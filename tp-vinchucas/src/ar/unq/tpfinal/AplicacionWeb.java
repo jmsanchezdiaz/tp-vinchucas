@@ -17,6 +17,10 @@ public class AplicacionWeb {
 		}
 		return app;
 	}
+	
+	public void agregarMuestra(Muestra nuevaMuestra) {
+		this.getMuestras().add(nuevaMuestra);
+	}
 
 	public List<Muestra> getMuestras() {
 		return muestras;
