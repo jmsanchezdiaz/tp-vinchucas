@@ -1,16 +1,26 @@
 package ar.unq.tpfinal;
 
+/**
+ * <p>
+ * 	Clase abstracta que representa al concepto de un usuario,
+ *  definiendo su comportamiento por defecto y el q puede ser extendido
+ * 
+ * </p>
+ * @author juan manuel sanchez diaz
+ *
+ */
+
 public abstract class Usuario {
 	private String nombre;
 	private String id;
-	private EstadoUsuario estado;
+	private NivelDeConocimiento nivelDeConocimiento;
 	
 	public void enviarMuestra(AplicacionWeb app, Ubicacion ubi, Foto foto, EspecieVinchuca especie) {
-		// enviar
+		app.agregarMuestra(new Muestra(this, ubi, foto, especie));
 	}
 	
 	public void opiniarMuestra(AplicacionWeb app, Muestra muestra, Opiniones opinion) {
-		// opinar
+		app.agregarOpinionA(muestra, opinion);
 	}
 
 	public String getNombre() {
@@ -29,13 +39,12 @@ public abstract class Usuario {
 		this.id = id;
 	}
 
-	public EstadoUsuario getEstado() {
-		return estado;
+	public NivelDeConocimiento getNivelDeConocimiento() {
+		return nivelDeConocimiento;
 	}
 
-	public void setEstado(EstadoUsuario estado) {
-		this.estado = estado;
+	public void setNivelDeConocimiento(NivelDeConocimiento nivelDeConocimiento) {
+		this.nivelDeConocimiento = nivelDeConocimiento;
 	}
-	
-	
+
 }

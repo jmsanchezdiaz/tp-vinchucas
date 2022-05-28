@@ -1,5 +1,5 @@
 package ar.unq.tpfinal;
 
-public enum EstadoUsuario {
+public enum NivelDeConocimiento {
 	EXPERTO, BASICO
 }
