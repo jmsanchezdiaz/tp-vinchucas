@@ -1,4 +1,13 @@
-package ar.unq.tpfinal;
+package ar.unq.tpfinal.usuario;
+
+import ar.unq.tpfinal.AplicacionWeb;
+import ar.unq.tpfinal.EspecieVinchuca;
+import ar.unq.tpfinal.Foto;
+import ar.unq.tpfinal.Muestra;
+import ar.unq.tpfinal.NivelDeConocimiento;
+import ar.unq.tpfinal.Opinion;
+import ar.unq.tpfinal.Opiniones;
+import ar.unq.tpfinal.Ubicacion;
 
 /**
  * <p>
@@ -19,8 +28,8 @@ public abstract class Usuario {
 		app.agregarMuestra(new Muestra(this, ubi, foto, especie));
 	}
 	
-	public void opinarMuestra(AplicacionWeb app, Muestra muestra, Opiniones opinion) {
-		app.agregarOpinionA(muestra, opinion);
+	public void opinarMuestra(AplicacionWeb app, Muestra muestra, Opiniones opinion) throws Exception {
+		app.agregarOpinionA(muestra, new Opinion(this, opinion));
 	}
 	
 	public String getNombre() {
@@ -43,8 +52,15 @@ public abstract class Usuario {
 		return nivelDeConocimiento;
 	}
 
-	public void setNivelDeConocimiento(NivelDeConocimiento nivelDeConocimiento) {
-		this.nivelDeConocimiento = nivelDeConocimiento;
+	abstract public void setNivelDeConocimiento(NivelDeConocimiento nivelDeConocimiento);
+	
+	@Override
+	public boolean equals(Object obj) {
+		Usuario otherUser = (Usuario) obj;
+		return this.getId().equals(otherUser.getId());
 	}
+
+	public abstract void subirDeNivel();
+	public abstract void bajarDeNivel();
 
 }
