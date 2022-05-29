@@ -43,7 +43,7 @@ public class AplicacionWeb {
 		// this.verificarActualicacionDe(nuevaMuestra.getUsuario());
 	}
 	
-	private void verificarActualicacionDe(Usuario usuario) {
+	private void verificarActualizacionDe(Usuario usuario) {
 		// TODO - Algoritmo de nivelDeConocimiento
 	}
 

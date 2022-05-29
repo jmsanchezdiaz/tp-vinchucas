@@ -19,10 +19,10 @@ public abstract class Usuario {
 		app.agregarMuestra(new Muestra(this, ubi, foto, especie));
 	}
 	
-	public void opiniarMuestra(AplicacionWeb app, Muestra muestra, Opiniones opinion) {
+	public void opinarMuestra(AplicacionWeb app, Muestra muestra, Opiniones opinion) {
 		app.agregarOpinionA(muestra, opinion);
 	}
-
+	
 	public String getNombre() {
 		return nombre;
 	}
