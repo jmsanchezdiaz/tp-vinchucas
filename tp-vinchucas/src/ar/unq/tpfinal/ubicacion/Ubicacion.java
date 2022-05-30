@@ -1,4 +1,4 @@
-package ar.unq.tpfinal;
+package ar.unq.tpfinal.ubicacion;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;

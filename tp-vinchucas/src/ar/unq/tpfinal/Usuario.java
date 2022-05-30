@@ -1,5 +1,7 @@
 package ar.unq.tpfinal;
 
+import ar.unq.tpfinal.ubicacion.Ubicacion;
+
 /**
  * <p>
  * 	Clase abstracta que representa al concepto de un usuario,

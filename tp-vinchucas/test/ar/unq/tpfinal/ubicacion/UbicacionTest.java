@@ -1,4 +1,4 @@
-package ar.unq.tpfinal;
+package ar.unq.tpfinal.ubicacion;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -9,6 +9,8 @@ import java.util.List;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+
+import ar.unq.tpfinal.ubicacion.Ubicacion;
 
 public class UbicacionTest {
 	private Ubicacion ubicacion;
