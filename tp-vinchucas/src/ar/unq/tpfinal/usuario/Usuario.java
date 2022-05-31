@@ -53,8 +53,14 @@ public abstract class Usuario {
 		return nivelDeConocimiento;
 	}
 
-	abstract public void setNivelDeConocimiento(NivelDeConocimiento nivelDeConocimiento);
+<<<<<<< HEAD
 
+=======
+	public void setNivelDeConocimiento(NivelDeConocimiento nivelDeConocimiento) {
+		this.nivelDeConocimiento = nivelDeConocimiento;
+	};
+	
+>>>>>>> refs/remotes/origin/master
 	@Override
 	public boolean equals(Object obj) {
 		Usuario otherUser = (Usuario) obj;

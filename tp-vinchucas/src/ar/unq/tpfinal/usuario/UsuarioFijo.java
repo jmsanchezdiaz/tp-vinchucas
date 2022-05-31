@@ -10,6 +10,7 @@ public class UsuarioFijo extends Usuario {
 		String uniqueID = UUID.randomUUID().toString();
 		this.setId(uniqueID);
 		this.setNombre(nombre);
+		super.setNivelDeConocimiento(NivelDeConocimiento.EXPERTO);
 	}
 	
 	@Override
