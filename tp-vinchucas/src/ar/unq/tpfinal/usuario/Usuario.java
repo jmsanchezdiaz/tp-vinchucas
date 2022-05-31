@@ -55,12 +55,6 @@ public abstract class Usuario {
 	public void setNivelDeConocimiento(NivelDeConocimiento nivelDeConocimiento) {
 		this.nivelDeConocimiento = nivelDeConocimiento;
 	};
-	
-	@Override
-	public boolean equals(Object obj) {
-		Usuario otherUser = (Usuario) obj;
-		return this.getId().equals(otherUser.getId());
-	}
 
 	public abstract void subirDeNivel();
 	public abstract void bajarDeNivel();
