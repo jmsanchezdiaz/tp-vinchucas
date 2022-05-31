@@ -52,7 +52,9 @@ public abstract class Usuario {
 		return nivelDeConocimiento;
 	}
 
-	abstract public void setNivelDeConocimiento(NivelDeConocimiento nivelDeConocimiento);
+	public void setNivelDeConocimiento(NivelDeConocimiento nivelDeConocimiento) {
+		this.nivelDeConocimiento = nivelDeConocimiento;
+	};
 	
 	@Override
 	public boolean equals(Object obj) {
