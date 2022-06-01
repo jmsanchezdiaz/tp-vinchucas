@@ -60,9 +60,9 @@ public class AplicacionWeb {
 	 * @author juanma
 	 * 
 	 */
-	public void agregarOpinionA(Muestra muestra, Opinion opinion) throws Exception {
+	public void agregarOpinionA(Muestra muestra, Opinion opinion) throws IllegalArgumentException {
 		// notify si valida una muestra
-		if(!this.getMuestras().contains(muestra)) throw new Exception("La muestra seleccionada no esta en la lista");
+		if(!this.getMuestras().contains(muestra)) throw new IllegalArgumentException("La muestra pasada no esta en la lista");
 		
 		this.actualizarSiCorrespondeUsuario(opinion.getUsuario());
 		muestra.agregarOpinion(opinion);

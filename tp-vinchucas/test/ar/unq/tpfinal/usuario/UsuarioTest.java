@@ -107,7 +107,7 @@ public class UsuarioTest {
 	void unUsuarioNoPuedeOpinarSobreUnaMuestraQueNoExisteYSeLanzaUnaExcepcion() throws Exception {
 		
 		//Mockeo que cuando la appMock llame al mensaje agregarOpinion lance una excepcion
-		doThrow(Exception.class)
+		doThrow(IllegalArgumentException.class)
 	      .when(appMock)
 	      .agregarOpinionA(muestraMock, mock(Opinion.class));
 
