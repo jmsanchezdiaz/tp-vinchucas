@@ -7,6 +7,7 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import ar.unq.tpfinal.usuario.Usuario;
+import ar.unq.tpfinal.zonaDeCobertura.ZonaDeCobertura;
 
 /**
  * <p>
@@ -20,6 +21,7 @@ import ar.unq.tpfinal.usuario.Usuario;
 public class AplicacionWeb {
 	static private AplicacionWeb app = null;
 	private List<Muestra> muestras;
+	private List<ZonaDeCobertura> zonasDeCobertura;
 	
 	private AplicacionWeb() {
 		muestras  = new ArrayList<Muestra>();
@@ -119,4 +121,9 @@ public class AplicacionWeb {
 		this.muestras = muestras;
 	}
 
+	public List<ZonaDeCobertura> zonasQueSeSolapan() {
+		
+		//@Despues creo la logica
+		return zonasDeCobertura;
+	}
 }

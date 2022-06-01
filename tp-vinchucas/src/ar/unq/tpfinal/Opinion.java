@@ -1,7 +1,6 @@
 package ar.unq.tpfinal;
 
 import java.time.LocalDate;
-import java.util.Date;
 
 import ar.unq.tpfinal.usuario.Usuario;
 
