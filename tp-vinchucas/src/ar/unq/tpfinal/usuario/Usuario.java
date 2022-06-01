@@ -7,7 +7,7 @@ import ar.unq.tpfinal.Muestra;
 import ar.unq.tpfinal.NivelDeConocimiento;
 import ar.unq.tpfinal.Opinion;
 import ar.unq.tpfinal.Opiniones;
-import ar.unq.tpfinal.Ubicacion;
+import ar.unq.tpfinal.ubicacion.Ubicacion;
 
 /**
  * <p>

@@ -3,18 +3,41 @@ package ar.unq.tpfinal.usuario;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.doThrow;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import ar.unq.tpfinal.AplicacionWeb;
+import ar.unq.tpfinal.EspecieVinchuca;
+import ar.unq.tpfinal.ubicacion.Ubicacion;
+import ar.unq.tpfinal.Foto;
+import ar.unq.tpfinal.Muestra;
 import ar.unq.tpfinal.NivelDeConocimiento;
+import ar.unq.tpfinal.Opinion;
+import ar.unq.tpfinal.Opiniones;
 
 public class UsuarioTest {
 	Usuario userBasico;
 	Usuario userExpertoFijo;
+	AplicacionWeb appMock;
+	Foto fotoMock;
+	Muestra muestraMock;
+	Ubicacion ubiMock;
+	
 	
 	@BeforeEach
 	void setUp() {
+		appMock = mock(AplicacionWeb.class);
+		fotoMock = mock(Foto.class);
+		muestraMock = mock(Muestra.class);
+		ubiMock = mock(Ubicacion.class);
+		
+		
 		userBasico = new UsuarioMutable("Juan");
 		userExpertoFijo = new UsuarioFijo("Eze");
 	}
@@ -64,16 +87,26 @@ public class UsuarioTest {
 	
 	@Test
 	void unUsuarioPuedeEnviarUnaMuestra() {
+		userBasico.enviarMuestra(appMock, ubiMock, fotoMock, EspecieVinchuca.VinchucaInfestans);
 		
+		verify(appMock).agregarMuestra(any(Muestra.class));
 	}
 	
 	@Test
-	void unUsuarioPuedeOpinarSobreUnaMuestra() {
+	void unUsuarioPuedeOpinarSobreUnaMuestra() throws Exception {
+		userBasico.opinarMuestra(appMock, muestraMock, Opiniones.IMAGEN_POCO_CLARA);
 		
+		verify(appMock).agregarOpinionA(any(Muestra.class), any(Opinion.class));
 	}
 	
 	@Test
 	void unUsuarioNoPuedeOpinarSobreUnaMuestraQueNoExisteYSeLanzaUnaExcepcion() throws Exception {
+		Opinion opinionMock = mock(Opinion.class);
+		
+		doThrow(IllegalStateException.class)
+	      .when(appMock)
+	      .agregarOpinionA(muestraMock, opinionMock);
 
+		userBasico.opinarMuestra(appMock, muestraMock, Opiniones.CHINCHE_FOLIADA);
 	}
 }
