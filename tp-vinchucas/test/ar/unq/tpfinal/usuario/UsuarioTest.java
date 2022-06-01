@@ -87,26 +87,31 @@ public class UsuarioTest {
 	
 	@Test
 	void unUsuarioPuedeEnviarUnaMuestra() {
+		//Exercise
 		userBasico.enviarMuestra(appMock, ubiMock, fotoMock, EspecieVinchuca.VinchucaInfestans);
 		
+		//Verify
 		verify(appMock).agregarMuestra(any(Muestra.class));
 	}
 	
 	@Test
 	void unUsuarioPuedeOpinarSobreUnaMuestra() throws Exception {
+		//Exercise
 		userBasico.opinarMuestra(appMock, muestraMock, Opiniones.IMAGEN_POCO_CLARA);
 		
+		//Verify
 		verify(appMock).agregarOpinionA(any(Muestra.class), any(Opinion.class));
 	}
 	
 	@Test
 	void unUsuarioNoPuedeOpinarSobreUnaMuestraQueNoExisteYSeLanzaUnaExcepcion() throws Exception {
-		Opinion opinionMock = mock(Opinion.class);
 		
-		doThrow(IllegalStateException.class)
+		//Mockeo que cuando la appMock llame al mensaje agregarOpinion lance una excepcion
+		doThrow(Exception.class)
 	      .when(appMock)
-	      .agregarOpinionA(muestraMock, opinionMock);
+	      .agregarOpinionA(muestraMock, mock(Opinion.class));
 
+		//Exercise
 		userBasico.opinarMuestra(appMock, muestraMock, Opiniones.CHINCHE_FOLIADA);
 	}
 }
