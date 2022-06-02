@@ -14,11 +14,6 @@ public class UsuarioMutable extends Usuario {
 	}
 
 	@Override
-	public void setNivelDeConocimiento(NivelDeConocimiento nivelDeConocimiento) {
-		this.setNivelDeConocimiento(nivelDeConocimiento);
-	}
-
-	@Override
 	public void subirDeNivel() {
 		this.setNivelDeConocimiento(this.getNivelDeConocimiento().siguienteNivel());
 	}

@@ -10,8 +10,6 @@ import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import ar.unq.tpfinal.ubicacion.Ubicacion;
-
 public class UbicacionTest {
 	private Ubicacion ubicacion;
 	private Ubicacion ubicacion2;

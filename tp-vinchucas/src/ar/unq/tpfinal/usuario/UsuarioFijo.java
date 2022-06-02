@@ -6,7 +6,7 @@ import ar.unq.tpfinal.NivelDeConocimiento;
 
 public class UsuarioFijo extends Usuario {
 	
-	public UsuarioFijo(String nombre, String id) {
+	public UsuarioFijo(String nombre) {
 		String uniqueID = UUID.randomUUID().toString();
 		this.setId(uniqueID);
 		this.setNombre(nombre);
