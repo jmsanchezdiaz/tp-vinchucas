@@ -6,7 +6,7 @@ public class Experto implements NivelDeConocimiento {
 
 	@Override
 	public void subirNivel(Usuario user) {
-		// Podria ir una excepcion?
+		throw new RuntimeException("No se puede subir de nivel más de nivel");
 	}
 
 	@Override

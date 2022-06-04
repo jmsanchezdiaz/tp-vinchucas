@@ -11,7 +11,7 @@ public class Basico implements NivelDeConocimiento {
 
 	@Override
 	public void bajarNivel(Usuario user) {
-		// Podria ir una excepcion?
+		throw new RuntimeException("No se puede bajar más de nivel");
 	}
 
 	@Override

@@ -2,6 +2,7 @@ package ar.unq.tpfinal.usuario;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertInstanceOf;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.mock;
@@ -75,6 +76,16 @@ public class UsuarioTest {
 		
 		//Assert
 		assertInstanceOf(Basico.class, userNormal.getNivelDeConocimiento());
+	}
+	
+	@Test
+	void noPuedoBajarElNivelDeConocimientoDeUnUsuarioBasicoYLanzaUnaExcepcion() {
+		 assertThrows(RuntimeException.class, () -> userNormal.bajarDeNivel(), "No se puede bajar más de nivel");
+	}
+	
+	@Test
+	void noPuedoSubirElNivelDeConocimientoDeUnUsuarioExpertoYLanzaUnaExcepcion() {
+		 assertThrows(RuntimeException.class, () -> userNormal.bajarDeNivel(), "No se puede subir más de nivel");
 	}
 	
 	@Test
