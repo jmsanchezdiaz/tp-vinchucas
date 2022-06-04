@@ -2,6 +2,7 @@ package ar.unq.tpfinal;
 
 import java.time.LocalDate;
 
+import ar.unq.tpfinal.niveldeconocimiento.NivelDeConocimiento;
 import ar.unq.tpfinal.usuario.Usuario;
 
 public class Opinion {

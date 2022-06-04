@@ -1,12 +1,12 @@
 package ar.unq.tpfinal.usuario;
 
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.Assert.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -15,17 +15,21 @@ import ar.unq.tpfinal.EspecieVinchuca;
 import ar.unq.tpfinal.ubicacion.Ubicacion;
 import ar.unq.tpfinal.Foto;
 import ar.unq.tpfinal.Muestra;
-import ar.unq.tpfinal.NivelDeConocimiento;
 import ar.unq.tpfinal.Opinion;
 import ar.unq.tpfinal.Opiniones;
+import ar.unq.tpfinal.niveldeconocimiento.Basico;
+import ar.unq.tpfinal.niveldeconocimiento.Experto;
+import ar.unq.tpfinal.niveldeconocimiento.ExpertoPermanente;
+import ar.unq.tpfinal.niveldeconocimiento.NivelDeConocimiento;
 
 public class UsuarioTest {
-	Usuario userBasico;
-	Usuario userExpertoFijo;
+	Usuario userNormal;
+	Usuario userExpertoPermanente;
 	AplicacionWeb appMock;
 	Foto fotoMock;
 	Muestra muestraMock;
 	Ubicacion ubiMock;
+	NivelDeConocimiento expertoPermanente;
 	
 	
 	@BeforeEach
@@ -34,82 +38,86 @@ public class UsuarioTest {
 		fotoMock = mock(Foto.class);
 		muestraMock = mock(Muestra.class);
 		ubiMock = mock(Ubicacion.class);
+		expertoPermanente = mock(ExpertoPermanente.class);
 		
-		
-		userBasico = new UsuarioMutable("Juan");
-		userExpertoFijo = new UsuarioFijo("Eze");
+		userNormal = new Usuario("Juan");
+		userExpertoPermanente = new Usuario("JuanCruz", expertoPermanente);
 	}
 	
 	@Test
 	void todosLoUsuarioMutablesAlInicioSuNivelDeConocimientoEsBasico() {
-		assertEquals(userBasico.getNivelDeConocimiento(), NivelDeConocimiento.BASICO);
+		assertInstanceOf(Basico.class, userNormal.getNivelDeConocimiento());
 	}
 	
 	@Test
 	void unUsuarioFijoSiempreEsExperto() {
-		assertEquals(userExpertoFijo.getNivelDeConocimiento(), NivelDeConocimiento.EXPERTO);
+		assertInstanceOf(ExpertoPermanente.class, userExpertoPermanente.getNivelDeConocimiento());
+		
+		userExpertoPermanente.bajarDeNivel();
+		
+		assertInstanceOf(ExpertoPermanente.class, userExpertoPermanente.getNivelDeConocimiento());
 	}
 	
 	@Test
-	void puedoSubirElNivelDeConocimientoDeUnUsuarioMutable() {
+	void puedoSubirElNivelDeConocimientoDeUnUsuarioComun() {
 		//Exercise
-		userBasico.subirDeNivel();
+		userNormal.subirDeNivel();
 		
 		//Assert
-		assertEquals(userBasico.getNivelDeConocimiento(), userBasico.getNivelDeConocimiento().siguienteNivel());
+		assertInstanceOf(Experto.class, userNormal.getNivelDeConocimiento());
 	}
 	
 	@Test
-	void puedoBajarElNivelDeConocimientoDeUnUsuarioMutable() {
+	void puedoBajarElNivelDeConocimientoDeUnUsuarioComun() {
 		//Exercise
-		userBasico.subirDeNivel();
-		userBasico.bajarDeNivel();
+		userNormal.subirDeNivel();
+		userNormal.bajarDeNivel();
 		
 		//Assert
-		assertEquals(userBasico.getNivelDeConocimiento(), userBasico.getNivelDeConocimiento().anteriorNivel());
+		assertInstanceOf(Basico.class, userNormal.getNivelDeConocimiento());
 	}
 	
 	@Test
 	void noPuedoBajarElNivelDeConocimientoDeUnUsuarioFijoYLanzaUnaExcepcion() {
-		assertThrows(RuntimeException.class, 
-				() -> userExpertoFijo.bajarDeNivel(), 
-				"No se puede bajar de nivel a un usuario fijo");
+		 doThrow(RuntimeException.class)
+	      .when(expertoPermanente)
+	      .bajarNivel(any());
 	}
 	
 	@Test
 	void noPuedoSubirElNivelDeConocimientoDeUnUsuarioFijoYLanzaUnaExcepcion() {
-		assertThrows(RuntimeException.class,
-				() -> userExpertoFijo.subirDeNivel(),
-				"No se puede subir de nivel a un usuario fijo");
+		doThrow(RuntimeException.class)
+	      .when(expertoPermanente)
+	      .subirNivel(any());
 	}
 	
 	@Test
 	void unUsuarioPuedeEnviarUnaMuestra() {
 		//Exercise
-		userBasico.enviarMuestra(appMock, ubiMock, fotoMock, EspecieVinchuca.VinchucaInfestans);
+		userNormal.enviarMuestra(appMock, ubiMock, fotoMock, EspecieVinchuca.VinchucaInfestans);
 		
 		//Verify
 		verify(appMock).agregarMuestra(any(Muestra.class));
 	}
 	
 	@Test
-	void unUsuarioPuedeOpinarSobreUnaMuestra() throws Exception {
-		//Exercise
-		userBasico.opinarMuestra(appMock, muestraMock, Opiniones.IMAGEN_POCO_CLARA);
-		
+	void unUsuarioBasicoNoPuedeOpinarEnMuestrasVerificadas() {
+		assertFalse(userNormal.puedeOpinarEnMuestrasVerificadasParcialcialmente());
+	}
+	
+	@Test
+	void unUsuarioExpertoNoPuedeOpinarEnMuestrasVerificadas() {
+		assertFalse(userExpertoPermanente.puedeOpinarEnMuestrasVerificadasParcialcialmente());
+	}
+	
+	@Test
+	void unUsuarioPuedeOpinarSobreUnaMuestra(){
+		// Exercise
+		userNormal.opinarMuestra(appMock, muestraMock, Opiniones.IMAGEN_POCO_CLARA);
 		//Verify
 		verify(appMock).agregarOpinionA(any(Muestra.class), any(Opinion.class));
 	}
 	
-	@Test
-	void unUsuarioNoPuedeOpinarSobreUnaMuestraQueNoExisteYSeLanzaUnaExcepcion() throws Exception {
-		
-		//Mockeo que cuando la appMock llame al mensaje agregarOpinion lance una excepcion
-		doThrow(IllegalArgumentException.class)
-	      .when(appMock)
-	      .agregarOpinionA(muestraMock, mock(Opinion.class));
-
-		//Exercise
-		userBasico.opinarMuestra(appMock, muestraMock, Opiniones.CHINCHE_FOLIADA);
-	}
+	
+	
 }
