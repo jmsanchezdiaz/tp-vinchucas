@@ -62,14 +62,13 @@ public class AplicacionWeb {
 	 * @author juanma
 	 * 
 	 */
-	public void agregarOpinionA(Muestra muestra, Opinion opinion) throws IllegalArgumentException {
-		// notify si valida una muestra
-		if(!this.getMuestras().contains(muestra)) throw new IllegalArgumentException("La muestra pasada no esta en la lista");
+	public void agregarOpinionA(Muestra muestra, Opinion opinion){
+		//notify si valida una muestra
 		
 		this.actualizarSiCorrespondeUsuario(opinion.getUsuario());
 		muestra.agregarOpinion(opinion);
-		
 	}
+
 	
 	private void actualizarSiCorrespondeUsuario(Usuario usuario) {
 		//Obtengo las muestras hace 30 dias desde el dia actual.

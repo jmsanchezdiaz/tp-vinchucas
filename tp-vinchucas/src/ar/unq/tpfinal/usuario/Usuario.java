@@ -1,10 +1,12 @@
 package ar.unq.tpfinal.usuario;
 
+import java.util.UUID;
+
 import ar.unq.tpfinal.AplicacionWeb;
 import ar.unq.tpfinal.EspecieVinchuca;
 import ar.unq.tpfinal.Foto;
 import ar.unq.tpfinal.Muestra;
-import ar.unq.tpfinal.NivelDeConocimiento;
+import ar.unq.tpfinal.niveldeconocimiento.*;
 import ar.unq.tpfinal.Opinion;
 import ar.unq.tpfinal.Opiniones;
 import ar.unq.tpfinal.ubicacion.Ubicacion;
@@ -19,16 +21,38 @@ import ar.unq.tpfinal.ubicacion.Ubicacion;
  *
  */
 
-public abstract class Usuario {
+//Concrete State
+public class Usuario {
 	private String nombre;
 	private String id;
 	private NivelDeConocimiento nivelDeConocimiento;
 	
+	/**
+	 * Instancia un usuario con nivel de conocimiento basico.
+	 * @param nombre
+	 */
+	public Usuario(String nombre) {
+		this.setId(UUID.randomUUID().toString());
+		this.setNombre(nombre);
+		this.setNivelDeConocimiento(new Basico());
+	}
+	
+	
+	/**
+	 * Instancia un usuario con nivel de conocimiento suministrado
+	 * @param nombre
+	 */
+	public Usuario(String nombre, NivelDeConocimiento nivel) {
+		this.setId(UUID.randomUUID().toString());
+		this.setNombre(nombre);
+		this.setNivelDeConocimiento(nivel);
+	}
+
 	public void enviarMuestra(AplicacionWeb app, Ubicacion ubi, Foto foto, EspecieVinchuca especie) {
 		app.agregarMuestra(new Muestra(this, ubi, foto, especie));
 	}
 	
-	public void opinarMuestra(AplicacionWeb app, Muestra muestra, Opiniones opinion) throws Exception {
+	public void opinarMuestra(AplicacionWeb app, Muestra muestra, Opiniones opinion){
 		app.agregarOpinionA(muestra, new Opinion(this, opinion));
 	}
 	
@@ -56,7 +80,16 @@ public abstract class Usuario {
 		this.nivelDeConocimiento = nivelDeConocimiento;
 	};
 
-	public abstract void subirDeNivel();
-	public abstract void bajarDeNivel();
+	public void subirDeNivel() {
+		this.getNivelDeConocimiento().subirNivel(this);
+	};
+	
+	public void bajarDeNivel() {
+		this.getNivelDeConocimiento().bajarNivel(this);
+	}
 
+	public boolean puedeOpinarEnMuestrasVerificadasParcialcialmente() {
+		return this.getNivelDeConocimiento().puedeOpinarEnMuestrasVerificadasParcialcialmente();
+	}
+	
 }
