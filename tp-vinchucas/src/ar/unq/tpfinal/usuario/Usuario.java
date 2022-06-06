@@ -27,12 +27,21 @@ public class Usuario {
 	private String id;
 	private NivelDeConocimiento nivelDeConocimiento;
 	
+	/**
+	 * Instancia un usuario con nivel de conocimiento basico.
+	 * @param nombre
+	 */
 	public Usuario(String nombre) {
 		this.setId(UUID.randomUUID().toString());
 		this.setNombre(nombre);
 		this.setNivelDeConocimiento(new Basico());
 	}
 	
+	
+	/**
+	 * Instancia un usuario con nivel de conocimiento suministrado
+	 * @param nombre
+	 */
 	public Usuario(String nombre, NivelDeConocimiento nivel) {
 		this.setId(UUID.randomUUID().toString());
 		this.setNombre(nombre);
