@@ -1,5 +1,5 @@
 package ar.unq.tpfinal;
 
-public enum EspecieVinchuca {
+public enum Vinchuca implements Insecto {
 	VinchucaInfestans, VinchucaSordida, VinchucaGuayasana
 }

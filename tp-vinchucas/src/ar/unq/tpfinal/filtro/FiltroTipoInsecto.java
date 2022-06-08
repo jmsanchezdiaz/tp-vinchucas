@@ -3,13 +3,14 @@ package ar.unq.tpfinal.filtro;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import ar.unq.tpfinal.Insecto;
 import ar.unq.tpfinal.Muestra;
 
 public class FiltroTipoInsecto implements IFiltro {
 
-	TipoInsecto valorBuscado;
+	Insecto valorBuscado;
 	
-	public void changeValue(TipoInsecto newValue) {
+	public void changeValue(Insecto newValue) {
 		this.valorBuscado = newValue;
 	}
 	

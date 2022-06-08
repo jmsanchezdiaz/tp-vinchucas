@@ -11,10 +11,11 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import ar.unq.tpfinal.AplicacionWeb;
-import ar.unq.tpfinal.EspecieVinchuca;
+import ar.unq.tpfinal.Vinchuca;
 import ar.unq.tpfinal.ubicacion.Ubicacion;
 import ar.unq.tpfinal.Foto;
 import ar.unq.tpfinal.Muestra;
+import ar.unq.tpfinal.NoVinchuca;
 import ar.unq.tpfinal.Opinion;
 import ar.unq.tpfinal.Opiniones;
 import ar.unq.tpfinal.niveldeconocimiento.ExpertoPermanente;
@@ -93,7 +94,7 @@ public class UsuarioTest {
 	@Test
 	void unUsuarioPuedeEnviarUnaMuestra() {
 		//Exercise
-		userNormal.enviarMuestra(appMock, ubiMock, fotoMock, EspecieVinchuca.VinchucaInfestans);
+		userNormal.enviarMuestra(appMock, ubiMock, fotoMock, Vinchuca.VinchucaInfestans);
 		
 		//Verify
 		verify(appMock).agregarMuestra(any(Muestra.class));
@@ -102,7 +103,7 @@ public class UsuarioTest {
 	@Test
 	void unUsuarioPuedeOpinarSobreUnaMuestra(){
 		// Exercise
-		userNormal.opinarMuestra(appMock, muestraMock, Opiniones.IMAGEN_POCO_CLARA);
+		userNormal.opinarMuestra(appMock, muestraMock, NoVinchuca.ChicheFoliada);
 		//Verify
 		verify(appMock).agregarOpinionA(any(Muestra.class), any(Opinion.class));
 	}

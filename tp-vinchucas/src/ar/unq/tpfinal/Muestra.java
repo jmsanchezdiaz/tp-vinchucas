@@ -7,7 +7,7 @@ import ar.unq.tpfinal.usuario.Usuario;
 
 public class Muestra {
 
-	public Muestra(Usuario usuario, Ubicacion ubicacion, Foto foto, EspecieVinchuca especieSospechada) {
+	public Muestra(Usuario usuario, Ubicacion ubicacion, Foto foto, Vinchuca especieSospechada) {
 		// Solamente lo agregue para poder seguir con mi clase.
 	}
 
