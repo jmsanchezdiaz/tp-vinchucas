@@ -88,8 +88,12 @@ public class Usuario {
 		this.getNivelDeConocimiento().bajarNivel(this);
 	}
 
-	public boolean puedeOpinarEnMuestrasVerificadasParcialcialmente() {
-		return this.getNivelDeConocimiento().puedeOpinarEnMuestrasVerificadasParcialcialmente();
+	public boolean esBasico() {
+		return this.getNivelDeConocimiento().esBasico();
 	}
 	
+	public boolean esExperto() {
+		return this.getNivelDeConocimiento().esExperto();
+	}
+
 }
