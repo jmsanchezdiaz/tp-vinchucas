@@ -15,8 +15,12 @@ public class Basico implements NivelDeConocimiento {
 	}
 
 	@Override
-	public boolean puedeOpinarEnMuestrasVerificadasParcialcialmente() {
-		return false;
+	public boolean esBasico() {
+		return true;
 	}
 
+	@Override
+	public boolean esExperto() {
+		return false;
+	}
 }

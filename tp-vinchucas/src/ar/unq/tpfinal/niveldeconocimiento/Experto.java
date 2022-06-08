@@ -13,10 +13,14 @@ public class Experto implements NivelDeConocimiento {
 	public void bajarNivel(Usuario user) {
 		user.setNivelDeConocimiento(new Basico());
 	}
-
+	
 	@Override
-	public boolean puedeOpinarEnMuestrasVerificadasParcialcialmente() {
-		return true;
+	public boolean esBasico() {
+		return false;
 	}
 
+	@Override
+	public boolean esExperto() {
+		return true;
+	}
 }

@@ -1,7 +1,6 @@
 package ar.unq.tpfinal.usuario;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertInstanceOf;
+import static org.junit.Assert.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doThrow;
@@ -18,8 +17,6 @@ import ar.unq.tpfinal.Foto;
 import ar.unq.tpfinal.Muestra;
 import ar.unq.tpfinal.Opinion;
 import ar.unq.tpfinal.Opiniones;
-import ar.unq.tpfinal.niveldeconocimiento.Basico;
-import ar.unq.tpfinal.niveldeconocimiento.Experto;
 import ar.unq.tpfinal.niveldeconocimiento.ExpertoPermanente;
 import ar.unq.tpfinal.niveldeconocimiento.NivelDeConocimiento;
 
@@ -47,16 +44,7 @@ public class UsuarioTest {
 	
 	@Test
 	void todosLoUsuarioMutablesAlInicioSuNivelDeConocimientoEsBasico() {
-		assertInstanceOf(Basico.class, userNormal.getNivelDeConocimiento());
-	}
-	
-	@Test
-	void unUsuarioFijoSiempreEsExperto() {
-		assertInstanceOf(ExpertoPermanente.class, userExpertoPermanente.getNivelDeConocimiento());
-		
-		userExpertoPermanente.bajarDeNivel();
-		
-		assertInstanceOf(ExpertoPermanente.class, userExpertoPermanente.getNivelDeConocimiento());
+		assertTrue(userNormal.esBasico());
 	}
 	
 	@Test
@@ -65,7 +53,7 @@ public class UsuarioTest {
 		userNormal.subirDeNivel();
 		
 		//Assert
-		assertInstanceOf(Experto.class, userNormal.getNivelDeConocimiento());
+		assertTrue(userNormal.esExperto());
 	}
 	
 	@Test
@@ -75,7 +63,7 @@ public class UsuarioTest {
 		userNormal.bajarDeNivel();
 		
 		//Assert
-		assertInstanceOf(Basico.class, userNormal.getNivelDeConocimiento());
+		assertTrue(userNormal.esBasico());
 	}
 	
 	@Test
@@ -112,23 +100,11 @@ public class UsuarioTest {
 	}
 	
 	@Test
-	void unUsuarioBasicoNoPuedeOpinarEnMuestrasVerificadas() {
-		assertFalse(userNormal.puedeOpinarEnMuestrasVerificadasParcialcialmente());
-	}
-	
-	@Test
-	void unUsuarioExpertoNoPuedeOpinarEnMuestrasVerificadas() {
-		assertFalse(userExpertoPermanente.puedeOpinarEnMuestrasVerificadasParcialcialmente());
-	}
-	
-	@Test
 	void unUsuarioPuedeOpinarSobreUnaMuestra(){
 		// Exercise
 		userNormal.opinarMuestra(appMock, muestraMock, Opiniones.IMAGEN_POCO_CLARA);
 		//Verify
 		verify(appMock).agregarOpinionA(any(Muestra.class), any(Opinion.class));
 	}
-	
-	
 	
 }

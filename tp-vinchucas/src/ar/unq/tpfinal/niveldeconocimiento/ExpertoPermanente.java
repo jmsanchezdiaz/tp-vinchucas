@@ -13,9 +13,14 @@ public class ExpertoPermanente implements NivelDeConocimiento {
 	public void bajarNivel(Usuario user) {
 		throw new RuntimeException("No se puede bajar de nivel a un usuario fijo");
 	}
-	
+
 	@Override
-	public boolean puedeOpinarEnMuestrasVerificadasParcialcialmente() {
+	public boolean esBasico() {
+		return false;
+	}
+
+	@Override
+	public boolean esExperto() {
 		return true;
 	}
 	

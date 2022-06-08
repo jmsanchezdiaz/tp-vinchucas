@@ -8,7 +8,9 @@ public interface NivelDeConocimiento {
 	public abstract void subirNivel(Usuario user);
 
 	public abstract void bajarNivel(Usuario user);
-
-	public abstract boolean puedeOpinarEnMuestrasVerificadasParcialcialmente();
 	
+	public abstract boolean esBasico();
+
+	public abstract boolean esExperto();
+
 }
