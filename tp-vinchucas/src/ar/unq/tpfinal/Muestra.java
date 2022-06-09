@@ -77,6 +77,28 @@ public class Muestra {
 	public int cantidadDeOpinionesDe(Usuario usuario) {
 		return opiniones.stream().filter(op -> op.esOpinionDe(usuario)).collect(Collectors.toList()).size();
 	}
+	
+	public NivelDeVerificacion getVerificacionActual() {
+		return null;
+	}
+
+	public List<Opinion> getOpiniones() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public boolean esInsecto(Insecto valorBuscado) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	public boolean fueVotadaEn(LocalDate fecha) {
+		return this.getOpiniones()
+				.stream()
+				.anyMatch(opinion -> opinion
+						.getFechaCreacion()
+						.equals(fecha));
+	}
 
 	public LocalDate getFechaCreacion() {
 		return null;
