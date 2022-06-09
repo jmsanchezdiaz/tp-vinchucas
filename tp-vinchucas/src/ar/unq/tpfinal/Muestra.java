@@ -13,19 +13,19 @@ import ar.unq.tpfinal.usuario.Usuario;
 
 public class Muestra {
 	
-	private EspecieVinchuca especie;
+	private Insecto especie;
 	private Foto foto;
 	private Ubicacion ubicacion;
 	private Usuario usuario;
 	private List<Opinion> opiniones;
 	private LocalDate fechaDeCreacion;
 	
-	public Muestra(Usuario usuario, Ubicacion ubicacion, Foto foto, EspecieVinchuca especieSospechada) {
+	public Muestra(Usuario usuario, Ubicacion ubicacion, Foto foto, Insecto especieSospechada) {
 		fechaDeCreacion = LocalDate.now();
 		opiniones = new ArrayList<>();
 	}
 
-	public EspecieVinchuca getEspecie() {
+	public Insecto getEspecie() {
 		return this.especie;
 	}
 	
@@ -58,18 +58,7 @@ public class Muestra {
 		//System.out.print(opiniones.stream().collect(Collectors.groupingBy(op -> op.getOpinion())));
 		
 		for (Opinion opinion : opiniones) {
-			Opiniones op = opinion.getOpinion();
-			switch (op) { 
-		    	case VINCHUCA:
-		    		break;
-		    	case CHINCHE_FOLIADA:
-		    		break;
-		    	case PHTIA_CHINCHE:
-		    		break;
-		    	case IMAGEN_POCO_CLARA:
-		    		break;
-		    	default:
-		    }
+			Opinable op = opinion.getOpinion();
 		}
 		return this.opiniones;
 	}
@@ -79,11 +68,6 @@ public class Muestra {
 	}
 	
 	public NivelDeVerificacion getVerificacionActual() {
-		return null;
-	}
-
-	public List<Opinion> getOpiniones() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 

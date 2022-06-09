@@ -12,13 +12,15 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import ar.unq.tpfinal.AplicacionWeb;
-import ar.unq.tpfinal.EspecieVinchuca;
+import ar.unq.tpfinal.Insecto;
 import ar.unq.tpfinal.ubicacion.Ubicacion;
 import ar.unq.tpfinal.usuario.Usuario;
 import ar.unq.tpfinal.Foto;
 import ar.unq.tpfinal.Muestra;
+import ar.unq.tpfinal.NoVinchuca;
 import ar.unq.tpfinal.Opinion;
 import ar.unq.tpfinal.Opiniones;
+import ar.unq.tpfinal.Vinchuca;
 import ar.unq.tpfinal.niveldeconocimiento.ExpertoPermanente;
 import ar.unq.tpfinal.niveldeconocimiento.NivelDeConocimiento;
 
@@ -40,7 +42,7 @@ public class MuestraTest {
 		ubiMock = mock(Ubicacion.class);
 		fotoMock = mock(Foto.class);
 		
-		muestra = new Muestra(userMock, ubiMock, fotoMock, EspecieVinchuca.VinchucaInfestans);
+		muestra = new Muestra(userMock, ubiMock, fotoMock, Vinchuca.VinchucaGuayasana);
 	}
 	
 	@Test
@@ -51,8 +53,8 @@ public class MuestraTest {
 	@Test
 	void unaa() {
 		
-		when(opinionImgPocoClaraMock.getOpinion()).thenReturn(Opiniones.IMAGEN_POCO_CLARA);
-		when(opinionNingunaMock.getOpinion()).thenReturn(Opiniones.NINGUNA);
+		when(opinionImgPocoClaraMock.getOpinion()).thenReturn(Vinchuca.VinchucaGuayasana);
+		when(opinionNingunaMock.getOpinion()).thenReturn(Vinchuca.VinchucaGuayasana);
 		
 		muestra.agregarOpinion(opinionImgPocoClaraMock);
 		muestra.agregarOpinion(opinionImgPocoClaraMock);
