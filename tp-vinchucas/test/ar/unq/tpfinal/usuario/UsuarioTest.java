@@ -17,7 +17,6 @@ import ar.unq.tpfinal.Foto;
 import ar.unq.tpfinal.Muestra;
 import ar.unq.tpfinal.NoVinchuca;
 import ar.unq.tpfinal.Opinion;
-import ar.unq.tpfinal.Opiniones;
 import ar.unq.tpfinal.niveldeconocimiento.ExpertoPermanente;
 import ar.unq.tpfinal.niveldeconocimiento.NivelDeConocimiento;
 
