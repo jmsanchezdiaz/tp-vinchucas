@@ -1,5 +1,3 @@
 package ar.unq.tpfinal;
 
-public interface Opinable {
-
-}
+public interface Opinable {}

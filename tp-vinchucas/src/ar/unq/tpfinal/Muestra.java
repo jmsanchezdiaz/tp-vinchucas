@@ -1,6 +1,7 @@
 package ar.unq.tpfinal;
 
 import java.time.LocalDate;
+import java.util.List;
 
 import ar.unq.tpfinal.ubicacion.Ubicacion;
 import ar.unq.tpfinal.usuario.Usuario;
@@ -25,6 +26,29 @@ public class Muestra {
 
 	public void agregarOpinion(Opinion opinion) {
 
+	}
+
+	
+	public NivelDeVerificacion getVerificacionActual() {
+		return null;
+	}
+
+	public List<Opinion> getOpiniones() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public boolean esInsecto(Insecto valorBuscado) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	public boolean fueVotadaEn(LocalDate fecha) {
+		return this.getOpiniones()
+				.stream()
+				.anyMatch(opinion -> opinion
+						.getFechaCreacion()
+						.equals(fecha));
 	}
 
 	

@@ -10,13 +10,19 @@ public class FiltroTipoInsecto implements IFiltro {
 
 	Insecto valorBuscado;
 	
+	public FiltroTipoInsecto(Insecto insecto) {
+		this.valorBuscado = insecto;
+	}
+	
 	public void changeValue(Insecto newValue) {
 		this.valorBuscado = newValue;
 	}
 	
 	@Override
 	public List<Muestra> filter(List<Muestra> muestras) {
-		return muestras.stream().filter(muestra -> muestra.esEspecie(this.valorBuscado)).collect(Collectors.toList());
+		return muestras.stream()
+				.filter(muestra -> muestra.esInsecto(this.valorBuscado))
+				.collect(Collectors.toList());
 	}
 
 }

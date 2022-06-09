@@ -9,12 +9,21 @@ public class FiltroFechaCreacion implements IFiltro {
 
 	LocalDate valorBuscado;
 	
+	public FiltroFechaCreacion(LocalDate fecha) {
+		this.valorBuscado = fecha;
+	}
+
 	public void changeValue(LocalDate newValue) {
 		this.valorBuscado = newValue;
 	}
 	
 	@Override
 	public List<Muestra> filter(List<Muestra> muestras) {
-		return muestras.stream().filter(muestra -> muestra.getFechaCreacion().equals(this.valorBuscado)).collect(Collectors.toList());
+		return muestras
+				.stream()
+				.filter(muestra -> muestra
+						.getFechaCreacion()
+						.equals(this.valorBuscado))
+				.collect(Collectors.toList());
 	}
 }

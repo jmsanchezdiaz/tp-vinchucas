@@ -4,20 +4,24 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import ar.unq.tpfinal.Muestra;
-import ar.unq.tpfinal.Resultado;
+import ar.unq.tpfinal.NivelDeVerificacion;
 
 public class FiltroTipoVerificacion implements IFiltro {
 
-	Resultado valorBuscado;
+	NivelDeVerificacion valorBuscado;
 	
-	public void changeValue(Resultado newValue) {
+	public FiltroTipoVerificacion(NivelDeVerificacion verificacion) {
+		this.valorBuscado = verificacion;
+	}
+
+	public void changeValue(NivelDeVerificacion newValue) {
 		this.valorBuscado = newValue;
 	}
 	
 	@Override
 	public List<Muestra> filter(List<Muestra> muestras) {
 		return muestras.stream()
-				.filter(muestra -> muestra.getResultadoActual() == this.valorBuscado)
+				.filter(muestra -> muestra.getVerificacionActual() == this.valorBuscado)
 				.collect(Collectors.toList());
 	}
 }

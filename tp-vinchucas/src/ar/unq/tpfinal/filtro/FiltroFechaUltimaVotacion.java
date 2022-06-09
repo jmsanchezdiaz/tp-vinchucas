@@ -10,15 +10,18 @@ public class FiltroFechaUltimaVotacion implements IFiltro {
 	
 	LocalDate valorBuscado;
 	
+	public FiltroFechaUltimaVotacion(LocalDate date) {
+		this.valorBuscado = date;
+	}
+
 	public void changeValue(LocalDate newValue) {
 		this.valorBuscado = newValue;
 	}
 	
 	@Override
 	public List<Muestra> filter(List<Muestra> muestras) {
-//		Tengo una duda, con los filtros de fecha, se busca encontrar las muestras de la fecha exacta (??)
 		return muestras.stream()
-				.filter(muestra -> muestra.getOpiniones().stream().anyMatch(opi -> opi.getFechaCreacion().equals(this.valorBuscado)))
+				.filter(muestra -> muestra.fueVotadaEn(this.valorBuscado))
 				.collect(Collectors.toList());
 	}
 }
