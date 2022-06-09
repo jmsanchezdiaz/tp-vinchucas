@@ -1,5 +1,6 @@
 package ar.unq.tpfinal.filtro;
 
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
@@ -48,8 +49,78 @@ public class FiltrosTest {
 		filtroAND = new FiltroAND();
 		
 		filtroOR.addFilter(filtroFechaUltimaVotacion);
+		filtroOR.addFilter(filtroInsecto);
+		
+		filtroAND.addFilter(filtroFechaUltimaVotacion);
+		filtroAND.addFilter(filtroInsecto);
 	}
 	
+	@Test
+	void puedoFiltrarMuestrasConElOperadorOR() {
+		when(muestraMock1.esInsecto(NoVinchuca.PhtiaChinche)).thenReturn(false);
+		when(muestraMock2.esInsecto(NoVinchuca.PhtiaChinche)).thenReturn(true);
+		when(muestraMock3.esInsecto(NoVinchuca.PhtiaChinche)).thenReturn(false);
+		when(muestraMock4.esInsecto(NoVinchuca.PhtiaChinche)).thenReturn(true);
+		when(muestraMock1.fueVotadaEn(fecha)).thenReturn(false);
+		when(muestraMock2.fueVotadaEn(fecha)).thenReturn(false);
+		when(muestraMock3.fueVotadaEn(fecha)).thenReturn(true);
+		when(muestraMock4.fueVotadaEn(fecha)).thenReturn(false);
+		
+		List<Muestra> filtradas = filtroOR.filter(muestras);
+		
+		muestras.forEach(muestra -> verify(muestra).esInsecto(NoVinchuca.PhtiaChinche));
+		muestras.forEach(muestra -> verify(muestra).fueVotadaEn(fecha));
+		assertFalse(filtradas.contains(muestraMock1));
+		assertTrue(filtradas.size() == 3);
+	}
+	
+	@Test
+	void puedoFiltrarMuestrasConElOperadorORConSubFiltrosCompuestos() {
+		when(muestraMock1.getVerificacionActual()).thenReturn(NivelDeVerificacion.VERIFICADA);
+		when(muestraMock2.getVerificacionActual()).thenReturn(NivelDeVerificacion.NO_VERIFICADA);
+		when(muestraMock3.getVerificacionActual()).thenReturn(NivelDeVerificacion.VERIFICADA_PARCIAL);
+		when(muestraMock4.getVerificacionActual()).thenReturn(NivelDeVerificacion.VERIFICADA);
+		when(muestraMock1.esInsecto(NoVinchuca.PhtiaChinche)).thenReturn(false);
+		when(muestraMock2.esInsecto(NoVinchuca.PhtiaChinche)).thenReturn(true);
+		when(muestraMock3.esInsecto(NoVinchuca.PhtiaChinche)).thenReturn(false);
+		when(muestraMock4.esInsecto(NoVinchuca.PhtiaChinche)).thenReturn(true);
+		when(muestraMock1.fueVotadaEn(fecha)).thenReturn(false);
+		when(muestraMock2.fueVotadaEn(fecha)).thenReturn(true);
+		when(muestraMock3.fueVotadaEn(fecha)).thenReturn(true);
+		when(muestraMock4.fueVotadaEn(fecha)).thenReturn(false);
+		
+		FiltroCompuesto otherFiltroOR = new FiltroOR();
+		otherFiltroOR.addFilter(filtroVerificacion);
+		otherFiltroOR.addFilter(filtroAND);
+		
+		List<Muestra> filtradas = otherFiltroOR.filter(muestras);
+		
+		muestras.forEach(muestra -> verify(muestra).getVerificacionActual());
+		muestras.forEach(muestra -> verify(muestra).fueVotadaEn(fecha));
+		verify(muestraMock2).esInsecto(NoVinchuca.PhtiaChinche);
+		
+		assertTrue(filtradas.containsAll(Arrays.asList(muestraMock1, muestraMock4, muestraMock2)));
+		assertTrue(filtradas.size() == 3);
+	}
+	
+	@Test
+	void puedoFiltrarMuestrasConElOperadorAND() {
+		when(muestraMock1.esInsecto(NoVinchuca.PhtiaChinche)).thenReturn(false);
+		when(muestraMock2.esInsecto(NoVinchuca.PhtiaChinche)).thenReturn(true);
+		when(muestraMock3.esInsecto(NoVinchuca.PhtiaChinche)).thenReturn(false);
+		when(muestraMock4.esInsecto(NoVinchuca.PhtiaChinche)).thenReturn(true);
+		when(muestraMock1.fueVotadaEn(fecha)).thenReturn(false);
+		when(muestraMock2.fueVotadaEn(fecha)).thenReturn(true);
+		when(muestraMock3.fueVotadaEn(fecha)).thenReturn(true);
+		when(muestraMock4.fueVotadaEn(fecha)).thenReturn(false);
+		
+		List<Muestra> filtradas = filtroAND.filter(muestras);
+		
+		muestras.forEach(muestra -> verify(muestra).fueVotadaEn(fecha));
+		verify(muestraMock2).esInsecto(NoVinchuca.PhtiaChinche);
+		assertTrue(filtradas.contains(muestraMock2));
+		assertTrue(filtradas.size() == 1);
+	}
 	
 	@Test
 	void puedoFiltrarMuestrasPorTipoDeInsecto() {
@@ -122,4 +193,5 @@ public class FiltrosTest {
 		assertTrue(filtradas.contains(muestraMock1) && filtradas.contains(muestraMock4));
 		assertTrue(filtradas.size() == 2);
 	}
+
 }

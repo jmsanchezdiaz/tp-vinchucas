@@ -8,6 +8,10 @@ import ar.unq.tpfinal.Muestra;
 
 public class FiltroOR extends FiltroCompuesto {
 
+	public FiltroOR() {
+		this.filtros = new ArrayList<IFiltro>();
+	}
+	
 	@Override
 	public List<Muestra> filter(List<Muestra> muestras) {
 		List<Muestra> resultados = new ArrayList<Muestra>();
