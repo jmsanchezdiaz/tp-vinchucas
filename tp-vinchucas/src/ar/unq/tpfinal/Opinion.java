@@ -54,4 +54,8 @@ public class Opinion {
 		this.usuario = usuario;
 	}
 	
+	public Boolean esOpinionDe(Usuario usuario) {
+		return this.getUsuario().equals(usuario);
+	}
+	
 }
