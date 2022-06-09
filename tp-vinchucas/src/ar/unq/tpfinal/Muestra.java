@@ -1,40 +1,73 @@
 package ar.unq.tpfinal;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
+import ar.unq.tpfinal.niveldeconocimiento.Experto;
 import ar.unq.tpfinal.ubicacion.Ubicacion;
 import ar.unq.tpfinal.usuario.Usuario;
 
 public class Muestra {
-
-	public Muestra(Usuario usuario, Ubicacion ubicacion, Foto foto, Vinchuca especieSospechada) {
-		// Solamente lo agregue para poder seguir con mi clase.
+	
+	private Insecto especie;
+	private Foto foto;
+	private Ubicacion ubicacion;
+	private Usuario usuario;
+	private List<Opinion> opiniones;
+	private LocalDate fechaDeCreacion;
+	
+	public Muestra(Usuario usuario, Ubicacion ubicacion, Foto foto, Insecto especieSospechada) {
+		fechaDeCreacion = LocalDate.now();
+		opiniones = new ArrayList<>();
 	}
 
+	public Insecto getEspecie() {
+		return this.especie;
+	}
+	
+	public Foto getFoto() {
+		return this.foto;
+	}
+	
 	public Usuario getUsuario() {
-		return null;
+		return this.usuario;
 	}
-
-	public int cantidadDeOpinionesDe(Usuario usuario) {
-		return 0;
+	
+	public Ubicacion getUbicacion() {
+		return this.ubicacion;
 	}
-
-	public LocalDate getFechaCreacion() {
-		return null;
+	
+	public List<Opinion> getOpiniones() {
+		return opiniones;
 	}
 
 	public void agregarOpinion(Opinion opinion) {
-
+		getOpiniones().add(opinion);
+	}
+	
+	public Boolean opinoUnExperto() {
+		//getOpiniones().stream().anyMatch(op -> op.esExperto());
+		return false;
 	}
 
+	public List<Opinion> getResultadoActual() {
+		//System.out.print(opiniones.stream().collect(Collectors.groupingBy(op -> op.getOpinion())));
+		
+		for (Opinion opinion : opiniones) {
+			Opinable op = opinion.getOpinion();
+		}
+		return this.opiniones;
+	}
+	
+	public int cantidadDeOpinionesDe(Usuario usuario) {
+		return opiniones.stream().filter(op -> op.esOpinionDe(usuario)).collect(Collectors.toList()).size();
+	}
 	
 	public NivelDeVerificacion getVerificacionActual() {
-		return null;
-	}
-
-	public List<Opinion> getOpiniones() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
@@ -51,6 +84,7 @@ public class Muestra {
 						.equals(fecha));
 	}
 
-	
-
+	public LocalDate getFechaCreacion() {
+		return null;
+	}
 }
