@@ -54,6 +54,15 @@ public class FiltrosTest {
 		filtroAND.addFilter(filtroFechaUltimaVotacion);
 		filtroAND.addFilter(filtroInsecto);
 	}
+	 
+	 @Test
+	 void unFiltroCompuestoPuedeEliminarUnFiltroQueEstaContenido() {
+		 
+		 filtroOR.addFilter(filtroFechaCreacion);
+		 filtroOR.deleteFilter(filtroFechaCreacion);
+		 
+		 assertFalse(filtroOR.containsFilter(filtroFechaCreacion));
+	 }
 	
 	@Test
 	void puedoFiltrarMuestrasConElOperadorOR() {
@@ -99,7 +108,10 @@ public class FiltrosTest {
 		List<Muestra> filtradas = filtroAND.filter(muestras);
 		
 		muestras.forEach(muestra -> verify(muestra).fueVotadaEn(fecha));
+		
 		verify(muestraMock2).esInsecto(NoVinchuca.PhtiaChinche);
+		verify(muestraMock3).esInsecto(NoVinchuca.PhtiaChinche);
+		
 		assertTrue(filtradas.contains(muestraMock2));
 		assertTrue(filtradas.size() == 1);
 	}
