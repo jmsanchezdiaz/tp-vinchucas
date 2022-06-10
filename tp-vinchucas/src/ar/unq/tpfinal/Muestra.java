@@ -1,10 +1,14 @@
 package ar.unq.tpfinal;
 
+import static org.mockito.ArgumentMatchers.anyMap;
+
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 import java.util.stream.Collectors;
 
 import ar.unq.tpfinal.niveldeconocimiento.Experto;
@@ -21,7 +25,7 @@ public class Muestra {
 	private LocalDate fechaDeCreacion;
 	
 	public Muestra(Usuario usuario, Ubicacion ubicacion, Foto foto, Insecto especieSospechada) {
-		setFechaDeCreacion(LocalDate.now());
+		setFechaCreacion(LocalDate.now());
 		opiniones = new ArrayList<>();
 	}
 
@@ -50,17 +54,24 @@ public class Muestra {
 	}
 	
 	public Boolean opinoUnExperto() {
-		//getOpiniones().stream().anyMatch(op -> op.esExperto());
-		return false;
+		return getOpiniones().stream().anyMatch(op -> op.getUsuario().esExperto());
 	}
 
-	public List<Opinion> getResultadoActual() {
-		//System.out.print(opiniones.stream().collect(Collectors.groupingBy(op -> op.getOpinion())));
-		
-		for (Opinion opinion : opiniones) {
-			Opinable op = opinion.getOpinion();
-		}
-		return this.opiniones;
+	public Opinable getResultadoActual() {
+
+		Map<Opinable, Long> mapOpiniones = opiniones.stream().collect(Collectors.groupingBy(op -> op.getOpinion(), Collectors.counting()));
+
+	    Opinable resultado = null;
+	    Long actualMayor = (long) 0;
+	    
+	    for (Entry<Opinable, Long> op : mapOpiniones.entrySet()) {
+	        System.out.println(op.getKey() + "/" + op.getValue());
+	        if(op.getValue() > actualMayor) {
+	    		resultado = op.getKey();
+	    		actualMayor = op.getValue();
+	    	}
+	    }
+	    return resultado;
 	}
 	
 	public int cantidadDeOpinionesDe(Usuario usuario) {
@@ -83,15 +94,12 @@ public class Muestra {
 						.equals(fecha));
 	}
 
-	public LocalDate getFechaCreacion() {
-		return this.fechaDeCreacion;
-	}
 
-	public LocalDate getFechaDeCreacion() {
+	public LocalDate getFechaCreacion() {
 		return fechaDeCreacion;
 	}
 
-	public void setFechaDeCreacion(LocalDate fechaDeCreacion) {
+	public void setFechaCreacion(LocalDate fechaDeCreacion) {
 		this.fechaDeCreacion = fechaDeCreacion;
 	}
 }
