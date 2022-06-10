@@ -23,10 +23,21 @@ public class AplicacionWeb {
 	private List<Muestra> muestras;
 	private List<ZonaDeCobertura> zonasDeCobertura;
 	
+	/**
+	 * Crea una instancia de AplicacionWeb, es privado para que solo
+	 * pueda utilizado dentro de la clase.
+	 * @return AplicacionWeb
+	 */
 	private AplicacionWeb() {
-		muestras  = new ArrayList<Muestra>();
+		muestras = new ArrayList<Muestra>();
+		zonasDeCobertura = new ArrayList<ZonaDeCobertura>();
 	}
 	
+	/**
+	 * Crea una unica instancia de AplicacionWeb, si se intenta 
+	 * crear otra devuelve la existente.
+	 * @return AplicacionWeb
+	 */
 	public static AplicacionWeb getAplicacionWeb() {
 		if(app == null) {
 			app = new AplicacionWeb();
@@ -70,9 +81,14 @@ public class AplicacionWeb {
 	}
 
 	
+	/**
+	 * Actualiza el nivel de conocimiento del usuario provisto si 
+	 * cumple con los requisitos.
+	 * @param {Usuario} - un usuario.
+	 */
 	private void actualizarSiCorrespondeUsuario(Usuario usuario) {
 		//Obtengo las muestras hace 30 dias desde el dia actual.
-		Stream<Muestra> muestrasHace30Dias = this.obtenerMuestrasHace(30);
+		List<Muestra> muestrasHace30Dias = this.obtenerMuestrasHace(30);
 		
 		// Obtengo la cantidad de esos envios que son del usuario
 		int cantidadDeEnviosDelUsuario = this.cantidadDeEnviosDe(usuario, muestrasHace30Dias);
@@ -86,30 +102,46 @@ public class AplicacionWeb {
 
 	}
 
-	private int cantidadDeEnviosDe(Usuario usuario, Stream<Muestra> muestrasHace30Dias) {
-		return muestrasHace30Dias
+	/**
+	 * Devuelve la cantidad de envios de un usuario en una lista de muestras pasadas.
+	 * @param {Usuario} - usuario
+	 * @param {Stream<Muestra>} - listaDeMuestras
+	 * @return int
+	 */
+	private int cantidadDeEnviosDe(Usuario usuario, List<Muestra> listaDeMuestras) {
+		return listaDeMuestras
+				.stream()
 				.filter(muestra -> usuario.equals(muestra.getUsuario()))
-				.collect(Collectors.toList()).size();
+				.collect(Collectors.toList())
+				.size();
 	}
 
-	private int cantidadDeOpinionesDe(Usuario usuario, Stream<Muestra> muestras) {
-		return muestras
+	/**
+	 * Devuelve la cantidad de opiniones de un usuario en una lista de muestras pasadas.
+	 * @param {Usuario} - usuario
+	 * @param {Stream<Muestra>} - listaDeMuestras
+	 * @return int
+	 */
+	private int cantidadDeOpinionesDe(Usuario usuario, List<Muestra> listaDeMuestras) {
+		return listaDeMuestras
+				.stream()
 				.mapToInt(muestra -> muestra.cantidadDeOpinionesDe(usuario))
 				.sum();
 	}
 
 	/**
-	 * Devuelve un Stream de muestras con las muestras de los ultimos dias pasados como parametros.
+	 * Devuelve una Lista de muestras con las muestras de los ultimos dias pasados como parametros.
 	 * Por ejemplo si queremos las muestras de hace 30 dias, cantidadDeDias seria 30.
 	 * 
 	 * @param int - cantidadDeDias - cantidad de dias anteriores entre las muestras y la fecha actual.
-	 * @return Stream<Muestra>
+	 * @return List<Muestra>
 	 */
-	private Stream<Muestra> obtenerMuestrasHace(int cantidadDeDias) {
+	private List<Muestra> obtenerMuestrasHace(int cantidadDeDias) {
 		LocalDate fechaDeHoy = LocalDate.now();
 		return this.getMuestras()
 		.stream()
-		.filter(muestra -> muestra.getFechaCreacion().isEqual(fechaDeHoy.minusDays(cantidadDeDias)));
+		.filter(muestra -> muestra.getFechaCreacion().isEqual(fechaDeHoy.minusDays(cantidadDeDias)))
+		.collect(Collectors.toList());
 	}
 
 	public List<Muestra> getMuestras() {
