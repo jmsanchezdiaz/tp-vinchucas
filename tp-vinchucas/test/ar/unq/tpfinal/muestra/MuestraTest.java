@@ -54,7 +54,7 @@ public class MuestraTest {
 	void unaa() {
 		
 		when(opinionImgPocoClaraMock.getOpinion()).thenReturn(Vinchuca.VinchucaGuayasana);
-		when(opinionNingunaMock.getOpinion()).thenReturn(Vinchuca.VinchucaGuayasana);
+		when(opinionNingunaMock.getOpinion()).thenReturn(Vinchuca.VinchucaInfestans);
 		
 		muestra.agregarOpinion(opinionImgPocoClaraMock);
 		muestra.agregarOpinion(opinionImgPocoClaraMock);
