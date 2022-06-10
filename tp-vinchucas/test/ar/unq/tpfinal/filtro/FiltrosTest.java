@@ -69,7 +69,6 @@ public class FiltrosTest {
 		assertTrue(filtradas.size() == 3);
 	}
 
-	
 	@Test
 	void puedoFiltrarMuestrasConElOperadorORConSubFiltrosCompuestos() {
 		//Setup
