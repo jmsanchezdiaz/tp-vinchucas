@@ -13,7 +13,6 @@ import org.junit.jupiter.api.Test;
 import ar.unq.tpfinal.AplicacionWeb;
 import ar.unq.tpfinal.Vinchuca;
 import ar.unq.tpfinal.ubicacion.Ubicacion;
-import ar.unq.tpfinal.usuario.Usuario;
 import ar.unq.tpfinal.Foto;
 import ar.unq.tpfinal.Muestra;
 import ar.unq.tpfinal.NoVinchuca;

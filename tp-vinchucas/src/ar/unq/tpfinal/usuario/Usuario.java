@@ -9,7 +9,6 @@ import ar.unq.tpfinal.Muestra;
 import ar.unq.tpfinal.Opinable;
 import ar.unq.tpfinal.niveldeconocimiento.*;
 import ar.unq.tpfinal.Opinion;
-import ar.unq.tpfinal.Opiniones;
 import ar.unq.tpfinal.ubicacion.Ubicacion;
 
 /**

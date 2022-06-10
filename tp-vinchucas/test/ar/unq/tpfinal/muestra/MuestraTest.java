@@ -1,28 +1,18 @@
 package ar.unq.tpfinal.muestra;
 
 import static org.junit.Assert.assertTrue;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import ar.unq.tpfinal.AplicacionWeb;
-import ar.unq.tpfinal.Insecto;
 import ar.unq.tpfinal.ubicacion.Ubicacion;
 import ar.unq.tpfinal.usuario.Usuario;
 import ar.unq.tpfinal.Foto;
 import ar.unq.tpfinal.Muestra;
-import ar.unq.tpfinal.NoVinchuca;
 import ar.unq.tpfinal.Opinion;
-import ar.unq.tpfinal.Opiniones;
 import ar.unq.tpfinal.Vinchuca;
-import ar.unq.tpfinal.niveldeconocimiento.ExpertoPermanente;
-import ar.unq.tpfinal.niveldeconocimiento.NivelDeConocimiento;
 
 public class MuestraTest {
 

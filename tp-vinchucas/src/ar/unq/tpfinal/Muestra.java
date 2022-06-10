@@ -25,7 +25,7 @@ public class Muestra {
 	private LocalDate fechaDeCreacion;
 	
 	public Muestra(Usuario usuario, Ubicacion ubicacion, Foto foto, Insecto especieSospechada) {
-		fechaDeCreacion = LocalDate.now();
+		setFechaCreacion(LocalDate.now());
 		opiniones = new ArrayList<>();
 	}
 
@@ -94,7 +94,12 @@ public class Muestra {
 						.equals(fecha));
 	}
 
+
 	public LocalDate getFechaCreacion() {
-		return this.fechaDeCreacion;
+		return fechaDeCreacion;
+	}
+
+	public void setFechaCreacion(LocalDate fechaDeCreacion) {
+		this.fechaDeCreacion = fechaDeCreacion;
 	}
 }
