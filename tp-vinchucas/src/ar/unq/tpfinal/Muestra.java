@@ -21,7 +21,7 @@ public class Muestra {
 	private LocalDate fechaDeCreacion;
 	
 	public Muestra(Usuario usuario, Ubicacion ubicacion, Foto foto, Insecto especieSospechada) {
-		fechaDeCreacion = LocalDate.now();
+		setFechaDeCreacion(LocalDate.now());
 		opiniones = new ArrayList<>();
 	}
 
@@ -72,7 +72,6 @@ public class Muestra {
 	}
 
 	public boolean esInsecto(Insecto valorBuscado) {
-		// TODO Auto-generated method stub
 		return false;
 	}
 
@@ -85,6 +84,14 @@ public class Muestra {
 	}
 
 	public LocalDate getFechaCreacion() {
-		return null;
+		return this.fechaDeCreacion;
+	}
+
+	public LocalDate getFechaDeCreacion() {
+		return fechaDeCreacion;
+	}
+
+	public void setFechaDeCreacion(LocalDate fechaDeCreacion) {
+		this.fechaDeCreacion = fechaDeCreacion;
 	}
 }
