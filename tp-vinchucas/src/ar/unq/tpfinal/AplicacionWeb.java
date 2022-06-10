@@ -105,7 +105,7 @@ public class AplicacionWeb {
 	/**
 	 * Devuelve la cantidad de envios de un usuario en una lista de muestras pasadas.
 	 * @param {Usuario} - usuario
-	 * @param {Stream<Muestra>} - listaDeMuestras
+	 * @param {List<Muestra>} - listaDeMuestras
 	 * @return int
 	 */
 	private int cantidadDeEnviosDe(Usuario usuario, List<Muestra> listaDeMuestras) {
