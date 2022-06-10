@@ -57,14 +57,9 @@ public class FiltrosTest {
 	
 	@Test
 	void puedoFiltrarMuestrasConElOperadorOR() {
-		when(muestraMock1.esInsecto(NoVinchuca.PhtiaChinche)).thenReturn(false);
-		when(muestraMock2.esInsecto(NoVinchuca.PhtiaChinche)).thenReturn(true);
-		when(muestraMock3.esInsecto(NoVinchuca.PhtiaChinche)).thenReturn(false);
-		when(muestraMock4.esInsecto(NoVinchuca.PhtiaChinche)).thenReturn(true);
-		when(muestraMock1.fueVotadaEn(fecha)).thenReturn(false);
-		when(muestraMock2.fueVotadaEn(fecha)).thenReturn(false);
-		when(muestraMock3.fueVotadaEn(fecha)).thenReturn(true);
-		when(muestraMock4.fueVotadaEn(fecha)).thenReturn(false);
+		//Setup
+		this.mockedEsInsectoMethods();
+		this.mockedFueVotadaEnMethod();
 		
 		List<Muestra> filtradas = filtroOR.filter(muestras);
 		
@@ -73,21 +68,14 @@ public class FiltrosTest {
 		assertFalse(filtradas.contains(muestraMock1));
 		assertTrue(filtradas.size() == 3);
 	}
+
 	
 	@Test
 	void puedoFiltrarMuestrasConElOperadorORConSubFiltrosCompuestos() {
-		when(muestraMock1.getVerificacionActual()).thenReturn(NivelDeVerificacion.VERIFICADA);
-		when(muestraMock2.getVerificacionActual()).thenReturn(NivelDeVerificacion.NO_VERIFICADA);
-		when(muestraMock3.getVerificacionActual()).thenReturn(NivelDeVerificacion.VERIFICADA_PARCIAL);
-		when(muestraMock4.getVerificacionActual()).thenReturn(NivelDeVerificacion.VERIFICADA);
-		when(muestraMock1.esInsecto(NoVinchuca.PhtiaChinche)).thenReturn(false);
-		when(muestraMock2.esInsecto(NoVinchuca.PhtiaChinche)).thenReturn(true);
-		when(muestraMock3.esInsecto(NoVinchuca.PhtiaChinche)).thenReturn(false);
-		when(muestraMock4.esInsecto(NoVinchuca.PhtiaChinche)).thenReturn(true);
-		when(muestraMock1.fueVotadaEn(fecha)).thenReturn(false);
-		when(muestraMock2.fueVotadaEn(fecha)).thenReturn(true);
-		when(muestraMock3.fueVotadaEn(fecha)).thenReturn(true);
-		when(muestraMock4.fueVotadaEn(fecha)).thenReturn(false);
+		//Setup
+		this.mockedGetVerificicacionActualMethods();
+		this.mockedEsInsectoMethods();
+		this.mockedFueVotadaEnMethod();
 		
 		FiltroCompuesto otherFiltroOR = new FiltroOR();
 		otherFiltroOR.addFilter(filtroVerificacion);
@@ -105,14 +93,9 @@ public class FiltrosTest {
 	
 	@Test
 	void puedoFiltrarMuestrasConElOperadorAND() {
-		when(muestraMock1.esInsecto(NoVinchuca.PhtiaChinche)).thenReturn(false);
-		when(muestraMock2.esInsecto(NoVinchuca.PhtiaChinche)).thenReturn(true);
-		when(muestraMock3.esInsecto(NoVinchuca.PhtiaChinche)).thenReturn(false);
-		when(muestraMock4.esInsecto(NoVinchuca.PhtiaChinche)).thenReturn(true);
-		when(muestraMock1.fueVotadaEn(fecha)).thenReturn(false);
-		when(muestraMock2.fueVotadaEn(fecha)).thenReturn(true);
-		when(muestraMock3.fueVotadaEn(fecha)).thenReturn(true);
-		when(muestraMock4.fueVotadaEn(fecha)).thenReturn(false);
+		//Setup
+		this.mockedEsInsectoMethods();
+		this.mockedFueVotadaEnMethod();
 		
 		List<Muestra> filtradas = filtroAND.filter(muestras);
 		
@@ -124,12 +107,8 @@ public class FiltrosTest {
 	
 	@Test
 	void puedoFiltrarMuestrasPorTipoDeInsecto() {
-		
 		//Setup
-		when(muestraMock1.esInsecto(NoVinchuca.PhtiaChinche)).thenReturn(false);
-		when(muestraMock2.esInsecto(NoVinchuca.PhtiaChinche)).thenReturn(true);
-		when(muestraMock3.esInsecto(NoVinchuca.PhtiaChinche)).thenReturn(false);
-		when(muestraMock4.esInsecto(NoVinchuca.PhtiaChinche)).thenReturn(true);
+		this.mockedEsInsectoMethods();
 		
 		//Exercise
 		List<Muestra> filtradas = filtroInsecto.filter(muestras);
@@ -142,12 +121,8 @@ public class FiltrosTest {
 	
 	@Test
 	void puedoFiltrarMuestrasPorFechaDeCreacion() {
-		
 		//Setup
-		when(muestraMock1.getFechaCreacion()).thenReturn(fecha);
-		when(muestraMock2.getFechaCreacion()).thenReturn(fecha);
-		when(muestraMock3.getFechaCreacion()).thenReturn(LocalDate.of(2022, 6, 16));
-		when(muestraMock4.getFechaCreacion()).thenReturn(fecha);
+		this.mockedGetFechaCreacionMethods();
 		
 		//Exercise
 		List<Muestra> filtradas = filtroFechaCreacion.filter(muestras);
@@ -157,33 +132,27 @@ public class FiltrosTest {
 		assertTrue(!filtradas.contains(muestraMock3));
 		assertTrue(filtradas.size() == 3);
 	}
+
+
 	
 	@Test
 	void puedoFiltrarMuestrasPorFechaDeUltimaVotacion() {
-		
 		//Setup
-		when(muestraMock1.fueVotadaEn(fecha)).thenReturn(false);
-		when(muestraMock2.fueVotadaEn(fecha)).thenReturn(false);
-		when(muestraMock3.fueVotadaEn(fecha)).thenReturn(true);
-		when(muestraMock4.fueVotadaEn(fecha)).thenReturn(false);
+		this.mockedFueVotadaEnMethod();
 		
 		//Exercise
 		List<Muestra> filtradas = filtroFechaUltimaVotacion.filter(muestras);
 		
 		//Verify/Assert
 		muestras.forEach(muestra -> verify(muestra).fueVotadaEn(fecha));
-		assertTrue(filtradas.contains(muestraMock3));
-		assertTrue(filtradas.size() == 1);
+		assertTrue(filtradas.contains(muestraMock2) && filtradas.contains(muestraMock3));
+		assertTrue(filtradas.size() == 2);
 	}
 	
 	@Test
-	void puedoFiltrarMuestrasPorVerificacionActual() {
-		
+	void puedoFiltrarMuestrasPorVerificacionActual() {	
 		//Setup
-		when(muestraMock1.getVerificacionActual()).thenReturn(NivelDeVerificacion.VERIFICADA);
-		when(muestraMock2.getVerificacionActual()).thenReturn(NivelDeVerificacion.NO_VERIFICADA);
-		when(muestraMock3.getVerificacionActual()).thenReturn(NivelDeVerificacion.VERIFICADA_PARCIAL);
-		when(muestraMock4.getVerificacionActual()).thenReturn(NivelDeVerificacion.VERIFICADA);
+		mockedGetVerificicacionActualMethods();
 		
 		//Exercise
 		List<Muestra> filtradas = filtroVerificacion.filter(muestras);
@@ -192,6 +161,34 @@ public class FiltrosTest {
 		muestras.forEach(muestra -> verify(muestra).getVerificacionActual());
 		assertTrue(filtradas.contains(muestraMock1) && filtradas.contains(muestraMock4));
 		assertTrue(filtradas.size() == 2);
+	}
+
+	private void mockedFueVotadaEnMethod() {
+		when(muestraMock1.fueVotadaEn(fecha)).thenReturn(false);
+		when(muestraMock2.fueVotadaEn(fecha)).thenReturn(true);
+		when(muestraMock3.fueVotadaEn(fecha)).thenReturn(true);
+		when(muestraMock4.fueVotadaEn(fecha)).thenReturn(false);
+	}
+
+	private void mockedEsInsectoMethods() {
+		when(muestraMock1.esInsecto(NoVinchuca.PhtiaChinche)).thenReturn(false);
+		when(muestraMock2.esInsecto(NoVinchuca.PhtiaChinche)).thenReturn(true);
+		when(muestraMock3.esInsecto(NoVinchuca.PhtiaChinche)).thenReturn(false);
+		when(muestraMock4.esInsecto(NoVinchuca.PhtiaChinche)).thenReturn(true);
+	}
+	
+	private void mockedGetFechaCreacionMethods() {
+		when(muestraMock1.getFechaCreacion()).thenReturn(fecha);
+		when(muestraMock2.getFechaCreacion()).thenReturn(fecha);
+		when(muestraMock3.getFechaCreacion()).thenReturn(LocalDate.of(2022, 6, 16));
+		when(muestraMock4.getFechaCreacion()).thenReturn(fecha);
+	}
+
+	private void mockedGetVerificicacionActualMethods() {
+		when(muestraMock1.getVerificacionActual()).thenReturn(NivelDeVerificacion.VERIFICADA);
+		when(muestraMock2.getVerificacionActual()).thenReturn(NivelDeVerificacion.NO_VERIFICADA);
+		when(muestraMock3.getVerificacionActual()).thenReturn(NivelDeVerificacion.VERIFICADA_PARCIAL);
+		when(muestraMock4.getVerificacionActual()).thenReturn(NivelDeVerificacion.VERIFICADA);
 	}
 
 }
