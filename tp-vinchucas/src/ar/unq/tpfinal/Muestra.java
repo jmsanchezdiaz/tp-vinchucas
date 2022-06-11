@@ -1,17 +1,12 @@
 package ar.unq.tpfinal;
 
-import static org.mockito.ArgumentMatchers.anyMap;
-
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.stream.Collectors;
 
-import ar.unq.tpfinal.niveldeconocimiento.Experto;
 import ar.unq.tpfinal.ubicacion.Ubicacion;
 import ar.unq.tpfinal.usuario.Usuario;
 
@@ -26,7 +21,11 @@ public class Muestra {
 	
 	public Muestra(Usuario usuario, Ubicacion ubicacion, Foto foto, Insecto especieSospechada) {
 		setFechaCreacion(LocalDate.now());
-		opiniones = new ArrayList<>();
+		this.opiniones = new ArrayList<>();
+		this.especie = especieSospechada;
+		this.foto = foto;
+		this.usuario = usuario;
+		this.ubicacion = ubicacion;
 	}
 
 	public Insecto getEspecie() {
@@ -50,40 +49,75 @@ public class Muestra {
 	}
 
 	public void agregarOpinion(Opinion opinion) {
-		getOpiniones().add(opinion);
+		
+		Boolean opinaUnExperto = opinion.getUsuario().esExperto();
+
+		if(esMuestraVerificada() || elUsuarioYaOpino(opinion.getUsuario())) {
+			return;
+		}else if(!opinoUnExperto() || opinaUnExperto) {			
+			getOpiniones().add(opinion);
+		}
+
+	}
+	
+	public Boolean elUsuarioYaOpino(Usuario usuario) {
+		return getOpiniones().stream().anyMatch(op -> op.getUsuario().equals(usuario));
+	}
+	
+	public Boolean esMuestraVerificada() {
+		return getVerificacionActual() == NivelDeVerificacion.VERIFICADA;
 	}
 	
 	public Boolean opinoUnExperto() {
 		return getOpiniones().stream().anyMatch(op -> op.getUsuario().esExperto());
 	}
 
-	public Opinable getResultadoActual() {
+	public Resultado getResultadoActual() {
 
-		Map<Opinable, Long> mapOpiniones = opiniones.stream().collect(Collectors.groupingBy(op -> op.getOpinion(), Collectors.counting()));
+		Map<Opinable, Long> mapOpiniones = contarOpiniones(getOpiniones());
 
-	    Opinable resultado = null;
+	    Resultado resultado = ResultadoEmpate.NO_DEFINIDO;
 	    Long actualMayor = (long) 0;
 	    
 	    for (Entry<Opinable, Long> op : mapOpiniones.entrySet()) {
-	        System.out.println(op.getKey() + "/" + op.getValue());
 	        if(op.getValue() > actualMayor) {
 	    		resultado = op.getKey();
 	    		actualMayor = op.getValue();
-	    	}
+	    	}else if(op.getValue() == actualMayor) {
+	        	resultado = ResultadoEmpate.NO_DEFINIDO;
+	        }
 	    }
 	    return resultado;
 	}
 	
-	public int cantidadDeOpinionesDe(Usuario usuario) {
-		return opiniones.stream().filter(op -> op.esOpinionDe(usuario)).collect(Collectors.toList()).size();
+	public NivelDeVerificacion getVerificacionActual() {
+		
+		if(opinoUnExperto()) {
+			
+			Map<Opinable, Long> mapOpiniones = contarOpiniones(getOpinionesDeExperto());
+			
+			for (Entry<Opinable, Long> op : mapOpiniones.entrySet()) {
+		        if(op.getValue() > 1) {
+		    		return NivelDeVerificacion.VERIFICADA;
+		    	}else {
+		    		return NivelDeVerificacion.VERIFICADA_PARCIAL;
+		    	}
+		    }
+		}
+		
+		return NivelDeVerificacion.NO_VERIFICADA;
 	}
 	
-	public NivelDeVerificacion getVerificacionActual() {
-		return null;
+	public Map<Opinable, Long> contarOpiniones(List<Opinion> opiniones) {
+		return opiniones.stream().collect(Collectors.groupingBy(op -> op.getOpinion(), Collectors.counting()));
+	}
+	
+	public List<Opinion> getOpinionesDeExperto() {
+		return opiniones.stream().filter(op -> op.getUsuario().esExperto()).collect(Collectors.toList());
 	}
 
 	public boolean esInsecto(Insecto valorBuscado) {
-		return false;
+		return getResultadoActual() == valorBuscado;
 	}
 
 	public boolean fueVotadaEn(LocalDate fecha) {
@@ -93,7 +127,6 @@ public class Muestra {
 						.getFechaCreacion()
 						.equals(fecha));
 	}
-
 
 	public LocalDate getFechaCreacion() {
 		return fechaDeCreacion;
