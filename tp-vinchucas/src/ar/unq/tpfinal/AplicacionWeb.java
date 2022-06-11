@@ -4,6 +4,8 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
+
+import ar.unq.tpfinal.filtro.IFiltro;
 import ar.unq.tpfinal.usuario.Usuario;
 import ar.unq.tpfinal.zonaDeCobertura.ZonaDeCobertura;
 
@@ -17,7 +19,7 @@ import ar.unq.tpfinal.zonaDeCobertura.ZonaDeCobertura;
  */
 
 public class AplicacionWeb {
-	static private AplicacionWeb app = null;
+	static private AplicacionWeb app;
 	private List<Muestra> muestras;
 	private List<ZonaDeCobertura> zonasDeCobertura;
 	
@@ -56,7 +58,9 @@ public class AplicacionWeb {
 	public void agregarMuestra(Muestra nuevaMuestra) {
 		// Falta agregar notify del observer
 		this.actualizarSiCorrespondeUsuario(nuevaMuestra.getUsuario());
-		this.getMuestras().add(nuevaMuestra);
+		if(!this.getMuestras().contains(nuevaMuestra)) {
+			this.getMuestras().add(nuevaMuestra);
+		}
 	}
 	
 	/**
@@ -123,8 +127,9 @@ public class AplicacionWeb {
 	public int cantidadDeOpinionesDe(Usuario usuario, List<Muestra> listaDeMuestras) {
 		return listaDeMuestras
 				.stream()
-				.mapToInt(muestra -> muestra.cantidadDeOpinionesDe(usuario))
-				.sum();
+				.filter(muestra -> muestra.elUsuarioYaOpino(usuario))
+				.collect(Collectors.toList())
+				.size();
 	}
 
 	/**
@@ -148,7 +153,7 @@ public class AplicacionWeb {
 		return muestras;
 	}
 
-	public void setMuestras(List<Muestra> muestras) {
+	protected void setMuestras(List<Muestra> muestras) {
 		this.muestras = muestras;
 	}
 
@@ -178,5 +183,18 @@ public class AplicacionWeb {
 		if(this.getMuestras().contains(muestra)) {
 			this.getMuestras().remove(muestra);
 		}
+	}
+
+	protected void setZonasDeCobertura(List<ZonaDeCobertura> zonas) {
+		this.zonasDeCobertura = zonas;		
+	}
+
+	/**
+	 * Pasado un filtro, devuelve todas las zonas que cumplan con el.
+	 * @param {IFiltro} - un filtro.
+	 * @return List<Muestra> - Muestras encontradas.
+	 */
+	public List<Muestra> buscar(IFiltro filtroMock) {
+		return filtroMock.filter(this.getMuestras());
 	}
 }

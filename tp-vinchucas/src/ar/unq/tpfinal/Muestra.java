@@ -112,4 +112,8 @@ public class Muestra {
 	public boolean fueEnviadaPor(Usuario usuario) {
 		return this.getUsuario().equals(usuario);
 	}
+
+	public Boolean elUsuarioYaOpino(Usuario usuario2) {
+		return false;
+	}
 }
