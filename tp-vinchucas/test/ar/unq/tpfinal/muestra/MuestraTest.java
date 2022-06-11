@@ -35,6 +35,7 @@ public class MuestraTest {
 	Opinion opinionNingunaMock2;
 	Opinion opinionImgPocoClaraMock;
 	Opinion opinionVinchucaInfestans;
+	Opinion opinionVinchucaInfestans2;
 	
 	Usuario userMock;
 	Usuario userNormalMock;
@@ -52,6 +53,7 @@ public class MuestraTest {
 		opinionNingunaMock2 = mock(Opinion.class);
 		opinionImgPocoClaraMock = mock(Opinion.class);
 		opinionVinchucaInfestans = mock(Opinion.class);
+		opinionVinchucaInfestans2 = mock(Opinion.class);
 		userMock = mock(Usuario.class);
 		userNormalMock = mock(Usuario.class);
 		userExpertoMock = mock(Usuario.class);
@@ -66,16 +68,12 @@ public class MuestraTest {
 		when(userExpertoMock2.esExperto()).thenReturn(true);
 		
 		when(opinionVinchucaInfestans.getOpinion()).thenReturn(Vinchuca.VinchucaInfestans);
+		when(opinionVinchucaInfestans2.getOpinion()).thenReturn(Vinchuca.VinchucaInfestans);
 		when(opinionNingunaMock.getOpinion()).thenReturn(Comentario.NINGUNA);
 		when(opinionNingunaMock2.getOpinion()).thenReturn(Comentario.NINGUNA);
 		when(opinionImgPocoClaraMock.getOpinion()).thenReturn(Comentario.IMAGEN_POCO_CLARA);
 		
 		muestra = new Muestra(userMock, ubiMock, fotoMock, Vinchuca.VinchucaGuayasana);
-	}
-	
-	@Test
-	void unaMuestraAlInicioNoTieneOpiniones() {
-		assertTrue(muestra.getOpiniones().isEmpty());
 	}
 	
 	@Test
@@ -94,8 +92,10 @@ public class MuestraTest {
 		when(opinionNingunaMock.getUsuario()).thenReturn(userNormalMock);
 		
 		muestra.agregarOpinion(opinionImgPocoClaraMock);
-		muestra.agregarOpinion(opinionNingunaMock);
-		assertTrue(muestra.getOpiniones().size() == 1);
+		muestra.agregarOpinion(opinionNingunaMock); //No se agrega porque ya opino.
+		
+		//son dos opiniones mas la del usuario creador de la muestra.
+		assertTrue(muestra.getOpiniones().size() == 2);
 	}
 	
 	@Test
@@ -106,9 +106,10 @@ public class MuestraTest {
 			
 			muestra.agregarOpinion(opinionNingunaMock);
 			muestra.agregarOpinion(opinionNingunaMock2);
-			muestra.agregarOpinion(opinionImgPocoClaraMock);
+			muestra.agregarOpinion(opinionImgPocoClaraMock); //No se agrega porque ya esta verificada.
 			
-			assertTrue(muestra.getOpiniones().size() == 2);
+			//son dos opiniones mas la del usuario creador de la muestra.
+			assertTrue(muestra.getOpiniones().size() == 3);
 		}
 	
 	@Test
@@ -118,23 +119,27 @@ public class MuestraTest {
 		when(opinionNingunaMock.getUsuario()).thenReturn(userNormalMock);
 		
 		muestra.agregarOpinion(opinionImgPocoClaraMock);
-		muestra.agregarOpinion(opinionNingunaMock);
+		muestra.agregarOpinion(opinionNingunaMock); //No se agrega porque ya opino un experto.
 
-		assertTrue(muestra.getOpiniones().size() == 1);
+		//es una opinion mas la del usuario creador de la muestra.
+		assertTrue(muestra.getOpiniones().size() == 2);
 	}
 	
 	@Test
-	void elResultadoDeUnaMuestraCuandoEstaVaciaEsNoDefinido() {
-		assertTrue(muestra.getResultadoActual() == ResultadoEmpate.NO_DEFINIDO);
+	void elResultadoDeUnaMuestraCuandoAlInicioEsLaOpinionDelUsuarioQueSubioLaMuestra() {
+		assertTrue(muestra.getResultadoActual() == Vinchuca.VinchucaGuayasana);
 	}
 	
 	@Test
 	void elResultadoDeUnaMuestraEsLaOpinionMasVotada() {
 		
-		when(opinionImgPocoClaraMock.getUsuario()).thenReturn(userExpertoMock);		
-		muestra.agregarOpinion(opinionImgPocoClaraMock);
+		when(opinionVinchucaInfestans.getUsuario()).thenReturn(userExpertoMock);
+		when(opinionVinchucaInfestans2.getUsuario()).thenReturn(userExpertoMock2);
 		
-		assertTrue(muestra.getResultadoActual() == Comentario.IMAGEN_POCO_CLARA);
+		muestra.agregarOpinion(opinionVinchucaInfestans);
+		muestra.agregarOpinion(opinionVinchucaInfestans2);
+		
+		assertTrue(muestra.getResultadoActual() == Vinchuca.VinchucaInfestans);
 	}
 	
 	@Test
@@ -195,8 +200,10 @@ public class MuestraTest {
 	@Test
 	void unaMuestraSabeSiElResultadoEsUnInsecto() {
 		
-		when(opinionVinchucaInfestans.getUsuario()).thenReturn(userNormalMock);	
+		when(opinionVinchucaInfestans.getUsuario()).thenReturn(userNormalMock);
+		when(opinionVinchucaInfestans2.getUsuario()).thenReturn(userExpertoMock);	
 		muestra.agregarOpinion(opinionVinchucaInfestans);
+		muestra.agregarOpinion(opinionVinchucaInfestans2);
 		
 		assertTrue(muestra.esInsecto(Vinchuca.VinchucaInfestans));
 	}
@@ -252,8 +259,8 @@ public class MuestraTest {
 	}
 	
 	@Test
-	void unaMuestraConoceSuEspecie() {
-		assertTrue(muestra.getEspecie() == Vinchuca.VinchucaGuayasana);;
+	void unaMuestraConoceLaOpinionDelUsuario() {
+		assertTrue(muestra.getOpinionDeUsuario().getOpinion() == Vinchuca.VinchucaGuayasana);;
 	}
 	
 	@Test

@@ -13,7 +13,7 @@ import ar.unq.tpfinal.zonaDeCobertura.ZonaDeCobertura;
 
 public class Muestra {
 
-	private Insecto especie;
+	private Opinion opinionDeUsuario;
 	private Foto foto;
 	private Ubicacion ubicacion;
 	private Usuario usuario;
@@ -23,14 +23,16 @@ public class Muestra {
 	public Muestra(Usuario usuario, Ubicacion ubicacion, Foto foto, Insecto especieSospechada) {
 		this.fechaDeCreacion = LocalDate.now();
 		this.opiniones = new ArrayList<>();
-		this.especie = especieSospechada;
+		this.opinionDeUsuario = new Opinion(usuario, especieSospechada);
 		this.foto = foto;
 		this.usuario = usuario;
 		this.ubicacion = ubicacion;
+		
+		getOpiniones().add(opinionDeUsuario);
 	}
 
-	public Insecto getEspecie() {
-		return this.especie;
+	public Opinion getOpinionDeUsuario() {
+		return this.opinionDeUsuario;
 	}
 
 	public Foto getFoto() {
