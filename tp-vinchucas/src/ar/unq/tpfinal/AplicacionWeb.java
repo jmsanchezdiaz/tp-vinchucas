@@ -119,7 +119,7 @@ public class AplicacionWeb {
 	/**
 	 * Devuelve la cantidad de opiniones de un usuario en una lista de muestras pasadas.
 	 * @param {Usuario} - usuario
-	 * @param {Stream<Muestra>} - listaDeMuestras
+	 * @param {List<Muestra>} - listaDeMuestras
 	 * @return int
 	 */
 	private int cantidadDeOpinionesDe(Usuario usuario, List<Muestra> listaDeMuestras) {
@@ -156,5 +156,27 @@ public class AplicacionWeb {
 		
 		//@Despues creo la logica
 		return zonasDeCobertura;
+	}
+
+	public List<ZonaDeCobertura> getZonasDeCobertura() {
+		return this.zonasDeCobertura;
+	}
+
+	public void agregarZona(ZonaDeCobertura zonaMock) {
+		if(!this.getZonasDeCobertura().contains(zonaMock)) {
+			this.getZonasDeCobertura().add(zonaMock);
+		}
+	}
+	
+	public void eliminarZona(ZonaDeCobertura zona) {
+		if(this.getZonasDeCobertura().contains(zona)) {
+			this.getZonasDeCobertura().remove(zona);
+		}
+	}
+
+	public void eliminarMuestra(Muestra muestra) {
+		if(this.getMuestras().contains(muestra)) {
+			this.getMuestras().remove(muestra);
+		}
 	}
 }
