@@ -98,10 +98,7 @@ public class AplicacionWeb {
 
 		this.actualizarSiCorrespondeUsuario(opinion.getUsuario());
 		muestra.agregarOpinion(opinion);
-
-//		if (muestra.esMuestraVerificada()) {
-//			this.zonasDeLaMuestra(muestra).forEach(zona -> zona.notificar(muestra, Aspecto.MUESTRA_VERIFICADA));
-//		}
+		muestra.notificarValidacionSiCorresponde(this.zonasDeLaMuestra(muestra));
 
 	}
 
@@ -124,6 +121,7 @@ public class AplicacionWeb {
 		// Si es apto para subir de nivel, lo subo sino no.
 		if (cantidadDeEnviosDelUsuario >= 10 && cantidadDeOpinionesDelUsuario >= 30)
 			usuario.subirDeNivel();
+
 		else
 			usuario.bajarDeNivel();
 

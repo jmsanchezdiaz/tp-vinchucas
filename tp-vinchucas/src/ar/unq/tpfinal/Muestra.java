@@ -9,6 +9,7 @@ import java.util.stream.Collectors;
 
 import ar.unq.tpfinal.ubicacion.Ubicacion;
 import ar.unq.tpfinal.usuario.Usuario;
+import ar.unq.tpfinal.zonaDeCobertura.ZonaDeCobertura;
 
 public class Muestra {
 
@@ -153,5 +154,12 @@ public class Muestra {
 
 	public boolean fueEnviadaPor(Usuario usuario) {
 		return this.getUsuario().equals(usuario);
+	}
+
+	public void notificarValidacionSiCorresponde(List<ZonaDeCobertura> zonasDeLaMuestra) {
+		if (this.esMuestraVerificada()) {
+			zonasDeLaMuestra.forEach(zona -> zona.notificar(this, Aspecto.MUESTRA_VERIFICADA));
+		}
+
 	}
 }
