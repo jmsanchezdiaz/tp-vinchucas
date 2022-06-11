@@ -20,7 +20,7 @@ public class Muestra {
 	private LocalDate fechaDeCreacion;
 	
 	public Muestra(Usuario usuario, Ubicacion ubicacion, Foto foto, Insecto especieSospechada) {
-		setFechaCreacion(LocalDate.now());
+		this.fechaDeCreacion = LocalDate.now();
 		this.opiniones = new ArrayList<>();
 		this.especie = especieSospechada;
 		this.foto = foto;
@@ -144,7 +144,7 @@ public class Muestra {
 	 * @return boolean
 	 */
 	public boolean fuePublicadaDentroDeEsteRango(LocalDate fechaInicio, LocalDate fechaFin) {
-		return this.getFechaCreacion().isBefore(fechaInicio) && this.getFechaCreacion().isAfter(fechaFin);
+		return getFechaCreacion().isBefore(fechaInicio) && getFechaCreacion().isAfter(fechaFin);
 	}
 
 	public boolean fueEnviadaPor(Usuario usuario) {

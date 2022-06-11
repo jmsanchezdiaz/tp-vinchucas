@@ -123,8 +123,9 @@ public class AplicacionWeb {
 	public int cantidadDeOpinionesDe(Usuario usuario, List<Muestra> listaDeMuestras) {
 		return listaDeMuestras
 				.stream()
-				.mapToInt(muestra -> muestra.cantidadDeOpinionesDe(usuario))
-				.sum();
+				.filter(muestra -> muestra.fueEnviadaPor(usuario))
+				.collect(Collectors.toList())
+				.size();
 	}
 
 	/**

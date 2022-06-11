@@ -3,7 +3,6 @@ package ar.unq.tpfinal;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -97,12 +96,12 @@ public class AplicacionWebTest {
 	}
 	
 	@Test
-	void puedoAñadirUnaMuestra() {
+	void puedoAniadirUnaMuestra() {
 		assertTrue(app.getMuestras().containsAll(muestras));
 	}
 	
 	@Test
-	void puedoAñadirUnaZonaDeCobertura() {
+	void puedoAniadirUnaZonaDeCobertura() {
 		app.agregarZona(zonaMock);
 		
 		assertTrue(app.getZonasDeCobertura().contains(zonaMock));

@@ -29,6 +29,7 @@ import ar.unq.tpfinal.Vinchuca;
 public class MuestraTest {
 
 	Muestra muestra;
+	Muestra muestraMock;
 	
 	Opinion opinionNingunaMock;
 	Opinion opinionNingunaMock2;
@@ -56,6 +57,7 @@ public class MuestraTest {
 		userExpertoMock2 = mock(Usuario.class);
 		ubiMock = mock(Ubicacion.class);
 		fotoMock = mock(Foto.class);
+		muestraMock = mock(Muestra.class);
 		
 		when(userNormalMock.esExperto()).thenReturn(false);
 		when(userExpertoMock.esExperto()).thenReturn(true);
@@ -217,6 +219,34 @@ public class MuestraTest {
 		muestra.agregarOpinion(opinionVinchucaInfestans);
 		
 		assertTrue(muestra.fueVotadaEn(fecha));
+	}
+	
+	@Test
+	void unaMuestraSabeSiFueVotadaEnCiertoRango() {
+		
+		LocalDate fecha1 = LocalDate.of(2030, 5, 11);
+		LocalDate fecha2 = LocalDate.of(2000, 10, 11);
+		
+		muestra.setFechaCreacion(LocalDate.of(2019, 7, 11));
+
+		assertTrue(muestra.fuePublicadaDentroDeEsteRango(fecha1, fecha2));
+	}
+	
+	@Test
+	void unaMuestraSabeSiNoFueVotadaEnCiertoRango() {
+		
+		LocalDate fecha1 = LocalDate.of(2030, 5, 11);
+		LocalDate fecha2 = LocalDate.of(2000, 10, 11);
+		
+		muestra.setFechaCreacion(LocalDate.of(2031, 7, 11));
+
+		assertFalse(muestra.fuePublicadaDentroDeEsteRango(fecha1, fecha2));
+	}
+	
+	@Test
+	void unaMuestraSabeSiUnaMuestraEsDelUsuarioDado() {
+		
+		assertTrue(muestra.fueEnviadaPor(userMock));
 	}
 	
 	@Test
