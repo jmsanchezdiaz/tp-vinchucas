@@ -12,10 +12,6 @@ public class FiltroFechaCreacion implements IFiltro {
 	public FiltroFechaCreacion(LocalDate fecha) {
 		this.valorBuscado = fecha;
 	}
-
-	public void changeValue(LocalDate newValue) {
-		this.valorBuscado = newValue;
-	}
 	
 	@Override
 	public List<Muestra> filter(List<Muestra> muestras) {

@@ -14,10 +14,6 @@ public class FiltroTipoVerificacion implements IFiltro {
 		this.valorBuscado = verificacion;
 	}
 
-	public void changeValue(NivelDeVerificacion newValue) {
-		this.valorBuscado = newValue;
-	}
-	
 	@Override
 	public List<Muestra> filter(List<Muestra> muestras) {
 		return muestras.stream()
