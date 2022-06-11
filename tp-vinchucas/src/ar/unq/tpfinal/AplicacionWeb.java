@@ -109,7 +109,7 @@ public class AplicacionWeb {
 	public int cantidadDeEnviosDe(Usuario usuario, List<Muestra> listaDeMuestras) {
 		return listaDeMuestras
 				.stream()
-				.filter(muestra -> usuario.equals(muestra.getUsuario()))
+				.filter(muestra -> muestra.fueEnviadaPor(usuario))
 				.collect(Collectors.toList())
 				.size();
 	}

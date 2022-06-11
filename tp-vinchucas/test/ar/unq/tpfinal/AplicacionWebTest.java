@@ -3,6 +3,7 @@ package ar.unq.tpfinal;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -22,9 +23,11 @@ public class AplicacionWebTest {
 	Muestra muestraMock1;
 	Muestra muestraMock2;
 	Muestra muestraMock3;
+	List<Muestra> muestras;
 	Opinion opMock;
 	ZonaDeCobertura zonaMock;
 	Usuario userMock;
+	Usuario userMock2;
 	
 	@BeforeEach
 	void setUp(){
@@ -32,53 +35,55 @@ public class AplicacionWebTest {
 		muestraMock1 = mock(Muestra.class);
 		muestraMock2 = mock(Muestra.class);
 		muestraMock3 = mock(Muestra.class);
+		muestras = Arrays.asList(muestraMock1,muestraMock2,muestraMock3);
 		opMock = mock(Opinion.class);
 		zonaMock = mock(ZonaDeCobertura.class);
 		userMock = mock(Usuario.class);
+		userMock2 = mock(Usuario.class);
+		
+		when(muestraMock1.getUsuario()).thenReturn(userMock);
+		when(muestraMock2.getUsuario()).thenReturn(userMock2);
+		when(muestraMock3.getUsuario()).thenReturn(userMock);
+		
+		muestras.forEach(muestra -> app.agregarMuestra(muestra));
+		
 	}
 	
 	@Test
 	void solamenteHayUnaInstanciaDeAplicacionWeb() {
-		
 		AplicacionWeb app2 = AplicacionWeb.getAplicacionWeb();
 		
 		assertEquals(app, app2);
 	}
 	
 	@Test
-	void alInicioUnaAplicacionWebNoTieneZonasDeCoberturasAlmacenadasNiMuestras() {
-		assertTrue(app.getMuestras().isEmpty());
-		assertTrue(app.getZonasDeCobertura().isEmpty());
-	}
-	
-	@Test
 	void puedoObtenerLasMuestrasDeLosUltimosDiasQueYoLePase() {
-		LocalDate fechaInicio = LocalDate.now().minusDays(5);
-		LocalDate fechaFin = LocalDate.now();
+		LocalDate fechaDeHoy = LocalDate.now();
+		LocalDate fechaInicio = fechaDeHoy.minusDays(5);
 		
-		when(muestraMock1.getUsuario()).thenReturn(userMock);
-		when(muestraMock2.getUsuario()).thenReturn(userMock);
-		when(muestraMock3.getUsuario()).thenReturn(userMock);
-		when(muestraMock1.fuePublicadaDentroDeEsteRango(fechaInicio, fechaFin)).thenReturn(true);
-		when(muestraMock2.fuePublicadaDentroDeEsteRango(fechaInicio, fechaFin)).thenReturn(false);
-		when(muestraMock3.fuePublicadaDentroDeEsteRango(fechaInicio, fechaFin)).thenReturn(true);
-		
-		List<Muestra> muestras = Arrays.asList(muestraMock1,muestraMock2,muestraMock3);
-		
-		muestras.forEach(muestra -> app.agregarMuestra(muestra));
+		when(muestraMock1.fuePublicadaDentroDeEsteRango(fechaInicio, fechaDeHoy)).thenReturn(true);
+		when(muestraMock2.fuePublicadaDentroDeEsteRango(fechaInicio, fechaDeHoy)).thenReturn(false);
+		when(muestraMock3.fuePublicadaDentroDeEsteRango(fechaInicio, fechaDeHoy)).thenReturn(true);
 		
 		List<Muestra> muestrasFiltradas = app.obtenerMuestrasHace(5);
 		
-		muestras.forEach(muestra -> verify(muestra)
-				.fuePublicadaDentroDeEsteRango(fechaInicio, fechaFin));
-		
-		assertEquals(muestrasFiltradas.size(), 2);
+		muestras.forEach(muestra -> verify(muestra).fuePublicadaDentroDeEsteRango(fechaInicio, fechaDeHoy));
+	
+		assertEquals(muestrasFiltradas.size(), 2, 0);
 		assertTrue(muestrasFiltradas.contains(muestraMock1) && muestrasFiltradas.contains(muestraMock3));
 	}
 	
 	@Test
 	void puedoObtenerLaCantidadDeMuestrasEnviadasPorUnUsuarioEnUnaListaDeMuestras() {
+		when(muestraMock1.fueEnviadaPor(userMock)).thenReturn(true);
+		when(muestraMock2.fueEnviadaPor(userMock)).thenReturn(false);
+		when(muestraMock3.fueEnviadaPor(userMock)).thenReturn(true);
 		
+		int cantidadEsperada = app.cantidadDeEnviosDe(userMock, muestras);
+		
+		muestras.forEach(muestra -> verify(muestra)
+				.fueEnviadaPor(userMock));
+		assertEquals(cantidadEsperada, 2, 0);
 	}
 	
 	@Test
@@ -93,10 +98,7 @@ public class AplicacionWebTest {
 	
 	@Test
 	void puedoAñadirUnaMuestra() {
-		when(muestraMock1.getUsuario()).thenReturn(userMock);
-		app.agregarMuestra(muestraMock1);
-		
-		assertTrue(app.getMuestras().contains(muestraMock1));
+		assertTrue(app.getMuestras().containsAll(muestras));
 	}
 	
 	@Test
@@ -108,7 +110,6 @@ public class AplicacionWebTest {
 	
 	@Test
 	void puedoEliminarUnaZonaDeCoberturaAlmacenada() {
-		app.agregarZona(zonaMock);
 		app.eliminarZona(zonaMock);
 		
 		assertFalse(app.getZonasDeCobertura().contains(zonaMock));
@@ -116,12 +117,9 @@ public class AplicacionWebTest {
 	
 	@Test
 	void puedoEliminarUnaMuestraAlmacenada() {
-		when(muestraMock1.getUsuario()).thenReturn(userMock);
-		
-		app.agregarMuestra(muestraMock1);
 		app.eliminarMuestra(muestraMock1);
 		
 		assertFalse(app.getMuestras().contains(muestraMock1));
 	}
-	
+
 }

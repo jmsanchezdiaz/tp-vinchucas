@@ -108,4 +108,8 @@ public class Muestra {
 	public boolean fuePublicadaDentroDeEsteRango(LocalDate fechaInicio, LocalDate fechaFin) {
 		return this.getFechaCreacion().isBefore(fechaInicio) && this.getFechaCreacion().isAfter(fechaFin);
 	}
+
+	public boolean fueEnviadaPor(Usuario usuario) {
+		return this.getUsuario().equals(usuario);
+	}
 }
