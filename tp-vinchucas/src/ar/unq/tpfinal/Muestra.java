@@ -78,7 +78,7 @@ public class Muestra {
 		Map<Opinable, Long> mapOpiniones = contarOpiniones(getOpiniones());
 
 		Resultado resultado = ResultadoEmpate.NO_DEFINIDO;
-		Long actualMayor = (long) 0;
+		long actualMayor = 0;
 
 		for (Entry<Opinable, Long> op : mapOpiniones.entrySet()) {
 			if (op.getValue() > actualMayor) {
@@ -89,11 +89,6 @@ public class Muestra {
 			}
 		}
 		return resultado;
-
-	}
-
-	public int cantidadDeOpinionesDe(Usuario usuario) {
-		return opiniones.stream().filter(op -> op.esOpinionDe(usuario)).collect(Collectors.toList()).size();
 
 	}
 
