@@ -33,7 +33,7 @@ public class Opinion {
 	public void setOpinion(Opinable opinion) {
 		this.opinion = opinion;
 	}
-	
+
 	public LocalDate getFechaCreacion() {
 		return fechaCreacion;
 	}

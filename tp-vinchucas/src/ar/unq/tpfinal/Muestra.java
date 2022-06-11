@@ -80,7 +80,7 @@ public class Muestra {
 		Map<Opinable, Long> mapOpiniones = contarOpiniones(getOpiniones());
 
 		Resultado resultado = ResultadoEmpate.NO_DEFINIDO;
-		Long actualMayor = (long) 0;
+		long actualMayor = 0;
 
 		for (Entry<Opinable, Long> op : mapOpiniones.entrySet()) {
 			if (op.getValue() > actualMayor) {
@@ -125,6 +125,11 @@ public class Muestra {
 		return getResultadoActual() == valorBuscado;
 	}
 
+	/**
+	 * Indica si la muestra fue opinada por el usuario pasado por parametros.
+	 * @param usuario
+	 * @return boolean
+	 */
 	public boolean fueVotadaEn(LocalDate fecha) {
 		return this.getOpiniones().stream().anyMatch(opinion -> opinion.getFechaCreacion().equals(fecha));
 	}
@@ -149,10 +154,19 @@ public class Muestra {
 		return getFechaCreacion().isBefore(fechaInicio) && getFechaCreacion().isAfter(fechaFin);
 	}
 
+	/**
+	 * Indica si la muestra fue enviada por el usuario pasado por parametros.
+	 * @param usuario
+	 * @return boolean
+	 */
 	public boolean fueEnviadaPor(Usuario usuario) {
 		return this.getUsuario().equals(usuario);
 	}
 
+	/**
+	 * Si la muestra esta verificada, notifica a las zonas pasadas por parametro.
+	 * @param {List<ZonaDeCobertura>} zonasDeLaMuestra
+	 */
 	public void notificarValidacionSiCorresponde(List<ZonaDeCobertura> zonasDeLaMuestra) {
 		if (this.esMuestraVerificada()) {
 			zonasDeLaMuestra.forEach(zona -> zona.notificar(this, Aspecto.MUESTRA_VERIFICADA));

@@ -60,7 +60,6 @@ public class MuestraTest {
 		userExpertoMock2 = mock(Usuario.class);
 		ubiMock = mock(Ubicacion.class);
 		fotoMock = mock(Foto.class);
-		muestraMock = mock(Muestra.class);
 		zonaMock = mock(ZonaDeCobertura.class);
 		
 		when(userNormalMock.esExperto()).thenReturn(false);
