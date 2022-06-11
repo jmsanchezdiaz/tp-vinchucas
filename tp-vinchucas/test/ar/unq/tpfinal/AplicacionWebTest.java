@@ -189,6 +189,17 @@ public class AplicacionWebTest {
 	}
 	
 	@Test
+	void puedoSaberSiUnaMuestraEstaAlmacenada() {
+		assertTrue(app.contieneMuestra(muestraMock1));
+	}
+	
+	@Test
+	void puedoSaberSiUnaZonaEstaAlmacenada() {
+		app.agregarZona(zonaMock);
+		assertTrue(app.contieneMuestra(muestraMock1));
+	}
+	
+	@Test
 	void puedoAñadirUnaZonaDeCobertura() {
 		app.agregarZona(zonaMock);
 		
