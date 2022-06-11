@@ -6,6 +6,10 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -27,8 +31,8 @@ public class ZonaDeCoberturaTest {
 	@BeforeEach
 	void setUp() throws Exception {
 
-		zona1 = new ZonaDeCobertura("nombreDeEjemplo", 200.0, new Ubicacion(20, 20));
-		zona2 = new ZonaDeCobertura("nombreDeEjemplo2", 200.0, new Ubicacion(20, 20));
+		zona1 = new ZonaDeCobertura("nombreDeEjemplo", 2000.0, new Ubicacion(20, 20));
+		zona2 = new ZonaDeCobertura("nombreDeEjemplo2", 2000.0, new Ubicacion(20, 20.001));
 		zona3 = new ZonaDeCobertura("nombreDeEjemplo3", 0.1, new Ubicacion(89, 120));
 
 		muestraMock1 = mock(Muestra.class);
@@ -58,13 +62,14 @@ public class ZonaDeCoberturaTest {
 	@Test
 	void testRadioDeZona() {
 
-		assertEquals(200.0, zona1.getRadio());
+		assertEquals(2000.0, zona1.getRadio());
 	}
 
 	@Test
 	void testEpicentroDeZona() throws Exception {
 
 		assertTrue(zona1.getEpicentro().equals(new Ubicacion(20, 20)));
+
 	}
 
 	@Test
@@ -107,6 +112,29 @@ public class ZonaDeCoberturaTest {
 		verify(observadorMock1, times(1)).eventoEnMuestra(zona1, muestraMock1, Aspecto.MUESTRA_ENVIADA);
 		verify(observadorMock2, times(1)).eventoEnMuestra(zona1, muestraMock1, Aspecto.MUESTRA_ENVIADA);
 
+	}
+
+	@Test
+	void testMuestraContenidaEnLaZona() throws Exception {
+		when(muestraMock1.getUbicacion()).thenReturn(new Ubicacion(20, 20.001));
+		assertTrue(zona1.contieneMuestra(muestraMock1));
+
+	}
+
+	@Test
+	void testMuestraNoContenidaEnLaZona() throws Exception {
+		when(muestraMock1.getUbicacion()).thenReturn(new Ubicacion(1, 2));
+		assertFalse(zona1.contieneMuestra(muestraMock1));
+
+	}
+
+	@Test
+	void testZonasQueSeSolapan() {
+		List<ZonaDeCobertura> zonas = new ArrayList<ZonaDeCobertura>();
+		zonas.add(zona2);
+
+		assertEquals(zona2, zona1.zonasQueSeSolapan(zonas).get(0));
+		assertEquals(1, zona1.zonasQueSeSolapan(zonas).size());
 	}
 
 }
