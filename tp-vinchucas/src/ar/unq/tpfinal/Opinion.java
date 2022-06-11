@@ -34,10 +34,6 @@ public class Opinion {
 		this.opinion = opinion;
 	}
 
-	public NivelDeConocimiento getNivelDeConocimiento() {
-		return estadoAlOpinar;
-	}
-	
 	public LocalDate getFechaCreacion() {
 		return fechaCreacion;
 	}

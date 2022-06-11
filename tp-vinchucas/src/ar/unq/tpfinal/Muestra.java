@@ -13,7 +13,7 @@ import ar.unq.tpfinal.zonaDeCobertura.ZonaDeCobertura;
 
 public class Muestra {
 
-	private Insecto especie;
+	private Opinion opinionDeUsuario;
 	private Foto foto;
 	private Ubicacion ubicacion;
 	private Usuario usuario;
@@ -23,14 +23,16 @@ public class Muestra {
 	public Muestra(Usuario usuario, Ubicacion ubicacion, Foto foto, Insecto especieSospechada) {
 		this.fechaDeCreacion = LocalDate.now();
 		this.opiniones = new ArrayList<>();
-		this.especie = especieSospechada;
+		this.opinionDeUsuario = new Opinion(usuario, especieSospechada);
 		this.foto = foto;
 		this.usuario = usuario;
 		this.ubicacion = ubicacion;
+		
+		getOpiniones().add(opinionDeUsuario);
 	}
 
-	public Insecto getEspecie() {
-		return this.especie;
+	public Opinion getOpinionDeUsuario() {
+		return this.opinionDeUsuario;
 	}
 
 	public Foto getFoto() {
@@ -78,7 +80,7 @@ public class Muestra {
 		Map<Opinable, Long> mapOpiniones = contarOpiniones(getOpiniones());
 
 		Resultado resultado = ResultadoEmpate.NO_DEFINIDO;
-		Long actualMayor = (long) 0;
+		long actualMayor = 0;
 
 		for (Entry<Opinable, Long> op : mapOpiniones.entrySet()) {
 			if (op.getValue() > actualMayor) {
@@ -89,11 +91,6 @@ public class Muestra {
 			}
 		}
 		return resultado;
-
-	}
-
-	public int cantidadDeOpinionesDe(Usuario usuario) {
-		return opiniones.stream().filter(op -> op.esOpinionDe(usuario)).collect(Collectors.toList()).size();
 
 	}
 
@@ -128,6 +125,11 @@ public class Muestra {
 		return getResultadoActual() == valorBuscado;
 	}
 
+	/**
+	 * Indica si la muestra fue opinada por el usuario pasado por parametros.
+	 * @param usuario
+	 * @return boolean
+	 */
 	public boolean fueVotadaEn(LocalDate fecha) {
 		return this.getOpiniones().stream().anyMatch(opinion -> opinion.getFechaCreacion().equals(fecha));
 	}
@@ -152,10 +154,19 @@ public class Muestra {
 		return getFechaCreacion().isBefore(fechaInicio) && getFechaCreacion().isAfter(fechaFin);
 	}
 
+	/**
+	 * Indica si la muestra fue enviada por el usuario pasado por parametros.
+	 * @param usuario
+	 * @return boolean
+	 */
 	public boolean fueEnviadaPor(Usuario usuario) {
 		return this.getUsuario().equals(usuario);
 	}
 
+	/**
+	 * Si la muestra esta verificada, notifica a las zonas pasadas por parametro.
+	 * @param {List<ZonaDeCobertura>} zonasDeLaMuestra
+	 */
 	public void notificarValidacionSiCorresponde(List<ZonaDeCobertura> zonasDeLaMuestra) {
 		if (this.esMuestraVerificada()) {
 			zonasDeLaMuestra.forEach(zona -> zona.notificar(this, Aspecto.MUESTRA_VERIFICADA));
