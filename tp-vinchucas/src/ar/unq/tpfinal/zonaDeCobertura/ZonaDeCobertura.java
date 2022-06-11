@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import ar.unq.tpfinal.Aspecto;
 import ar.unq.tpfinal.Muestra;
@@ -91,6 +92,10 @@ public class ZonaDeCobertura {
 	public Boolean contieneMuestra(Muestra muestra) {
 
 		return muestra.getUbicacion().distanciaEnMetrosCon(this.getEpicentro()) <= (this.getRadio() * 1000);
+	}
+
+	public List<ZonaDeCobertura> zonasQueSeSolapan(List<ZonaDeCobertura> zonasAAnalizar) {
+		return zonasAAnalizar.stream().filter(zona -> this.esZonaSolapada(zona)).collect(Collectors.toList());
 	}
 
 }
