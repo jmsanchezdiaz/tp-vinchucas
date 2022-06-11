@@ -4,6 +4,7 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyList;
 import static org.mockito.Mockito.atLeastOnce;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
@@ -29,6 +30,7 @@ public class AplicacionWebTest {
 	List<Muestra> muestras;
 	Opinion opMock;
 	ZonaDeCobertura zonaMock;
+	ZonaDeCobertura zonaMock2;
 	Usuario userMock;
 	Usuario userMock2;
 	
@@ -41,6 +43,7 @@ public class AplicacionWebTest {
 		muestras = Arrays.asList(muestraMock1,muestraMock2,muestraMock3);
 		opMock = mock(Opinion.class);
 		zonaMock = mock(ZonaDeCobertura.class);
+		zonaMock2 = mock(ZonaDeCobertura.class);
 		userMock = mock(Usuario.class);
 		userMock2 = mock(Usuario.class);
 		
@@ -58,6 +61,35 @@ public class AplicacionWebTest {
 	void cleanUp() {
 		app.setMuestras(new ArrayList<Muestra>());
 		app.setZonasDeCobertura(new ArrayList<ZonaDeCobertura>());
+	}
+	
+	@Test
+	void cuandoSeAgregaUnaMuestraSeNotificaALasZonaQueLaContienen() {
+		app.agregarZona(zonaMock);
+		app.agregarZona(zonaMock2);
+		
+		when(zonaMock.contieneMuestra(muestraMock1)).thenReturn(false);
+		when(zonaMock2.contieneMuestra(muestraMock1)).thenReturn(true);
+		
+		
+		app.eliminarMuestra(muestraMock1);
+		app.agregarMuestra(muestraMock1);
+		
+		app.zonasDeLaMuestra(muestraMock1).forEach(zona -> verify(zona).notificar(muestraMock1, Aspecto.MUESTRA_ENVIADA));
+	}
+	
+	@Test
+	void puedoObtenerLasZonasEnLasQueEstaUnaMuestra() {
+		app.agregarZona(zonaMock);
+		app.agregarZona(zonaMock2);
+		
+		when(zonaMock.contieneMuestra(muestraMock1)).thenReturn(false);
+		when(zonaMock2.contieneMuestra(muestraMock1)).thenReturn(true);
+		
+		List<ZonaDeCobertura> zonas = app.zonasDeLaMuestra(muestraMock1);
+		
+		assertEquals(zonas.size(), 1, 0);
+		assertTrue(zonas.contains(zonaMock2));
 	}
 	
 	@Test
@@ -117,6 +149,7 @@ public class AplicacionWebTest {
 		app.agregarOpinionA(muestraMock1, opMock);
 		
 		verify(muestraMock1).agregarOpinion(opMock);
+		verify(muestraMock1).notificarValidacionSiCorresponde(anyList());
 		verify(opMock).getUsuario();
 	}
 	

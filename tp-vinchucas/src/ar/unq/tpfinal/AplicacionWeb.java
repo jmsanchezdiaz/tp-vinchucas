@@ -69,7 +69,12 @@ public class AplicacionWeb {
 		}
 	}
 
-	private List<ZonaDeCobertura> zonasDeLaMuestra(Muestra nuevaMuestra) {
+	/**
+	 * Devuelve las zonas en la que la muestra provista se encuentra.
+	 * @param {Muestra} - nuevaMuestra
+	 * @return List<ZonaDeCobertura> - las zonas en las que estan las muestra.
+	 */
+	public List<ZonaDeCobertura> zonasDeLaMuestra(Muestra nuevaMuestra) {
 		return this.getZonasDeCobertura().stream().filter(zona -> zona.contieneMuestra(nuevaMuestra))
 				.collect(Collectors.toList());
 	}
@@ -95,7 +100,6 @@ public class AplicacionWeb {
 	 * 
 	 */
 	public void agregarOpinionA(Muestra muestra, Opinion opinion) {
-
 		this.actualizarSiCorrespondeUsuario(opinion.getUsuario());
 		muestra.agregarOpinion(opinion);
 		muestra.notificarValidacionSiCorresponde(this.zonasDeLaMuestra(muestra));
@@ -119,12 +123,8 @@ public class AplicacionWeb {
 		int cantidadDeOpinionesDelUsuario = this.cantidadDeOpinionesDe(usuario, muestrasHace30Dias);
 
 		// Si es apto para subir de nivel, lo subo sino no.
-		if (cantidadDeEnviosDelUsuario >= 10 && cantidadDeOpinionesDelUsuario >= 30)
-			usuario.subirDeNivel();
-
-		else
-			usuario.bajarDeNivel();
-
+		if (cantidadDeEnviosDelUsuario >= 10 && cantidadDeOpinionesDelUsuario >= 30) usuario.subirDeNivel();
+		else usuario.bajarDeNivel();
 	}
 
 	/**
@@ -197,7 +197,6 @@ public class AplicacionWeb {
 	}
 
 	public void eliminarMuestra(Muestra muestra) {
-
 		if (this.contieneMuestra(muestra)) {
 			this.getMuestras().remove(muestra);
 		}
