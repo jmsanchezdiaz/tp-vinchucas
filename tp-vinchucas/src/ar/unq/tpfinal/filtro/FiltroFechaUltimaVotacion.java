@@ -13,10 +13,6 @@ public class FiltroFechaUltimaVotacion implements IFiltro {
 	public FiltroFechaUltimaVotacion(LocalDate date) {
 		this.valorBuscado = date;
 	}
-
-	public void changeValue(LocalDate newValue) {
-		this.valorBuscado = newValue;
-	}
 	
 	@Override
 	public List<Muestra> filter(List<Muestra> muestras) {

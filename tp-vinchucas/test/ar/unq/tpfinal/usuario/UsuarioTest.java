@@ -3,12 +3,15 @@ package ar.unq.tpfinal.usuario;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
+import org.hamcrest.core.IsInstanceOf;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -38,7 +41,7 @@ public class UsuarioTest {
 		fotoMock = mock(Foto.class);
 		muestraMock = mock(Muestra.class);
 		ubiMock = mock(Ubicacion.class);
-		expertoPermanente = mock(ExpertoPermanente.class);
+		expertoPermanente = new ExpertoPermanente();
 		
 		userNormal = new Usuario("Juan");
 		userExpertoPermanente = new Usuario("JuanCruz", expertoPermanente);
@@ -69,6 +72,7 @@ public class UsuarioTest {
 		
 		//Assert
 		assertTrue(userNormal.esExperto());
+		assertFalse(userNormal.esBasico());
 	}
 	
 	@Test
@@ -79,6 +83,7 @@ public class UsuarioTest {
 		
 		//Assert
 		assertTrue(userNormal.esBasico());
+		assertFalse(userNormal.esExperto());
 	}
 	
 	@Test
@@ -94,21 +99,30 @@ public class UsuarioTest {
 		
 		RuntimeException exp = assertThrows(RuntimeException.class, () -> userNormal.subirDeNivel());
 		
-		assertEquals(exp.getMessage(), "No se puede subir más de nivel");
+		assertEquals(exp.getMessage(),"No se puede subir más de nivel");
+		assertInstanceOf(RuntimeException.class, exp);
 	}
 	
 	@Test
 	void noPuedoBajarElNivelDeConocimientoDeUnUsuarioFijoYLanzaUnaExcepcion() {
-		 doThrow(RuntimeException.class)
-	      .when(expertoPermanente)
-	      .bajarNivel(any());
+		
+		RuntimeException exp = assertThrows(RuntimeException.class, () -> userExpertoPermanente.bajarDeNivel());
+		assertEquals(exp.getMessage(), "No se puede bajar de nivel a un usuario fijo");
+		assertInstanceOf(RuntimeException.class, exp);
 	}
 	
 	@Test
 	void noPuedoSubirElNivelDeConocimientoDeUnUsuarioFijoYLanzaUnaExcepcion() {
-		doThrow(RuntimeException.class)
-	      .when(expertoPermanente)
-	      .subirNivel(any());
+		RuntimeException exp = assertThrows(RuntimeException.class, () -> userExpertoPermanente.subirDeNivel());
+		
+		assertEquals(exp.getMessage(),"No se puede subir de nivel a un usuario fijo");
+		assertInstanceOf(RuntimeException.class, exp);
+	}
+	
+	@Test
+	void unUsuarioExpertoPermanenteSiempreLoEs() {
+		assertFalse(userExpertoPermanente.esBasico());
+		assertTrue(userExpertoPermanente.esExperto());
 	}
 	
 	@Test
