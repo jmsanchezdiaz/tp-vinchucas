@@ -92,11 +92,6 @@ public class Muestra {
 
 	}
 
-	public int cantidadDeOpinionesDe(Usuario usuario) {
-		return opiniones.stream().filter(op -> op.esOpinionDe(usuario)).collect(Collectors.toList()).size();
-
-	}
-
 	public NivelDeVerificacion getVerificacionActual() {
 
 		if (opinoUnExperto()) {
