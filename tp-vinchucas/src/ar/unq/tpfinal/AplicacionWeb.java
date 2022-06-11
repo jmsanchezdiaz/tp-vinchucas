@@ -61,7 +61,8 @@ public class AplicacionWeb {
 	 */
 	public void agregarMuestra(Muestra nuevaMuestra) {
 		this.actualizarSiCorrespondeUsuario(nuevaMuestra.getUsuario());
-		if (!this.getMuestras().contains(nuevaMuestra)) {
+
+		if (!this.contieneMuestra(nuevaMuestra)) {
 			this.getMuestras().add(nuevaMuestra);
 			this.zonasDeLaMuestra(nuevaMuestra).forEach(zona -> zona.notificar(nuevaMuestra, Aspecto.MUESTRA_ENVIADA));
 
@@ -71,6 +72,14 @@ public class AplicacionWeb {
 	private List<ZonaDeCobertura> zonasDeLaMuestra(Muestra nuevaMuestra) {
 		return this.getZonasDeCobertura().stream().filter(zona -> zona.contieneMuestra(nuevaMuestra))
 				.collect(Collectors.toList());
+	}
+
+	public boolean contieneMuestra(Muestra muestra) {
+		return this.getMuestras().contains(muestra);
+	}
+
+	public boolean contieneZona(ZonaDeCobertura zona) {
+		return this.getZonasDeCobertura().contains(zona);
 	}
 
 	/**
@@ -176,20 +185,22 @@ public class AplicacionWeb {
 		return this.zonasDeCobertura;
 	}
 
-	public void agregarZona(ZonaDeCobertura zonaMock) {
-		if (!this.getZonasDeCobertura().contains(zonaMock)) {
-			this.getZonasDeCobertura().add(zonaMock);
+	public void agregarZona(ZonaDeCobertura zona) {
+		if (!this.contieneZona(zona)) {
+			this.getZonasDeCobertura().add(zona);
 		}
 	}
 
 	public void eliminarZona(ZonaDeCobertura zona) {
-		if (this.getZonasDeCobertura().contains(zona)) {
+
+		if (this.contieneZona(zona)) {
 			this.getZonasDeCobertura().remove(zona);
 		}
 	}
 
 	public void eliminarMuestra(Muestra muestra) {
-		if (this.getMuestras().contains(muestra)) {
+
+		if (this.contieneMuestra(muestra)) {
 			this.getMuestras().remove(muestra);
 		}
 	}

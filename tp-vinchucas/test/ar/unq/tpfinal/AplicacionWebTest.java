@@ -184,12 +184,23 @@ public class AplicacionWebTest {
 	}
 	
 	@Test
-	void puedoAñadirUnaMuestra() {
+	void puedoAgregarUnaMuestra() {
 		assertTrue(app.getMuestras().containsAll(muestras));
 	}
 	
 	@Test
-	void puedoAñadirUnaZonaDeCobertura() {
+	void puedoSaberSiUnaMuestraEstaAlmacenada() {
+		assertTrue(app.contieneMuestra(muestraMock1));
+	}
+	
+	@Test
+	void puedoSaberSiUnaZonaEstaAlmacenada() {
+		app.agregarZona(zonaMock);
+		assertTrue(app.contieneMuestra(muestraMock1));
+	}
+	
+	@Test
+	void puedoAgregarUnaZonaDeCobertura() {
 		app.agregarZona(zonaMock);
 		
 		assertTrue(app.getZonasDeCobertura().contains(zonaMock));

@@ -1,6 +1,8 @@
 package ar.unq.tpfinal.usuario;
 
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doThrow;
@@ -43,6 +45,19 @@ public class UsuarioTest {
 	}
 	
 	@Test
+	void cadaUsuarioTieneUnIdGeneradoUnicoAleatoriamente() {
+		assertFalse(userNormal.getId().equals(userExpertoPermanente.getId()));
+	}
+	
+	@Test
+	void losUsuarioTienenNombreYId() {
+		userNormal.setId("id testeado");
+		
+		assertEquals(userNormal.getNombre(), "Juan");
+		assertEquals(userNormal.getId(), "id testeado");
+	}
+	
+	@Test
 	void todosLoUsuarioMutablesAlInicioSuNivelDeConocimientoEsBasico() {
 		assertTrue(userNormal.esBasico());
 	}
@@ -68,12 +83,18 @@ public class UsuarioTest {
 	
 	@Test
 	void noPuedoBajarElNivelDeConocimientoDeUnUsuarioBasicoYLanzaUnaExcepcion() {
-		 assertThrows(RuntimeException.class, () -> userNormal.bajarDeNivel(), "No se puede bajar más de nivel");
+		RuntimeException exp = assertThrows(RuntimeException.class, () -> userNormal.bajarDeNivel());
+		
+		assertEquals(exp.getMessage(), "No se puede bajar más de nivel");
 	}
 	
 	@Test
 	void noPuedoSubirElNivelDeConocimientoDeUnUsuarioExpertoYLanzaUnaExcepcion() {
-		 assertThrows(RuntimeException.class, () -> userNormal.bajarDeNivel(), "No se puede subir más de nivel");
+		userNormal.subirDeNivel();
+		
+		RuntimeException exp = assertThrows(RuntimeException.class, () -> userNormal.subirDeNivel());
+		
+		assertEquals(exp.getMessage(), "No se puede subir más de nivel");
 	}
 	
 	@Test

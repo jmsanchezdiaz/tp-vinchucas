@@ -202,5 +202,5 @@ public class FiltrosTest {
 		when(muestraMock3.getVerificacionActual()).thenReturn(NivelDeVerificacion.VERIFICADA_PARCIAL);
 		when(muestraMock4.getVerificacionActual()).thenReturn(NivelDeVerificacion.VERIFICADA);
 	}
-
+	
 }
