@@ -88,4 +88,9 @@ public class ZonaDeCobertura {
 		this.getSuscriptores().get(aspecto).forEach(observador -> observador.eventoEnMuestra(this, muestra, aspecto));
 	}
 
+	public Boolean contieneMuestra(Muestra muestra) {
+
+		return muestra.getUbicacion().distanciaEnMetrosCon(this.getEpicentro()) <= (this.getRadio() * 1000);
+	}
+
 }
