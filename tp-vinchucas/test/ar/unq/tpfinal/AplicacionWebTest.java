@@ -3,17 +3,21 @@ package ar.unq.tpfinal;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.atLeastOnce;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-
+import ar.unq.tpfinal.filtro.IFiltro;
 import ar.unq.tpfinal.usuario.Usuario;
 import ar.unq.tpfinal.zonaDeCobertura.ZonaDeCobertura;
 
@@ -44,8 +48,16 @@ public class AplicacionWebTest {
 		when(muestraMock2.getUsuario()).thenReturn(userMock2);
 		when(muestraMock3.getUsuario()).thenReturn(userMock);
 		
-		muestras.forEach(muestra -> app.agregarMuestra(muestra));
+		app.agregarMuestra(muestraMock1);
+		app.agregarMuestra(muestraMock2);
+		app.agregarMuestra(muestraMock3);
 		
+	}
+	
+	@AfterEach
+	void cleanUp() {
+		app.setMuestras(new ArrayList<Muestra>());
+		app.setZonasDeCobertura(new ArrayList<ZonaDeCobertura>());
 	}
 	
 	@Test
@@ -69,7 +81,7 @@ public class AplicacionWebTest {
 		muestras.forEach(muestra -> verify(muestra).fuePublicadaDentroDeEsteRango(fechaInicio, fechaDeHoy));
 	
 		assertEquals(muestrasFiltradas.size(), 2, 0);
-		assertTrue(muestrasFiltradas.contains(muestraMock1) && muestrasFiltradas.contains(muestraMock3));
+		assertTrue(muestrasFiltradas.containsAll(Arrays.asList(muestraMock1, muestraMock3)));
 	}
 	
 	@Test
@@ -87,12 +99,88 @@ public class AplicacionWebTest {
 	
 	@Test
 	void puedoObtenerLaCantidadDeOpinionesPorUnUsuarioEnUnaListaDeMuestras() {
+		when(muestraMock1.elUsuarioYaOpino(userMock)).thenReturn(true);
+		when(muestraMock2.elUsuarioYaOpino(userMock)).thenReturn(false);
+		when(muestraMock3.elUsuarioYaOpino(userMock)).thenReturn(true);
 		
+		int cantidadEsperada = app.cantidadDeOpinionesDe(userMock, muestras);
+		
+		muestras.forEach(muestra -> verify(muestra)
+				.elUsuarioYaOpino(userMock));
+		
+		assertEquals(cantidadEsperada, 2, 0);
 	}
 	
 	@Test
-	void puedoActualizarElNivelDeConocimientoDeUnUsuarioSiCorresponde() {
+	void puedoAgregarUnaOpinionAUnaMuestraAlmacenada() {
+		when(opMock.getUsuario()).thenReturn(userMock);
+		app.agregarOpinionA(muestraMock1, opMock);
 		
+		verify(muestraMock1).agregarOpinion(opMock);
+		verify(opMock).getUsuario();
+	}
+	
+	@Test
+	void puedoBuscarMuestrasConUnFiltro() {
+		IFiltro filtroMock = mock(IFiltro.class);
+		
+		app.buscar(filtroMock);
+		
+		verify(filtroMock).filter(muestras);
+	}
+	
+	@Test
+	void puedoBajarElNivelDeConocimientoDeUnUsuarioSiCorresponde() {
+		Muestra envioMockeado = mock(Muestra.class);
+		
+		//Mockeo los valores del envio mockeado.
+		when(envioMockeado.fueEnviadaPor(userMock))
+			.thenReturn(true);
+		when(envioMockeado.getUsuario())
+			.thenReturn(userMock);
+		when(envioMockeado.elUsuarioYaOpino(userMock))
+		.thenReturn(false);
+		when(envioMockeado.fuePublicadaDentroDeEsteRango(any(LocalDate.class), any(LocalDate.class)))
+			.thenReturn(true);
+		
+		app.agregarMuestra(envioMockeado);
+		
+		verify(userMock, atLeastOnce()).bajarDeNivel();
+	}
+	
+	@Test
+	void puedoSubirElNivelDeConocimientoDeUnUsuarioSiCorresponde() {
+		//Lleno la app con muestras enviadas 
+		for(int i = 0; i < 31; i++){
+			Muestra envioMockeado = mock(Muestra.class);
+			Muestra muestraConOpinionMockeada = mock(Muestra.class);
+			
+			//Mockeo los valores del envio mockeado.
+			when(envioMockeado.fueEnviadaPor(userMock))
+				.thenReturn(true);
+			when(envioMockeado.getUsuario())
+				.thenReturn(userMock);
+			when(envioMockeado.elUsuarioYaOpino(userMock))
+			.thenReturn(false);
+			when(envioMockeado.fuePublicadaDentroDeEsteRango(any(LocalDate.class), any(LocalDate.class)))
+				.thenReturn(true);
+			
+			//Mockeo los valores del envio mockeado.
+			when(muestraConOpinionMockeada.fueEnviadaPor(userMock))
+				.thenReturn(false);
+			when(muestraConOpinionMockeada.getUsuario())
+				.thenReturn(userMock2);
+			when(muestraConOpinionMockeada.elUsuarioYaOpino(userMock))
+			.thenReturn(true);
+			when(muestraConOpinionMockeada.fuePublicadaDentroDeEsteRango(any(LocalDate.class), any(LocalDate.class)))
+				.thenReturn(true);
+			
+			app.agregarMuestra(envioMockeado);
+			app.agregarMuestra(muestraConOpinionMockeada);
+		};
+		
+		//Verifico que se le suba el nivel al usuario
+		verify(userMock,atLeastOnce()).subirDeNivel();
 	}
 	
 	@Test

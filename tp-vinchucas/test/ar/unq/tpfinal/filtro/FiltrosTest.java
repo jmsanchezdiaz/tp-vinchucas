@@ -1,5 +1,6 @@
 package ar.unq.tpfinal.filtro;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.mock;
@@ -75,7 +76,7 @@ public class FiltrosTest {
 		muestras.forEach(muestra -> verify(muestra).esInsecto(NoVinchuca.PhtiaChinche));
 		muestras.forEach(muestra -> verify(muestra).fueVotadaEn(fecha));
 		assertFalse(filtradas.contains(muestraMock1));
-		assertTrue(filtradas.size() == 3);
+		assertEquals(filtradas.size(),3,0);
 	}
 
 	@Test
@@ -96,7 +97,7 @@ public class FiltrosTest {
 		verify(muestraMock2).esInsecto(NoVinchuca.PhtiaChinche);
 		
 		assertTrue(filtradas.containsAll(Arrays.asList(muestraMock1, muestraMock4, muestraMock2)));
-		assertTrue(filtradas.size() == 3);
+		assertEquals(filtradas.size(),3,0);
 	}
 	
 	@Test
@@ -113,7 +114,7 @@ public class FiltrosTest {
 		verify(muestraMock3).esInsecto(NoVinchuca.PhtiaChinche);
 		
 		assertTrue(filtradas.contains(muestraMock2));
-		assertTrue(filtradas.size() == 1);
+		assertEquals(filtradas.size(),1,0);
 	}
 	
 	@Test
@@ -126,8 +127,8 @@ public class FiltrosTest {
 		
 		//Verify/Assert
 		muestras.forEach(muestra -> verify(muestra).esInsecto(NoVinchuca.PhtiaChinche));
-		assertTrue(filtradas.contains(muestraMock2) && filtradas.contains(muestraMock4));
-		assertTrue(filtradas.size() == 2);
+		assertTrue(filtradas.containsAll(Arrays.asList(muestraMock2, muestraMock4)));
+		assertEquals(filtradas.size(),2,0);
 	}
 	
 	@Test
@@ -140,8 +141,8 @@ public class FiltrosTest {
 		
 		//Verify/Assert
 		muestras.forEach(muestra -> verify(muestra).getFechaCreacion());
-		assertTrue(!filtradas.contains(muestraMock3));
-		assertTrue(filtradas.size() == 3);
+		assertTrue(filtradas.containsAll(Arrays.asList(muestraMock1, muestraMock2, muestraMock4)));
+		assertEquals(filtradas.size(),3,0);
 	}
 
 
@@ -156,8 +157,8 @@ public class FiltrosTest {
 		
 		//Verify/Assert
 		muestras.forEach(muestra -> verify(muestra).fueVotadaEn(fecha));
-		assertTrue(filtradas.contains(muestraMock2) && filtradas.contains(muestraMock3));
-		assertTrue(filtradas.size() == 2);
+		assertTrue(filtradas.containsAll(Arrays.asList(muestraMock2, muestraMock3)));
+		assertEquals(filtradas.size(),2,0);
 	}
 	
 	@Test
@@ -170,8 +171,8 @@ public class FiltrosTest {
 		
 		//Verify/Assert
 		muestras.forEach(muestra -> verify(muestra).getVerificacionActual());
-		assertTrue(filtradas.contains(muestraMock1) && filtradas.contains(muestraMock4));
-		assertTrue(filtradas.size() == 2);
+		assertTrue(filtradas.containsAll(Arrays.asList(muestraMock1, muestraMock4)));
+		assertEquals(filtradas.size(),2,0);
 	}
 
 	private void mockedFueVotadaEnMethod() {
