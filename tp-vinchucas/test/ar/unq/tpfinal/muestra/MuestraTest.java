@@ -7,11 +7,9 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-import java.io.Console;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -24,7 +22,6 @@ import ar.unq.tpfinal.Comentario;
 import ar.unq.tpfinal.Foto;
 import ar.unq.tpfinal.Muestra;
 import ar.unq.tpfinal.NivelDeVerificacion;
-import ar.unq.tpfinal.Opinable;
 import ar.unq.tpfinal.Opinion;
 import ar.unq.tpfinal.ResultadoEmpate;
 import ar.unq.tpfinal.Vinchuca;

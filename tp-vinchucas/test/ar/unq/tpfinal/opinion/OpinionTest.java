@@ -3,22 +3,14 @@ package ar.unq.tpfinal.opinion;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
 
 import java.time.LocalDate;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import ar.unq.tpfinal.Foto;
-import ar.unq.tpfinal.Muestra;
 import ar.unq.tpfinal.Opinable;
 import ar.unq.tpfinal.Opinion;
-import ar.unq.tpfinal.Vinchuca;
-import ar.unq.tpfinal.niveldeconocimiento.Basico;
-import ar.unq.tpfinal.niveldeconocimiento.Experto;
-import ar.unq.tpfinal.niveldeconocimiento.NivelDeConocimiento;
-import ar.unq.tpfinal.ubicacion.Ubicacion;
 import ar.unq.tpfinal.usuario.Usuario;
 
 public class OpinionTest {
