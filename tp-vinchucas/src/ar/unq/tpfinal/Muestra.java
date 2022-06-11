@@ -1,17 +1,12 @@
 package ar.unq.tpfinal;
 
-import static org.mockito.ArgumentMatchers.anyMap;
-
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.stream.Collectors;
 
-import ar.unq.tpfinal.niveldeconocimiento.Experto;
 import ar.unq.tpfinal.ubicacion.Ubicacion;
 import ar.unq.tpfinal.usuario.Usuario;
 
@@ -101,5 +96,16 @@ public class Muestra {
 
 	public void setFechaCreacion(LocalDate fechaDeCreacion) {
 		this.fechaDeCreacion = fechaDeCreacion;
+	}
+
+	/**
+	 * Indica si esta muestra fue publicada entre el rango de fechas suministrado en los
+	 * parametros.
+	 * @param {LocalDate} fechaInicio
+	 * @param {LocalDate} fechaFin
+	 * @return boolean
+	 */
+	public boolean fuePublicadaDentroDeEsteRango(LocalDate fechaInicio, LocalDate fechaFin) {
+		return this.getFechaCreacion().isBefore(fechaInicio) && this.getFechaCreacion().isAfter(fechaFin);
 	}
 }

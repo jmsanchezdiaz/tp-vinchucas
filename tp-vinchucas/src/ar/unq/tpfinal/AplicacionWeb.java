@@ -4,8 +4,6 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
-
 import ar.unq.tpfinal.usuario.Usuario;
 import ar.unq.tpfinal.zonaDeCobertura.ZonaDeCobertura;
 
@@ -108,7 +106,7 @@ public class AplicacionWeb {
 	 * @param {List<Muestra>} - listaDeMuestras
 	 * @return int
 	 */
-	private int cantidadDeEnviosDe(Usuario usuario, List<Muestra> listaDeMuestras) {
+	public int cantidadDeEnviosDe(Usuario usuario, List<Muestra> listaDeMuestras) {
 		return listaDeMuestras
 				.stream()
 				.filter(muestra -> usuario.equals(muestra.getUsuario()))
@@ -122,7 +120,7 @@ public class AplicacionWeb {
 	 * @param {List<Muestra>} - listaDeMuestras
 	 * @return int
 	 */
-	private int cantidadDeOpinionesDe(Usuario usuario, List<Muestra> listaDeMuestras) {
+	public int cantidadDeOpinionesDe(Usuario usuario, List<Muestra> listaDeMuestras) {
 		return listaDeMuestras
 				.stream()
 				.mapToInt(muestra -> muestra.cantidadDeOpinionesDe(usuario))
@@ -136,11 +134,13 @@ public class AplicacionWeb {
 	 * @param int - cantidadDeDias - cantidad de dias anteriores entre las muestras y la fecha actual.
 	 * @return List<Muestra>
 	 */
-	private List<Muestra> obtenerMuestrasHace(int cantidadDeDias) {
+	public List<Muestra> obtenerMuestrasHace(int cantidadDeDias) {
 		LocalDate fechaDeHoy = LocalDate.now();
+		LocalDate fechaInicio = fechaDeHoy.minusDays(cantidadDeDias);
+		
 		return this.getMuestras()
 		.stream()
-		.filter(muestra -> muestra.getFechaCreacion().isEqual(fechaDeHoy.minusDays(cantidadDeDias)))
+		.filter(muestra -> muestra.fuePublicadaDentroDeEsteRango(fechaInicio, fechaDeHoy))
 		.collect(Collectors.toList());
 	}
 
