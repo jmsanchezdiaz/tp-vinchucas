@@ -81,7 +81,7 @@ public class AplicacionWebTest {
 		muestras.forEach(muestra -> verify(muestra).fuePublicadaDentroDeEsteRango(fechaInicio, fechaDeHoy));
 	
 		assertEquals(muestrasFiltradas.size(), 2, 0);
-		assertTrue(muestrasFiltradas.contains(muestraMock1) && muestrasFiltradas.contains(muestraMock3));
+		assertTrue(muestrasFiltradas.containsAll(Arrays.asList(muestraMock1, muestraMock3)));
 	}
 	
 	@Test
