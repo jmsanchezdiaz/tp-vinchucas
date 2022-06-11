@@ -15,7 +15,7 @@ public class UbicacionTest {
 	private Ubicacion ubicacion2;
 
 	@BeforeEach
-	public void setup() {
+	public void setup() throws Exception {
 		this.ubicacion = new Ubicacion(12, 13);
 		this.ubicacion2 = new Ubicacion(12.0001, 13.0001);
 	}
@@ -26,7 +26,7 @@ public class UbicacionTest {
 	}
 
 	@Test
-	public void testSetLatitud() {
+	public void testSetLatitud() throws Exception {
 		this.ubicacion.setLatitud(16.3);
 		assertEquals(ubicacion.getLatitud(), 16.3);
 	}
@@ -37,7 +37,7 @@ public class UbicacionTest {
 	}
 
 	@Test
-	public void testSetLongitud() {
+	public void testSetLongitud() throws Exception {
 		this.ubicacion.setLongitud(16.3);
 		assertEquals(ubicacion.getLongitud(), 16.3);
 	}
@@ -100,7 +100,7 @@ public class UbicacionTest {
 	}
 
 	@Test
-	public void testUbicacionesAMenosDeUnaCantidadDeMetrosPositiva() {
+	public void testUbicacionesAMenosDeUnaCantidadDeMetrosPositiva() throws Exception {
 		List<Ubicacion> ubicaciones = new ArrayList<Ubicacion>();
 
 		Ubicacion ubicacionA = new Ubicacion(12.0001, 13);

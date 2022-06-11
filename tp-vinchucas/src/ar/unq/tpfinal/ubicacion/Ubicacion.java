@@ -18,7 +18,7 @@ public class Ubicacion {
 	private double latitud;
 	private double longitud;
 
-	public Ubicacion(double latitud, double longitud) {
+	public Ubicacion(double latitud, double longitud) throws Exception {
 
 		this.setLatitud(latitud);
 		this.setLongitud(longitud);
@@ -29,7 +29,7 @@ public class Ubicacion {
 		return latitud;
 	}
 
-	void setLatitud(double latitud) {
+	void setLatitud(double latitud) throws Exception {
 		if (latitud > -90 & latitud < 90) {
 			this.latitud = latitud;
 		} else {
@@ -42,7 +42,7 @@ public class Ubicacion {
 		return longitud;
 	}
 
-	void setLongitud(double longitud) {
+	void setLongitud(double longitud) throws Exception {
 		if (longitud > -180 & longitud < 180) {
 			this.longitud = longitud;
 		} else {
@@ -73,6 +73,17 @@ public class Ubicacion {
 	public List<Ubicacion> ubicacionesAMenosDe(List<Ubicacion> ubicaciones, double distanciaEnMetros) {
 		return ubicaciones.stream().filter(ubicacion -> this.distanciaEnMetrosCon(ubicacion) <= distanciaEnMetros)
 				.collect(Collectors.toList());
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		Ubicacion objeto = (Ubicacion) obj;
+		if ((this.getLatitud() != objeto.getLatitud()) || (this.getLongitud() != objeto.getLongitud())) {
+			return false;
+		} else {
+			return true;
+		}
+
 	}
 
 }
