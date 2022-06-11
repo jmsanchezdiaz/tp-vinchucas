@@ -87,7 +87,7 @@ public class ZonaDeCoberturaTest {
 	}
 
 	@Test
-	void testDesuscripcionAUnAspectoConOtrosSuscriptores() {
+	void testDesuscripcionAUnAspectoAlQueNoEstabaPreviamenteSuscrito() {
 		zona1.suscribir(observadorMock1, Aspecto.MUESTRA_ENVIADA);
 
 		zona1.desuscribir(observadorMock2, Aspecto.MUESTRA_ENVIADA);

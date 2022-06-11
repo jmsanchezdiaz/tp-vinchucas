@@ -69,9 +69,9 @@ public class Organizacion implements Observador {
 			this.getSuscripcionesAZonasPorAspecto().get(aspecto).add(zona);
 
 		} else {
-			List<ZonaDeCobertura> observadoresDelAspecto = new ArrayList<ZonaDeCobertura>();
-			observadoresDelAspecto.add(zona);
-			this.getSuscripcionesAZonasPorAspecto().put(aspecto, observadoresDelAspecto);
+			List<ZonaDeCobertura> zonasDelAspecto = new ArrayList<ZonaDeCobertura>();
+			zonasDelAspecto.add(zona);
+			this.getSuscripcionesAZonasPorAspecto().put(aspecto, zonasDelAspecto);
 		}
 	}
 
@@ -81,10 +81,14 @@ public class Organizacion implements Observador {
 		// lo mismo sucede si el aspecto no está definido como clave
 		if (this.getSuscripcionesAZonasPorAspecto().containsKey(aspecto)) {
 
-			List<ZonaDeCobertura> observadoresDelAspecto = this.getSuscripcionesAZonasPorAspecto().get(aspecto);
-			observadoresDelAspecto.remove(zona);
+			List<ZonaDeCobertura> zonasDelAspecto = this.getSuscripcionesAZonasPorAspecto().get(aspecto);
+			zonasDelAspecto.remove(zona);
 
 		}
+	}
+
+	public void setFuncionalidadParaAspecto(FuncionalidadExterna funcionalidad, Aspecto aspecto) {
+		this.getFuncionalidadesPorAspecto().put(aspecto, funcionalidad);
 	}
 
 	@Override
@@ -93,6 +97,10 @@ public class Organizacion implements Observador {
 			this.getFuncionalidadesPorAspecto().get(aspecto).nuevoEvento(zona, this, muestra);
 		}
 
+	}
+
+	public int getCantidadDePersonal() {
+		return this.cantidadDePersonal;
 	}
 
 }
