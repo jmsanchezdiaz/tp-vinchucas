@@ -184,7 +184,7 @@ public class AplicacionWebTest {
 	}
 	
 	@Test
-	void puedoAñadirUnaMuestra() {
+	void puedoAgregarUnaMuestra() {
 		assertTrue(app.getMuestras().containsAll(muestras));
 	}
 	
@@ -200,7 +200,7 @@ public class AplicacionWebTest {
 	}
 	
 	@Test
-	void puedoAñadirUnaZonaDeCobertura() {
+	void puedoAgregarUnaZonaDeCobertura() {
 		app.agregarZona(zonaMock);
 		
 		assertTrue(app.getZonasDeCobertura().contains(zonaMock));
