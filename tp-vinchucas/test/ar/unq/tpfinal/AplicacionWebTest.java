@@ -203,21 +203,69 @@ public class AplicacionWebTest {
 	void puedoAgregarUnaZonaDeCobertura() {
 		app.agregarZona(zonaMock);
 		
-		assertTrue(app.getZonasDeCobertura().contains(zonaMock));
+		assertTrue(app.contieneZona(zonaMock));
 	}
 	
 	@Test
 	void puedoEliminarUnaZonaDeCoberturaAlmacenada() {
+		app.agregarZona(zonaMock);
 		app.eliminarZona(zonaMock);
 		
-		assertFalse(app.getZonasDeCobertura().contains(zonaMock));
+		assertFalse(app.contieneZona(zonaMock));
 	}
 	
 	@Test
 	void puedoEliminarUnaMuestraAlmacenada() {
 		app.eliminarMuestra(muestraMock1);
 		
-		assertFalse(app.getMuestras().contains(muestraMock1));
+		assertFalse(app.contieneMuestra(muestraMock1));
 	}
+	
+	@Test
+	void noPuedoEliminarUnaMuestraQueNoEstaAlmacenada() {
+		int sizeEsperado = app.getMuestras().size();
+		Muestra muestraQueNoEsta = mock(Muestra.class);
+		
+		app.eliminarMuestra(muestraQueNoEsta);
+		
+		assertEquals(sizeEsperado, app.getMuestras().size(), 0);
+		assertFalse(app.contieneMuestra(muestraQueNoEsta));
+	}
+	
+	@Test
+	void noPuedoEliminarUnaZonaQueNoEstaAlmacenada() {
+		app.agregarZona(zonaMock);
+		ZonaDeCobertura zonaQueNoEsta = mock(ZonaDeCobertura.class);
+		
+		int sizeEsperado = app.getZonasDeCobertura().size();
+		
+		app.eliminarZona(zonaQueNoEsta);
+		
+		assertEquals(sizeEsperado, app.getZonasDeCobertura().size(), 0);
+		assertFalse(app.contieneZona(zonaQueNoEsta));
+	}
+	
+	@Test
+	void noPuedoAgregarUnaZonaQueYaEstaAlmacenada() {
+		app.agregarZona(zonaMock);
+		
+		int sizeEsperado = app.getZonasDeCobertura().size();
+		
+		app.agregarZona(zonaMock);
+		
+		assertEquals(sizeEsperado, app.getZonasDeCobertura().size(), 0);
+	}
+	
+	@Test
+	void noPuedoMuestraUnaZonaQueYaEstaAlmacenada() {
+		
+		int sizeEsperado = app.getMuestras().size();
+		
+		app.agregarMuestra(muestraMock1);
+		
+		assertEquals(sizeEsperado, app.getMuestras().size(), 0);
+	}
+	
+	
 
 }

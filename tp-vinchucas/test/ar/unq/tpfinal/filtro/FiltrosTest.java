@@ -55,7 +55,7 @@ public class FiltrosTest {
 		filtroAND.addFilter(filtroFechaUltimaVotacion);
 		filtroAND.addFilter(filtroInsecto);
 	}
-	 
+	
 	 @Test
 	 void unFiltroCompuestoPuedeEliminarUnFiltroQueEstaContenido() {
 		 
