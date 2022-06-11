@@ -4,8 +4,8 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
+import ar.unq.tpfinal.filtro.IFiltro;
 import ar.unq.tpfinal.usuario.Usuario;
 import ar.unq.tpfinal.zonaDeCobertura.ZonaDeCobertura;
 
@@ -19,14 +19,25 @@ import ar.unq.tpfinal.zonaDeCobertura.ZonaDeCobertura;
  */
 
 public class AplicacionWeb {
-	static private AplicacionWeb app = null;
+	static private AplicacionWeb app;
 	private List<Muestra> muestras;
 	private List<ZonaDeCobertura> zonasDeCobertura;
 	
+	/**
+	 * Crea una instancia de AplicacionWeb, es privado para que solo
+	 * pueda utilizado dentro de la clase.
+	 * @return AplicacionWeb
+	 */
 	private AplicacionWeb() {
-		muestras  = new ArrayList<Muestra>();
+		muestras = new ArrayList<Muestra>();
+		zonasDeCobertura = new ArrayList<ZonaDeCobertura>();
 	}
 	
+	/**
+	 * Crea una unica instancia de AplicacionWeb, si se intenta 
+	 * crear otra devuelve la existente.
+	 * @return AplicacionWeb
+	 */
 	public static AplicacionWeb getAplicacionWeb() {
 		if(app == null) {
 			app = new AplicacionWeb();
@@ -47,7 +58,9 @@ public class AplicacionWeb {
 	public void agregarMuestra(Muestra nuevaMuestra) {
 		// Falta agregar notify del observer
 		this.actualizarSiCorrespondeUsuario(nuevaMuestra.getUsuario());
-		this.getMuestras().add(nuevaMuestra);
+		if(!this.getMuestras().contains(nuevaMuestra)) {
+			this.getMuestras().add(nuevaMuestra);
+		}
 	}
 	
 	/**
@@ -70,9 +83,14 @@ public class AplicacionWeb {
 	}
 
 	
+	/**
+	 * Actualiza el nivel de conocimiento del usuario provisto si 
+	 * cumple con los requisitos.
+	 * @param {Usuario} - un usuario.
+	 */
 	private void actualizarSiCorrespondeUsuario(Usuario usuario) {
 		//Obtengo las muestras hace 30 dias desde el dia actual.
-		Stream<Muestra> muestrasHace30Dias = this.obtenerMuestrasHace(30);
+		List<Muestra> muestrasHace30Dias = this.obtenerMuestrasHace(30);
 		
 		// Obtengo la cantidad de esos envios que son del usuario
 		int cantidadDeEnviosDelUsuario = this.cantidadDeEnviosDe(usuario, muestrasHace30Dias);
@@ -86,37 +104,56 @@ public class AplicacionWeb {
 
 	}
 
-	private int cantidadDeEnviosDe(Usuario usuario, Stream<Muestra> muestrasHace30Dias) {
-		return muestrasHace30Dias
-				.filter(muestra -> usuario.equals(muestra.getUsuario()))
-				.collect(Collectors.toList()).size();
-	}
-
-	private int cantidadDeOpinionesDe(Usuario usuario, Stream<Muestra> muestras) {
-		return muestras
-				.mapToInt(muestra -> muestra.cantidadDeOpinionesDe(usuario))
-				.sum();
+	/**
+	 * Devuelve la cantidad de envios de un usuario en una lista de muestras pasadas.
+	 * @param {Usuario} - usuario
+	 * @param {List<Muestra>} - listaDeMuestras
+	 * @return int
+	 */
+	public int cantidadDeEnviosDe(Usuario usuario, List<Muestra> listaDeMuestras) {
+		return listaDeMuestras
+				.stream()
+				.filter(muestra -> muestra.fueEnviadaPor(usuario))
+				.collect(Collectors.toList())
+				.size();
 	}
 
 	/**
-	 * Devuelve un Stream de muestras con las muestras de los ultimos dias pasados como parametros.
+	 * Devuelve la cantidad de opiniones de un usuario en una lista de muestras pasadas.
+	 * @param {Usuario} - usuario
+	 * @param {List<Muestra>} - listaDeMuestras
+	 * @return int
+	 */
+	public int cantidadDeOpinionesDe(Usuario usuario, List<Muestra> listaDeMuestras) {
+		return listaDeMuestras
+				.stream()
+				.filter(muestra -> muestra.elUsuarioYaOpino(usuario))
+				.collect(Collectors.toList())
+				.size();
+	}
+
+	/**
+	 * Devuelve una Lista de muestras con las muestras de los ultimos dias pasados como parametros.
 	 * Por ejemplo si queremos las muestras de hace 30 dias, cantidadDeDias seria 30.
 	 * 
 	 * @param int - cantidadDeDias - cantidad de dias anteriores entre las muestras y la fecha actual.
-	 * @return Stream<Muestra>
+	 * @return List<Muestra>
 	 */
-	private Stream<Muestra> obtenerMuestrasHace(int cantidadDeDias) {
+	public List<Muestra> obtenerMuestrasHace(int cantidadDeDias) {
 		LocalDate fechaDeHoy = LocalDate.now();
+		LocalDate fechaInicio = fechaDeHoy.minusDays(cantidadDeDias);
+		
 		return this.getMuestras()
 		.stream()
-		.filter(muestra -> muestra.getFechaCreacion().isEqual(fechaDeHoy.minusDays(cantidadDeDias)));
+		.filter(muestra -> muestra.fuePublicadaDentroDeEsteRango(fechaInicio, fechaDeHoy))
+		.collect(Collectors.toList());
 	}
 
 	public List<Muestra> getMuestras() {
 		return muestras;
 	}
 
-	public void setMuestras(List<Muestra> muestras) {
+	protected void setMuestras(List<Muestra> muestras) {
 		this.muestras = muestras;
 	}
 
@@ -124,5 +161,40 @@ public class AplicacionWeb {
 		
 		//@Despues creo la logica
 		return zonasDeCobertura;
+	}
+
+	public List<ZonaDeCobertura> getZonasDeCobertura() {
+		return this.zonasDeCobertura;
+	}
+
+	public void agregarZona(ZonaDeCobertura zonaMock) {
+		if(!this.getZonasDeCobertura().contains(zonaMock)) {
+			this.getZonasDeCobertura().add(zonaMock);
+		}
+	}
+	
+	public void eliminarZona(ZonaDeCobertura zona) {
+		if(this.getZonasDeCobertura().contains(zona)) {
+			this.getZonasDeCobertura().remove(zona);
+		}
+	}
+
+	public void eliminarMuestra(Muestra muestra) {
+		if(this.getMuestras().contains(muestra)) {
+			this.getMuestras().remove(muestra);
+		}
+	}
+
+	protected void setZonasDeCobertura(List<ZonaDeCobertura> zonas) {
+		this.zonasDeCobertura = zonas;		
+	}
+
+	/**
+	 * Pasado un filtro, devuelve todas las zonas que cumplan con el.
+	 * @param {IFiltro} - un filtro.
+	 * @return List<Muestra> - Muestras encontradas.
+	 */
+	public List<Muestra> buscar(IFiltro filtroMock) {
+		return filtroMock.filter(this.getMuestras());
 	}
 }

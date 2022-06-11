@@ -1,5 +1,0 @@
-package ar.unq.tpfinal;
-
-public enum Opiniones {
-	VINCHUCA, CHINCHE_FOLIADA, PHTIA_CHINCHE, NINGUNA, IMAGEN_POCO_CLARA, VERIFICADA
-}

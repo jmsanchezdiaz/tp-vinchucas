@@ -9,9 +9,9 @@ public class Opinion {
 	private Usuario usuario;
 	private NivelDeConocimiento estadoAlOpinar;
 	private LocalDate fechaCreacion;
-	private Opiniones opinion;
+	private Opinable opinion;
 
-	public Opinion(Usuario usuario, Opiniones opinion) {
+	public Opinion(Usuario usuario, Opinable opinion) {
 		this.setUsuario(usuario);
 		this.estadoAlOpinar = usuario.getNivelDeConocimiento();
 		this.fechaCreacion = LocalDate.now();
@@ -30,7 +30,7 @@ public class Opinion {
 		this.fechaCreacion = fechaCreacion;
 	}
 
-	public void setOpinion(Opiniones opinion) {
+	public void setOpinion(Opinable opinion) {
 		this.opinion = opinion;
 	}
 
@@ -42,7 +42,7 @@ public class Opinion {
 		return fechaCreacion;
 	}
 	
-	public Opiniones getOpinion() {
+	public Opinable getOpinion() {
 		return opinion;
 	}
 
@@ -52,6 +52,10 @@ public class Opinion {
 
 	public void setUsuario(Usuario usuario) {
 		this.usuario = usuario;
+	}
+	
+	public Boolean esOpinionDe(Usuario usuario) {
+		return this.getUsuario().equals(usuario);
 	}
 	
 }

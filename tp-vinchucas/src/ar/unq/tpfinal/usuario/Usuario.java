@@ -3,12 +3,12 @@ package ar.unq.tpfinal.usuario;
 import java.util.UUID;
 
 import ar.unq.tpfinal.AplicacionWeb;
-import ar.unq.tpfinal.EspecieVinchuca;
+import ar.unq.tpfinal.Vinchuca;
 import ar.unq.tpfinal.Foto;
 import ar.unq.tpfinal.Muestra;
+import ar.unq.tpfinal.Opinable;
 import ar.unq.tpfinal.niveldeconocimiento.*;
 import ar.unq.tpfinal.Opinion;
-import ar.unq.tpfinal.Opiniones;
 import ar.unq.tpfinal.ubicacion.Ubicacion;
 
 /**
@@ -48,11 +48,11 @@ public class Usuario {
 		this.setNivelDeConocimiento(nivel);
 	}
 
-	public void enviarMuestra(AplicacionWeb app, Ubicacion ubi, Foto foto, EspecieVinchuca especie) {
+	public void enviarMuestra(AplicacionWeb app, Ubicacion ubi, Foto foto, Vinchuca especie) {
 		app.agregarMuestra(new Muestra(this, ubi, foto, especie));
 	}
 	
-	public void opinarMuestra(AplicacionWeb app, Muestra muestra, Opiniones opinion){
+	public void opinarMuestra(AplicacionWeb app, Muestra muestra, Opinable opinion){
 		app.agregarOpinionA(muestra, new Opinion(this, opinion));
 	}
 	
