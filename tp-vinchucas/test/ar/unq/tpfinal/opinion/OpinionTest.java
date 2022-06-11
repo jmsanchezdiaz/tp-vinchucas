@@ -4,15 +4,13 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.mock;
 
+import java.time.LocalDate;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import ar.unq.tpfinal.Foto;
-import ar.unq.tpfinal.Muestra;
 import ar.unq.tpfinal.Opinable;
 import ar.unq.tpfinal.Opinion;
-import ar.unq.tpfinal.Vinchuca;
-import ar.unq.tpfinal.ubicacion.Ubicacion;
 import ar.unq.tpfinal.usuario.Usuario;
 
 public class OpinionTest {
@@ -21,6 +19,7 @@ public class OpinionTest {
 	Usuario userMock;
 	Usuario user2Mock;
 	Opinable opinableMock;
+	Opinable opinableMock2;
 	
 	@BeforeEach
 	void setUp() {
@@ -30,6 +29,24 @@ public class OpinionTest {
 		opinableMock = mock(Opinable.class);
 
 		opinion = new Opinion(userMock, opinableMock);
+	}
+	
+	@Test
+	void unaOpinionConoceYSeteaSuEstado() {
+		opinion.setEstadoAlOpinar(user2Mock.getNivelDeConocimiento());
+		assertTrue(opinion.getEstadoAlOpinar() == user2Mock.getNivelDeConocimiento());
+	}
+	
+	@Test
+	void unaOpinionConoceYSeteaSusOpiniones() {
+		opinion.setOpinion(opinableMock2);
+		assertTrue(opinion.getOpinion() == opinableMock2);
+	}
+	
+	@Test
+	void unaOpinionConoceYSeteaSusFechas() {
+		opinion.setFechaCreacion(LocalDate.of(2021, 5, 11));
+		assertTrue(opinion.getFechaCreacion().equals(LocalDate.of(2021, 5, 11)));
 	}
 	
 	@Test

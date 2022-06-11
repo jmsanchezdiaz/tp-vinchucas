@@ -4,24 +4,24 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-import java.io.Console;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import ar.unq.tpfinal.ubicacion.Ubicacion;
 import ar.unq.tpfinal.usuario.Usuario;
+import ar.unq.tpfinal.zonaDeCobertura.ZonaDeCobertura;
+import ar.unq.tpfinal.Aspecto;
 import ar.unq.tpfinal.Comentario;
 import ar.unq.tpfinal.Foto;
 import ar.unq.tpfinal.Muestra;
 import ar.unq.tpfinal.NivelDeVerificacion;
-import ar.unq.tpfinal.Opinable;
 import ar.unq.tpfinal.Opinion;
 import ar.unq.tpfinal.ResultadoEmpate;
 import ar.unq.tpfinal.Vinchuca;
@@ -43,6 +43,7 @@ public class MuestraTest {
 	
 	Ubicacion ubiMock;
 	Foto fotoMock;
+	ZonaDeCobertura zonaMock;
 	
 	@BeforeEach
 	void setUp() {
@@ -58,6 +59,7 @@ public class MuestraTest {
 		ubiMock = mock(Ubicacion.class);
 		fotoMock = mock(Foto.class);
 		muestraMock = mock(Muestra.class);
+		zonaMock = mock(ZonaDeCobertura.class);
 		
 		when(userNormalMock.esExperto()).thenReturn(false);
 		when(userExpertoMock.esExperto()).thenReturn(true);
@@ -272,6 +274,22 @@ public class MuestraTest {
 	@Test
 	void unaMuestraConoceSuFechaDeCreacion() {
 		assertTrue(muestra.getFechaCreacion().equals(LocalDate.now()));;
+	}
+	
+	@Test
+	void unaMuestraSabeNotificarValidaciones() {
+		when(opinionNingunaMock.getUsuario()).thenReturn(userExpertoMock);		
+		when(opinionNingunaMock2.getUsuario()).thenReturn(userExpertoMock2);	
+		
+		muestra.agregarOpinion(opinionNingunaMock);
+		muestra.agregarOpinion(opinionNingunaMock2);
+
+		List<ZonaDeCobertura> zonasDeCobertura = new ArrayList<>();
+		zonasDeCobertura.add(zonaMock);
+		
+		muestra.notificarValidacionSiCorresponde(zonasDeCobertura);
+		
+		verify(zonaMock).notificar(muestra, Aspecto.MUESTRA_VERIFICADA);
 	}
 
 }
