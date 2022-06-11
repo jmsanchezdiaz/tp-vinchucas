@@ -33,10 +33,6 @@ public class Opinion {
 	public void setOpinion(Opinable opinion) {
 		this.opinion = opinion;
 	}
-
-	public NivelDeConocimiento getNivelDeConocimiento() {
-		return estadoAlOpinar;
-	}
 	
 	public LocalDate getFechaCreacion() {
 		return fechaCreacion;
