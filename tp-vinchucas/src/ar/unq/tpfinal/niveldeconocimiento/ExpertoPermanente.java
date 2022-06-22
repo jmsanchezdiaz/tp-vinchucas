@@ -1,6 +1,7 @@
 package ar.unq.tpfinal.niveldeconocimiento;
 
 import ar.unq.tpfinal.usuario.Usuario;
+
 //Concrete State
 public class ExpertoPermanente implements NivelDeConocimiento {
 

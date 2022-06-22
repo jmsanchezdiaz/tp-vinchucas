@@ -1,6 +1,5 @@
 package ar.unq.tpfinal.usuario;
 
-import java.util.UUID;
 
 import ar.unq.tpfinal.AplicacionWeb;
 import ar.unq.tpfinal.Vinchuca;
@@ -21,10 +20,9 @@ import ar.unq.tpfinal.ubicacion.Ubicacion;
  *
  */
 
-//Concrete State
+//Context
 public class Usuario {
 	private String nombre;
-	private String id;
 	private NivelDeConocimiento nivelDeConocimiento;
 	
 	/**
@@ -32,18 +30,15 @@ public class Usuario {
 	 * @param nombre
 	 */
 	public Usuario(String nombre) {
-		this.setId(UUID.randomUUID().toString());
 		this.setNombre(nombre);
 		this.setNivelDeConocimiento(new Basico());
 	}
-	
 	
 	/**
 	 * Instancia un usuario con nivel de conocimiento suministrado
 	 * @param nombre
 	 */
 	public Usuario(String nombre, NivelDeConocimiento nivel) {
-		this.setId(UUID.randomUUID().toString());
 		this.setNombre(nombre);
 		this.setNivelDeConocimiento(nivel);
 	}
@@ -64,14 +59,6 @@ public class Usuario {
 		this.nombre = nombre;
 	}
 	
-	public String getId() {
-		return id;
-	}
-	
-	public void setId(String id) {
-		this.id = id;
-	}
-
 	public NivelDeConocimiento getNivelDeConocimiento() {
 		return nivelDeConocimiento;
 	}

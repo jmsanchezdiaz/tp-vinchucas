@@ -2,6 +2,7 @@ package ar.unq.tpfinal.niveldeconocimiento;
 
 import ar.unq.tpfinal.usuario.Usuario;
 
+//ConcreteState
 public class Experto implements NivelDeConocimiento {
 
 	@Override
