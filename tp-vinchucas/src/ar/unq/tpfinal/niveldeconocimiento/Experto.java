@@ -17,7 +17,7 @@ public class Experto implements NivelDeConocimiento {
 		}
 	}
 
-	public boolean debeBajarDeNivel(AplicacionWeb app, Usuario usuario) {
+	private boolean debeBajarDeNivel(AplicacionWeb app, Usuario usuario) {
 		// Obtengo la cantidad de esos envios que son del usuario
 		int cantidadDeEnviosDelUsuario = app.cantidadDeEnviosDeHace(usuario, 30);
 

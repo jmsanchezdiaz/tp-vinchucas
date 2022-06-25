@@ -62,10 +62,6 @@ public class UsuarioTest {
 		when(appMock.cantidadDeEnviosDeHace(userNormal, 30)).thenReturn(15);
 		when(appMock.cantidadDeOpinionesDeHace(userNormal, 30)).thenReturn(34);
 
-		//Compruebo que el usuario deba subir de nivel.
-		Basico estadoUsuario = (Basico) userNormal.getNivelDeConocimiento();
-		assertTrue(estadoUsuario.debeSubirDeNivel(appMock, userNormal));
-
 		userNormal.enviarMuestra(appMock, ubiMock, fotoMock, Vinchuca.VinchucaGuayasana);
 		
 		//Assert
@@ -80,11 +76,7 @@ public class UsuarioTest {
 		when(appMock.cantidadDeEnviosDeHace(userNormal, 30)).thenReturn(7);
 		when(appMock.cantidadDeOpinionesDeHace(userNormal, 30)).thenReturn(32);
 		userNormal.setNivelDeConocimiento(new Experto());
-		
-		//Compruebo que el usuario deba bajar de nivel.
-		Experto estadoUsuario = (Experto) userNormal.getNivelDeConocimiento();
-		assertTrue(estadoUsuario.debeBajarDeNivel(appMock, userNormal));
-		
+
 		//Exercise
 		userNormal.enviarMuestra(appMock, ubiMock, fotoMock, Vinchuca.VinchucaGuayasana);
 		
