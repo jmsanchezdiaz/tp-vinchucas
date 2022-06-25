@@ -62,9 +62,9 @@ public class MuestraTest {
 		fotoMock = mock(Foto.class);
 		zonaMock = mock(ZonaDeCobertura.class);
 		
-		when(userNormalMock.esExperto()).thenReturn(false);
-		when(userExpertoMock.esExperto()).thenReturn(true);
-		when(userExpertoMock2.esExperto()).thenReturn(true);
+		when(userNormalMock.puedeOpinarEnMuestrapuedeOpinarEnMuestraParcialmenteVerificada()).thenReturn(false);
+		when(userExpertoMock.puedeOpinarEnMuestrapuedeOpinarEnMuestraParcialmenteVerificada()).thenReturn(true);
+		when(userExpertoMock2.puedeOpinarEnMuestrapuedeOpinarEnMuestraParcialmenteVerificada()).thenReturn(true);
 		
 		when(opinionVinchucaInfestans.getOpinion()).thenReturn(Vinchuca.VinchucaInfestans);
 		when(opinionVinchucaInfestans2.getOpinion()).thenReturn(Vinchuca.VinchucaInfestans);
@@ -78,7 +78,7 @@ public class MuestraTest {
 	@Test
 	void unUsuarioPuedeOpinarSiNadieOpino() {
 		when(opinionImgPocoClaraMock.getUsuario()).thenReturn(userMock);
-		when(userMock.esExperto()).thenReturn(false);
+		when(userMock.puedeOpinarEnMuestrapuedeOpinarEnMuestraParcialmenteVerificada()).thenReturn(false);
 		
 		muestra.agregarOpinion(opinionImgPocoClaraMock);
 		assertTrue(!muestra.getOpiniones().isEmpty());

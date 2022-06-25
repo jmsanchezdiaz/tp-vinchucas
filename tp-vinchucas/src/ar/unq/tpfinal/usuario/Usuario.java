@@ -44,11 +44,15 @@ public class Usuario {
 	}
 
 	public void enviarMuestra(AplicacionWeb app, Ubicacion ubi, Foto foto, Vinchuca especie) {
-		app.agregarMuestra(new Muestra(this, ubi, foto, especie));
+		this.getNivelDeConocimiento().enviarMuestra(app,this, new Muestra(this, ubi, foto, especie));
 	}
 	
 	public void opinarMuestra(AplicacionWeb app, Muestra muestra, Opinable opinion){
-		app.agregarOpinionA(muestra, new Opinion(this, opinion));
+		this.getNivelDeConocimiento().opinarMuestra(app, this, muestra, new Opinion(this, opinion));
+	}
+	
+	public boolean puedeOpinarEnMuestrapuedeOpinarEnMuestraParcialmenteVerificada() {
+		return this.getNivelDeConocimiento().puedeOpinarEnMuestraParcialmenteVerificada();
 	}
 	
 	public String getNombre() {
@@ -66,21 +70,5 @@ public class Usuario {
 	public void setNivelDeConocimiento(NivelDeConocimiento nivelDeConocimiento) {
 		this.nivelDeConocimiento = nivelDeConocimiento;
 	};
-
-	public void subirDeNivel() {
-		this.getNivelDeConocimiento().subirNivel(this);
-	};
-	
-	public void bajarDeNivel() {
-		this.getNivelDeConocimiento().bajarNivel(this);
-	}
-
-	public boolean esBasico() {
-		return this.getNivelDeConocimiento().esBasico();
-	}
-	
-	public boolean esExperto() {
-		return this.getNivelDeConocimiento().esExperto();
-	}
 
 }

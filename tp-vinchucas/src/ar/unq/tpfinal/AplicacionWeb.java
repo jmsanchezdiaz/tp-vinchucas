@@ -52,7 +52,7 @@ public class AplicacionWeb {
 	/**
 	 * <p>
 	 * Agrega la muestra pasada como párametro, notifica a las zonas de cobertura
-	 * de su subida y chequea si debe actualizar el nivelDeConocimiento del usuario.
+	 * de su subida.
 	 * </p>
 	 * 
 	 * @param nuevaMuestra - Muestra para agregar a la applicacion web.
@@ -60,12 +60,9 @@ public class AplicacionWeb {
 	 * 
 	 */
 	public void agregarMuestra(Muestra nuevaMuestra) {
-		this.actualizarSiCorrespondeUsuario(nuevaMuestra.getUsuario());
-
 		if (!this.contieneMuestra(nuevaMuestra)) {
 			this.getMuestras().add(nuevaMuestra);
 			this.zonasDeLaMuestra(nuevaMuestra).forEach(zona -> zona.notificar(nuevaMuestra, Aspecto.MUESTRA_ENVIADA));
-
 		}
 	}
 
@@ -90,66 +87,43 @@ public class AplicacionWeb {
 	/**
 	 * <p>
 	 * Agrega la opinion a la muestra si esta existe, sino lanza un error, notifica
-	 * a las zonas de cobertura si su opinion valida la muestra y chequea si debe
-	 * actualizar el nivelDeConocimiento del usuario.
+	 * a las zonas de cobertura si su opinion valida la muestra
 	 * </p>
 	 * 
-	 * @param Muestra muestra donde se agregara la opinion
-	 * @param Opinion - opinion de la muestra
+	 * @param muestra - muestra donde se agregara la opinion
+	 * @param opinion - opinion de la muestra
 	 * @author juanma
 	 * 
 	 */
 	public void agregarOpinionA(Muestra muestra, Opinion opinion) {
-		this.actualizarSiCorrespondeUsuario(opinion.getUsuario());
 		muestra.agregarOpinion(opinion);
 		muestra.notificarValidacionSiCorresponde(this.zonasDeLaMuestra(muestra));
 
 	}
 
 	/**
-	 * Actualiza el nivel de conocimiento del usuario provisto si cumple con los
-	 * requisitos.
+	 * Devuelve la cantidad de envios de un usuario hace una cantidad de dias provistos.
 	 * 
-	 * @param {Usuario} - un usuario.
-	 */
-	private void actualizarSiCorrespondeUsuario(Usuario usuario) {
-		// Obtengo las muestras hace 30 dias desde el dia actual.
-		List<Muestra> muestrasHace30Dias = this.obtenerMuestrasHace(30);
-
-		// Obtengo la cantidad de esos envios que son del usuario
-		int cantidadDeEnviosDelUsuario = this.cantidadDeEnviosDe(usuario, muestrasHace30Dias);
-
-		// Obtengo la cantidad de opiniones mandadas del usuario
-		int cantidadDeOpinionesDelUsuario = this.cantidadDeOpinionesDe(usuario, muestrasHace30Dias);
-
-		// Si es apto para subir de nivel, lo subo sino no.
-		if (cantidadDeEnviosDelUsuario >= 10 && cantidadDeOpinionesDelUsuario >= 30) usuario.subirDeNivel();
-		else usuario.bajarDeNivel();
-	}
-
-	/**
-	 * Devuelve la cantidad de envios de un usuario en una lista de muestras
-	 * pasadas.
-	 * 
-	 * @param {Usuario}       - usuario
-	 * @param {List<Muestra>} - listaDeMuestras
+	 * @param usuario
+	 * @param dias - cantidad de dias anteriores entre las muestras y la fecha actual.
 	 * @return int
 	 */
-	public int cantidadDeEnviosDe(Usuario usuario, List<Muestra> listaDeMuestras) {
-		return listaDeMuestras.stream().filter(muestra -> muestra.fueEnviadaPor(usuario)).collect(Collectors.toList())
+	public int cantidadDeEnviosDeHace(Usuario usuario, int dias) {
+		return this.obtenerMuestrasHace(dias)
+				.stream()
+				.filter(muestra -> muestra.fueEnviadaPor(usuario)).collect(Collectors.toList())
 				.size();
 	}
 
 	/**
-	 * Devuelve la cantidad de opiniones de un usuario en una lista de muestras
-	 * pasadas.
+	 * Devuelve la cantidad de opiniones de un usuario hace una cantidad de dias provistos.
 	 * 
-	 * @param {Usuario}       - usuario
-	 * @param {List<Muestra>} - listaDeMuestras
+	 * @param usuario
+	 * @param dias - cantidad de dias anteriores entre las muestras y la fecha actual.
 	 * @return int
 	 */
-	public int cantidadDeOpinionesDe(Usuario usuario, List<Muestra> listaDeMuestras) {
-		return listaDeMuestras.stream().filter(muestra -> muestra.elUsuarioYaOpino(usuario))
+	public int cantidadDeOpinionesDeHace(Usuario usuario, int dias) {
+		return this.obtenerMuestrasHace(dias).stream().filter(muestra -> muestra.elUsuarioYaOpino(usuario))
 				.collect(Collectors.toList()).size();
 	}
 
@@ -158,7 +132,7 @@ public class AplicacionWeb {
 	 * como parametros. Por ejemplo si queremos las muestras de hace 30 dias,
 	 * cantidadDeDias seria 30.
 	 * 
-	 * @param int - cantidadDeDias - cantidad de dias anteriores entre las muestras
+	 * @param cantidadDeDias - cantidad de dias anteriores entre las muestras
 	 *            y la fecha actual.
 	 * @return List<Muestra>
 	 */
