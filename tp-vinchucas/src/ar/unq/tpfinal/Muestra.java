@@ -55,7 +55,7 @@ public class Muestra {
 
 		Boolean opinaUnExperto = opinion
 				.getUsuario()
-				.puedeOpinarEnMuestrapuedeOpinarEnMuestraParcialmenteVerificada();
+				.puedeOpinarEnMuestraParcialmenteVerificada();
 
 		if (esMuestraVerificada() || elUsuarioYaOpino(opinion.getUsuario())) {
 			return;
@@ -77,7 +77,7 @@ public class Muestra {
 		return getOpiniones()
 				.stream().anyMatch(op -> op
 				.getUsuario()
-				.puedeOpinarEnMuestrapuedeOpinarEnMuestraParcialmenteVerificada());
+				.puedeOpinarEnMuestraParcialmenteVerificada());
 	}
 
 	public Resultado getResultadoActual() {
@@ -125,7 +125,7 @@ public class Muestra {
 		return opiniones.stream()
 				.filter(op -> op
 						.getUsuario()
-						.puedeOpinarEnMuestrapuedeOpinarEnMuestraParcialmenteVerificada())
+						.puedeOpinarEnMuestraParcialmenteVerificada())
 				.collect(Collectors.toList());
 
 	}

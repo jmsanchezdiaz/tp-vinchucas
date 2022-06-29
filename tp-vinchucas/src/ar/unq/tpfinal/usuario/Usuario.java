@@ -51,7 +51,7 @@ public class Usuario {
 		this.getNivelDeConocimiento().opinarMuestra(app, this, muestra, new Opinion(this, opinion));
 	}
 	
-	public boolean puedeOpinarEnMuestrapuedeOpinarEnMuestraParcialmenteVerificada() {
+	public boolean puedeOpinarEnMuestraParcialmenteVerificada() {
 		return this.getNivelDeConocimiento().puedeOpinarEnMuestraParcialmenteVerificada();
 	}
 	

@@ -53,7 +53,7 @@ public class UsuarioTest {
 	
 	@Test
 	void todosLoUsuarioMutablesAlInicioSuNivelDeConocimientoEsBasico() {
-		assertFalse(userNormal.puedeOpinarEnMuestrapuedeOpinarEnMuestraParcialmenteVerificada());
+		assertFalse(userNormal.puedeOpinarEnMuestraParcialmenteVerificada());
 	}
 	
 	@Test
@@ -66,7 +66,7 @@ public class UsuarioTest {
 		userNormal.opinarMuestra(appMock, muestraMock, Vinchuca.VinchucaGuayasana);
 		
 		//Assert
-		assertTrue(userNormal.puedeOpinarEnMuestrapuedeOpinarEnMuestraParcialmenteVerificada());
+		assertTrue(userNormal.puedeOpinarEnMuestraParcialmenteVerificada());
 		assertInstanceOf(Experto.class, userNormal.getNivelDeConocimiento());
 		verify(appMock).agregarMuestra(any(Muestra.class));
 	}
@@ -83,7 +83,7 @@ public class UsuarioTest {
 		userNormal.opinarMuestra(appMock, muestraMock, Vinchuca.VinchucaGuayasana);
 		
 		//Assert
-		assertFalse(userNormal.puedeOpinarEnMuestrapuedeOpinarEnMuestraParcialmenteVerificada());
+		assertFalse(userNormal.puedeOpinarEnMuestraParcialmenteVerificada());
 		assertInstanceOf(Basico.class, userNormal.getNivelDeConocimiento());
 		verify(appMock).agregarMuestra(any(Muestra.class));
 	}
