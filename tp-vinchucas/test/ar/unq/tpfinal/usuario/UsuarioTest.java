@@ -63,6 +63,7 @@ public class UsuarioTest {
 		when(appMock.cantidadDeOpinionesDeHace(userNormal, 30)).thenReturn(34);
 
 		userNormal.enviarMuestra(appMock, ubiMock, fotoMock, Vinchuca.VinchucaGuayasana);
+		userNormal.opinarMuestra(appMock, muestraMock, Vinchuca.VinchucaGuayasana);
 		
 		//Assert
 		assertTrue(userNormal.puedeOpinarEnMuestrapuedeOpinarEnMuestraParcialmenteVerificada());
@@ -71,7 +72,7 @@ public class UsuarioTest {
 	}
 	
 	@Test
-	void puedoBajarElNivelDeConocimientoDeUnUsuarioComun() {
+	void puedoBajarElNivelDeConocimientoDeUnUsuarioExperto() {
 		//Setup
 		when(appMock.cantidadDeEnviosDeHace(userNormal, 30)).thenReturn(7);
 		when(appMock.cantidadDeOpinionesDeHace(userNormal, 30)).thenReturn(32);
@@ -79,6 +80,7 @@ public class UsuarioTest {
 
 		//Exercise
 		userNormal.enviarMuestra(appMock, ubiMock, fotoMock, Vinchuca.VinchucaGuayasana);
+		userNormal.opinarMuestra(appMock, muestraMock, Vinchuca.VinchucaGuayasana);
 		
 		//Assert
 		assertFalse(userNormal.puedeOpinarEnMuestrapuedeOpinarEnMuestraParcialmenteVerificada());

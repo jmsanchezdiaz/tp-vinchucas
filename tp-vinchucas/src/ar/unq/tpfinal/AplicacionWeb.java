@@ -111,7 +111,8 @@ public class AplicacionWeb {
 	public int cantidadDeEnviosDeHace(Usuario usuario, int dias) {
 		return this.obtenerMuestrasHace(dias)
 				.stream()
-				.filter(muestra -> muestra.fueEnviadaPor(usuario)).collect(Collectors.toList())
+				.filter(muestra -> muestra.fueEnviadaPor(usuario))
+				.collect(Collectors.toList())
 				.size();
 	}
 
@@ -123,7 +124,9 @@ public class AplicacionWeb {
 	 * @return int
 	 */
 	public int cantidadDeOpinionesDeHace(Usuario usuario, int dias) {
-		return this.obtenerMuestrasHace(dias).stream().filter(muestra -> muestra.elUsuarioYaOpino(usuario))
+		return this.obtenerMuestrasHace(dias)
+				.stream()
+				.filter(muestra -> muestra.elUsuarioYaOpino(usuario))
 				.collect(Collectors.toList()).size();
 	}
 

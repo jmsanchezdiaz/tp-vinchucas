@@ -47,9 +47,13 @@ public class AplicacionWebTest {
 		userMock = mock(Usuario.class);
 		userMock2 = mock(Usuario.class);
 		
+		//Mockeamos los metodos en común.
 		when(muestraMock1.getUsuario()).thenReturn(userMock);
 		when(muestraMock2.getUsuario()).thenReturn(userMock2);
 		when(muestraMock3.getUsuario()).thenReturn(userMock);
+		when(muestraMock1.fuePublicadaDentroDeEsteRango(any(LocalDate.class), any(LocalDate.class))).thenReturn(true);
+		when(muestraMock2.fuePublicadaDentroDeEsteRango(any(LocalDate.class), any(LocalDate.class))).thenReturn(false);
+		when(muestraMock3.fuePublicadaDentroDeEsteRango(any(LocalDate.class), any(LocalDate.class))).thenReturn(true);
 		
 		app.agregarMuestra(muestraMock1);
 		app.agregarMuestra(muestraMock2);
@@ -70,7 +74,6 @@ public class AplicacionWebTest {
 		
 		when(zonaMock.contieneMuestra(muestraMock1)).thenReturn(false);
 		when(zonaMock2.contieneMuestra(muestraMock1)).thenReturn(true);
-		
 		
 		app.eliminarMuestra(muestraMock1);
 		app.agregarMuestra(muestraMock1);
@@ -104,10 +107,6 @@ public class AplicacionWebTest {
 		LocalDate fechaDeHoy = LocalDate.now();
 		LocalDate fechaInicio = fechaDeHoy.minusDays(5);
 		
-		when(muestraMock1.fuePublicadaDentroDeEsteRango(fechaInicio, fechaDeHoy)).thenReturn(true);
-		when(muestraMock2.fuePublicadaDentroDeEsteRango(fechaInicio, fechaDeHoy)).thenReturn(false);
-		when(muestraMock3.fuePublicadaDentroDeEsteRango(fechaInicio, fechaDeHoy)).thenReturn(true);
-		
 		List<Muestra> muestrasFiltradas = app.obtenerMuestrasHace(5);
 		
 		muestras.forEach(muestra -> verify(muestra).fuePublicadaDentroDeEsteRango(fechaInicio, fechaDeHoy));
@@ -119,25 +118,25 @@ public class AplicacionWebTest {
 	@Test
 	void puedoObtenerLaCantidadDeMuestrasEnviadasPorUnUsuarioEnUnaListaDeMuestras() {
 		when(muestraMock1.fueEnviadaPor(userMock)).thenReturn(true);
-		when(muestraMock2.fueEnviadaPor(userMock)).thenReturn(false);
 		when(muestraMock3.fueEnviadaPor(userMock)).thenReturn(true);
 		
 		int cantidadEsperada = app.cantidadDeEnviosDeHace(userMock, 30);
 		
-		muestras.forEach(muestra -> verify(muestra)
-				.fueEnviadaPor(userMock));
+		Arrays.asList(muestraMock1, muestraMock3)
+			.forEach(muestra -> verify(muestra)
+					.fueEnviadaPor(userMock));
 		assertEquals(cantidadEsperada, 2, 0);
 	}
 	
 	@Test
 	void puedoObtenerLaCantidadDeOpinionesPorUnUsuarioEnUnaListaDeMuestras() {
 		when(muestraMock1.elUsuarioYaOpino(userMock)).thenReturn(true);
-		when(muestraMock2.elUsuarioYaOpino(userMock)).thenReturn(false);
 		when(muestraMock3.elUsuarioYaOpino(userMock)).thenReturn(true);
 		
 		int cantidadEsperada = app.cantidadDeOpinionesDeHace(userMock, 30);
 		
-		muestras.forEach(muestra -> verify(muestra)
+		Arrays.asList(muestraMock1, muestraMock3)
+			.forEach(muestra -> verify(muestra)
 				.elUsuarioYaOpino(userMock));
 		
 		assertEquals(cantidadEsperada, 2, 0);
@@ -150,7 +149,6 @@ public class AplicacionWebTest {
 		
 		verify(muestraMock1).agregarOpinion(opMock);
 		verify(muestraMock1).notificarValidacionSiCorresponde(anyList());
-		verify(opMock).getUsuario();
 	}
 	
 	@Test
