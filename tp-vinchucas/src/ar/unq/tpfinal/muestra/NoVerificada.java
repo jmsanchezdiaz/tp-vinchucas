@@ -3,6 +3,7 @@ package ar.unq.tpfinal.muestra;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import ar.unq.tpfinal.AplicacionWeb;
 import ar.unq.tpfinal.NivelDeVerificacion;
 import ar.unq.tpfinal.Opinable;
 import ar.unq.tpfinal.Opinion;
@@ -11,15 +12,16 @@ import ar.unq.tpfinal.ResultadoEmpate;
 
 public class NoVerificada implements EstadoVerificacion {
 
-	public NoVerificada() {}
+	public NoVerificada() {
+	}
 
 	@Override
-	public void agregarOpinion(Muestra muestra, Opinion opinion) {
-		
-		if(opinion.esOpinionDeExperto()) {
+	public void agregarOpinion(AplicacionWeb app, Muestra muestra, Opinion opinion) {
+
+		if (opinion.esOpinionDeExperto()) {
 			muestra.setEstadoDeVerificacion(new VerificadaParcial());
 		}
-		
+
 		muestra.addOpinion(opinion);
 	}
 
@@ -45,5 +47,5 @@ public class NoVerificada implements EstadoVerificacion {
 	public NivelDeVerificacion valor() {
 		return NivelDeVerificacion.NO_VERIFICADA;
 	}
-	
+
 }

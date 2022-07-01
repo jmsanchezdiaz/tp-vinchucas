@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-import ar.unq.tpfinal.Aspecto;
+import ar.unq.tpfinal.AplicacionWeb;
 import ar.unq.tpfinal.Foto;
 import ar.unq.tpfinal.Insecto;
 import ar.unq.tpfinal.NivelDeVerificacion;
@@ -15,11 +15,9 @@ import ar.unq.tpfinal.Opinion;
 import ar.unq.tpfinal.Resultado;
 import ar.unq.tpfinal.ubicacion.Ubicacion;
 import ar.unq.tpfinal.usuario.Usuario;
-import ar.unq.tpfinal.zonaDeCobertura.ZonaDeCobertura;
-
 
 public class Muestra {
-	
+
 	private EstadoVerificacion estadoDeVerificacion;
 	private Opinion opinionDeUsuario;
 	private Foto foto;
@@ -27,9 +25,9 @@ public class Muestra {
 	private Usuario usuario;
 	private List<Opinion> opiniones;
 	private LocalDate fechaDeCreacion;
-	
+
 	public Muestra(Usuario usuario, Ubicacion ubicacion, Foto foto, Insecto especieSospechada) {
-		
+
 		this.setEstadoDeVerificacion(new NoVerificada());
 		this.setFechaDeCreacion(LocalDate.now());
 		this.opiniones = new ArrayList<>();
@@ -37,22 +35,23 @@ public class Muestra {
 		this.foto = foto;
 		this.usuario = usuario;
 		this.ubicacion = ubicacion;
-		
+
 		getOpiniones().add(opinionDeUsuario);
 	}
 
 	public List<Opinion> getOpiniones() {
 		return opiniones;
 	}
-	
+
 	private List<Opinion> getOpinionesDeExpertos() {
-		return opiniones.stream().filter(op -> op.getUsuario().puedeOpinarEnMuestraParcialmenteVerificada()).collect(Collectors.toList());
+		return opiniones.stream().filter(op -> op.getUsuario().puedeOpinarEnMuestraParcialmenteVerificada())
+				.collect(Collectors.toList());
 	}
 
 	public Opinion getOpinionDeUsuario() {
 		return this.opinionDeUsuario;
 	}
-	
+
 	public EstadoVerificacion getEstadoDeVerificacion() {
 		return estadoDeVerificacion;
 	}
@@ -72,7 +71,7 @@ public class Muestra {
 	public Usuario getUsuario() {
 		return usuario;
 	}
-	
+
 	public void setFechaDeCreacion(LocalDate fechaDeCreacion) {
 		this.fechaDeCreacion = fechaDeCreacion;
 	}
@@ -80,14 +79,14 @@ public class Muestra {
 	public Map<Opinable, Long> contarOpiniones(List<Opinion> opiniones) {
 		return opiniones.stream().collect(Collectors.groupingBy(op -> op.getOpinion(), Collectors.counting()));
 	}
-	
+
 	public Map<Opinable, Long> mapOpinionesDeExperto() {
 		return contarOpiniones(getOpinionesDeExpertos());
 	}
 
 	public void agregarOpinion(Opinion opinion) {
-		if(!elUsuarioYaOpino(opinion.getUsuario())) {
-			estadoDeVerificacion.agregarOpinion(this, opinion);
+		if (!elUsuarioYaOpino(opinion.getUsuario())) {
+			estadoDeVerificacion.agregarOpinion(AplicacionWeb.getAplicacionWeb(), this, opinion);
 		}
 	}
 
@@ -98,19 +97,19 @@ public class Muestra {
 	public boolean esInsecto(Insecto valorBuscado) {
 		return getResultadoActual() == valorBuscado;
 	}
-	
+
 	public boolean fueVotadaEn(LocalDate fecha) {
 		return this.getOpiniones().stream().anyMatch(opinion -> opinion.getFechaCreacion().equals(fecha));
 	}
-	
+
 	public LocalDate getFechaCreacion() {
 		return fechaDeCreacion;
 	}
-	
+
 	public void setFechaCreacion(LocalDate fechaDeCreacion) {
 		this.fechaDeCreacion = fechaDeCreacion;
 	}
-	
+
 	public boolean elUsuarioYaOpino(Usuario usuario) {
 		return getOpiniones().stream().anyMatch(op -> op.getUsuario().equals(usuario));
 	}
@@ -129,22 +128,12 @@ public class Muestra {
 
 	/**
 	 * Indica si la muestra fue enviada por el usuario pasado por parametros.
+	 * 
 	 * @param usuario
 	 * @return boolean
 	 */
 	public boolean fueEnviadaPor(Usuario usuario) {
 		return this.getUsuario().equals(usuario);
-	}
-
-	/**
-	 * Si la muestra esta verificada, notifica a las zonas pasadas por parametro.
-	 * @param {List<ZonaDeCobertura>} zonasDeLaMuestra
-	 */
-	public void notificarValidacionSiCorresponde(List<ZonaDeCobertura> zonasDeLaMuestra) {
-		if (estadoDeVerificacion instanceof Verificada) {
-			zonasDeLaMuestra.forEach(zona -> zona.notificar(this, Aspecto.MUESTRA_VERIFICADA));
-		}
-		
 	}
 
 	void addOpinion(Opinion opinion) {
