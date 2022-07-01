@@ -6,9 +6,9 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import ar.unq.tpfinal.filtro.IFiltro;
+import ar.unq.tpfinal.muestra.Muestra;
 import ar.unq.tpfinal.usuario.Usuario;
 import ar.unq.tpfinal.zonaDeCobertura.ZonaDeCobertura;
-import ar.unq.tpfinal.muestra.Muestra;
 
 /**
  * <p>
@@ -69,6 +69,7 @@ public class AplicacionWeb {
 
 	/**
 	 * Devuelve las zonas en la que la muestra provista se encuentra.
+	 * 
 	 * @param {Muestra} - nuevaMuestra
 	 * @return List<ZonaDeCobertura> - las zonas en las que estan las muestra.
 	 */
@@ -98,36 +99,33 @@ public class AplicacionWeb {
 	 */
 	public void agregarOpinionA(Muestra muestra, Opinion opinion) {
 		muestra.agregarOpinion(opinion);
-		muestra.notificarValidacionSiCorresponde(this.zonasDeLaMuestra(muestra));
-
 	}
 
 	/**
-	 * Devuelve la cantidad de envios de un usuario hace una cantidad de dias provistos.
+	 * Devuelve la cantidad de envios de un usuario hace una cantidad de dias
+	 * provistos.
 	 * 
 	 * @param usuario
-	 * @param dias - cantidad de dias anteriores entre las muestras y la fecha actual.
+	 * @param dias    - cantidad de dias anteriores entre las muestras y la fecha
+	 *                actual.
 	 * @return int
 	 */
 	public int cantidadDeEnviosDeHace(Usuario usuario, int dias) {
-		return this.obtenerMuestrasHace(dias)
-				.stream()
-				.filter(muestra -> muestra.fueEnviadaPor(usuario))
-				.collect(Collectors.toList())
-				.size();
+		return this.obtenerMuestrasHace(dias).stream().filter(muestra -> muestra.fueEnviadaPor(usuario))
+				.collect(Collectors.toList()).size();
 	}
 
 	/**
-	 * Devuelve la cantidad de opiniones de un usuario hace una cantidad de dias provistos.
+	 * Devuelve la cantidad de opiniones de un usuario hace una cantidad de dias
+	 * provistos.
 	 * 
 	 * @param usuario
-	 * @param dias - cantidad de dias anteriores entre las muestras y la fecha actual.
+	 * @param dias    - cantidad de dias anteriores entre las muestras y la fecha
+	 *                actual.
 	 * @return int
 	 */
 	public int cantidadDeOpinionesDeHace(Usuario usuario, int dias) {
-		return this.obtenerMuestrasHace(dias)
-				.stream()
-				.filter(muestra -> muestra.elUsuarioYaOpino(usuario))
+		return this.obtenerMuestrasHace(dias).stream().filter(muestra -> muestra.elUsuarioYaOpino(usuario))
 				.collect(Collectors.toList()).size();
 	}
 
@@ -136,8 +134,8 @@ public class AplicacionWeb {
 	 * como parametros. Por ejemplo si queremos las muestras de hace 30 dias,
 	 * cantidadDeDias seria 30.
 	 * 
-	 * @param cantidadDeDias - cantidad de dias anteriores entre las muestras
-	 *            y la fecha actual.
+	 * @param cantidadDeDias - cantidad de dias anteriores entre las muestras y la
+	 *                       fecha actual.
 	 * @return List<Muestra>
 	 */
 	public List<Muestra> obtenerMuestrasHace(int cantidadDeDias) {
