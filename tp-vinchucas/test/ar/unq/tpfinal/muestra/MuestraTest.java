@@ -17,6 +17,7 @@ import org.junit.jupiter.api.Test;
 import ar.unq.tpfinal.AplicacionWeb;
 import ar.unq.tpfinal.Comentario;
 import ar.unq.tpfinal.Foto;
+import ar.unq.tpfinal.NivelDeVerificacion;
 import ar.unq.tpfinal.Opinion;
 import ar.unq.tpfinal.ResultadoEmpate;
 import ar.unq.tpfinal.Vinchuca;
@@ -157,6 +158,22 @@ public class MuestraTest {
 	}
 
 	@Test
+	void unaMuestraParcialSabeCuandoEsEmpate() {
+		
+		when(opinionVinchucaInfestans.esOpinionDeExperto()).thenReturn(false);
+		when(opinionNingunaMock.esOpinionDeExperto()).thenReturn(true);
+		
+		when(opinionVinchucaInfestans.getUsuario()).thenReturn(userExpertoMock);	
+		when(opinionImgPocoClaraMock.getUsuario()).thenReturn(userExpertoMock2);
+		
+		muestra.agregarOpinion(opinionVinchucaInfestans);
+		muestra.agregarOpinion(opinionImgPocoClaraMock);
+		muestra.agregarOpinion(opinionNingunaMock);
+		
+		assertTrue(muestra.getResultadoActual() == ResultadoEmpate.NO_DEFINIDO);
+	}
+	
+	@Test
 	void unaMuestraSabeCuandoEsVerificada() {
 
 		when(opinionNingunaMock.getUsuario()).thenReturn(userExpertoMock);
@@ -168,6 +185,7 @@ public class MuestraTest {
 		muestra.agregarOpinion(opinionNingunaMock2);
 
 		assertTrue(muestra.getEstadoDeVerificacion() instanceof Verificada);
+		assertEquals(muestra.getEstadoDeVerificacion().valor(),  NivelDeVerificacion.VERIFICADA);
 	}
 
 	@Test
@@ -178,6 +196,7 @@ public class MuestraTest {
 		muestra.agregarOpinion(opinionImgPocoClaraMock);
 
 		assertInstanceOf(VerificadaParcial.class, muestra.getEstadoDeVerificacion());
+		assertEquals(muestra.getEstadoDeVerificacion().valor(),  NivelDeVerificacion.VERIFICADA_PARCIAL);
 	}
 
 	@Test
@@ -287,6 +306,40 @@ public class MuestraTest {
 	void unaMuestraConoceSuFechaDeCreacion() {
 		assertTrue(muestra.getFechaCreacion().equals(LocalDate.now()));
 		;
+	}
+
+	@Test
+	void unaMuestraInicialmenteEsNoVerificada() {
+		assertEquals(muestra.getEstadoDeVerificacion().valor(), NivelDeVerificacion.NO_VERIFICADA);
+		assertTrue(muestra.seEncuentraEnEstado(NivelDeVerificacion.NO_VERIFICADA));
+	}
+	
+	@Test
+	void unaMuestraVerificadaNoPuedeAgregarOpiniones() {
+		when(opinionNingunaMock.getUsuario()).thenReturn(userExpertoMock);		
+		when(opinionNingunaMock2.getUsuario()).thenReturn(userExpertoMock2);
+		when(opinionNingunaMock.esOpinionDeExperto()).thenReturn(true);		
+		when(opinionNingunaMock2.esOpinionDeExperto()).thenReturn(true);	
+		
+		muestra.agregarOpinion(opinionNingunaMock);
+		muestra.agregarOpinion(opinionNingunaMock2);
+		
+		muestra.agregarOpinion(opinionVinchucaInfestans);
+		
+		assertEquals(muestra.getOpiniones().size(), 3);
+	}
+	
+	@Test
+	void unaMuestraVerificadaConoceSuResultado() {
+		when(opinionNingunaMock.getUsuario()).thenReturn(userExpertoMock);		
+		when(opinionNingunaMock2.getUsuario()).thenReturn(userExpertoMock2);
+		when(opinionNingunaMock.esOpinionDeExperto()).thenReturn(true);		
+		when(opinionNingunaMock2.esOpinionDeExperto()).thenReturn(true);	
+		
+		muestra.agregarOpinion(opinionNingunaMock);
+		muestra.agregarOpinion(opinionNingunaMock2);
+		
+		assertEquals(muestra.getEstadoDeVerificacion().resultadoActual(muestra), Comentario.NINGUNA);
 	}
 
 }
