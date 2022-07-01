@@ -1,27 +1,36 @@
-package ar.unq.tpfinal;
+package Muestra;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
 import java.util.stream.Collectors;
 
+import ar.unq.tpfinal.Aspecto;
+import ar.unq.tpfinal.Foto;
+import ar.unq.tpfinal.Insecto;
+import ar.unq.tpfinal.Opinable;
+import ar.unq.tpfinal.Opinion;
+import ar.unq.tpfinal.Resultado;
 import ar.unq.tpfinal.ubicacion.Ubicacion;
 import ar.unq.tpfinal.usuario.Usuario;
 import ar.unq.tpfinal.zonaDeCobertura.ZonaDeCobertura;
 
-public class Muestra {
 
+public class Muestra {
+	
+	private EstadoVerificacion estadoDeVerificacion;
 	private Opinion opinionDeUsuario;
 	private Foto foto;
 	private Ubicacion ubicacion;
 	private Usuario usuario;
 	private List<Opinion> opiniones;
 	private LocalDate fechaDeCreacion;
-
+	
 	public Muestra(Usuario usuario, Ubicacion ubicacion, Foto foto, Insecto especieSospechada) {
-		this.fechaDeCreacion = LocalDate.now();
+		
+		this.setEstadoDeVerificacion(new NoVerificada());
+		this.setFechaDeCreacion(LocalDate.now());
 		this.opiniones = new ArrayList<>();
 		this.opinionDeUsuario = new Opinion(usuario, especieSospechada);
 		this.foto = foto;
@@ -31,46 +40,48 @@ public class Muestra {
 		getOpiniones().add(opinionDeUsuario);
 	}
 
-	public Opinion getOpinionDeUsuario() {
-		return this.opinionDeUsuario;
-	}
-
-	public Foto getFoto() {
-		return this.foto;
-	}
-
-	public Usuario getUsuario() {
-		return this.usuario;
-	}
-
-	public Ubicacion getUbicacion() {
-		return this.ubicacion;
-	}
-
 	public List<Opinion> getOpiniones() {
 		return opiniones;
 	}
-
-	public void agregarOpinion(Opinion opinion) {
-
-		Boolean opinaUnExperto = opinion
-				.getUsuario()
-				.puedeOpinarEnMuestraParcialmenteVerificada();
-
-		if (esMuestraVerificada() || elUsuarioYaOpino(opinion.getUsuario())) {
-			return;
-		} else if (!opinoUnExperto() || opinaUnExperto) {
-			getOpiniones().add(opinion);
-		}
-
+	
+	private List<Opinion> getOpinionesDeExpertos() {
+		return opiniones.stream().filter(op -> op.getUsuario().puedeOpinarEnMuestraParcialmenteVerificada()).collect(Collectors.toList());
 	}
 
-	public Boolean elUsuarioYaOpino(Usuario usuario) {
-		return getOpiniones().stream().anyMatch(op -> op.getUsuario().equals(usuario));
+	public Opinion getOpinionDeUsuario() {
+		return this.opinionDeUsuario;
+	}
+	
+	public EstadoVerificacion getEstadoDeVerificacion() {
+		return estadoDeVerificacion;
 	}
 
-	public Boolean esMuestraVerificada() {
-		return getVerificacionActual() == NivelDeVerificacion.VERIFICADA;
+	public void setEstadoDeVerificacion(EstadoVerificacion estadoDeVerificacion) {
+		this.estadoDeVerificacion = estadoDeVerificacion;
+	}
+
+	public Foto getFoto() {
+		return foto;
+	}
+
+	public Ubicacion getUbicacion() {
+		return ubicacion;
+	}
+
+	public Usuario getUsuario() {
+		return usuario;
+	}
+
+	public LocalDate getFechaDeCreacion() {
+		return fechaDeCreacion;
+	}
+	
+	public void setFechaDeCreacion(LocalDate fechaDeCreacion) {
+		this.fechaDeCreacion = fechaDeCreacion;
+	}
+
+	public Map<Opinable, Long> contarOpiniones(List<Opinion> opiniones) {
+		return opiniones.stream().collect(Collectors.groupingBy(op -> op.getOpinion(), Collectors.counting()));
 	}
 
 	public Boolean opinoUnExperto() {
@@ -79,46 +90,19 @@ public class Muestra {
 				.getUsuario()
 				.puedeOpinarEnMuestraParcialmenteVerificada());
 	}
+	
+	public Map<Opinable, Long> mapOpinionesDeExperto() {
+		return contarOpiniones(getOpinionesDeExpertos());
+	}
+
+	public void agregarOpinion(Opinion opinion) {
+		if(!elUsuarioYaOpino(opinion.getUsuario())) {
+			estadoDeVerificacion.agregarOpinion(this, opinion);
+		}
+	}
 
 	public Resultado getResultadoActual() {
-
-		Map<Opinable, Long> mapOpiniones = contarOpiniones(getOpiniones());
-
-		Resultado resultado = ResultadoEmpate.NO_DEFINIDO;
-		long actualMayor = 0;
-
-		for (Entry<Opinable, Long> op : mapOpiniones.entrySet()) {
-			if (op.getValue() > actualMayor) {
-				resultado = op.getKey();
-				actualMayor = op.getValue();
-			} else if (op.getValue() == actualMayor) {
-				resultado = ResultadoEmpate.NO_DEFINIDO;
-			}
-		}
-		return resultado;
-
-	}
-
-	public NivelDeVerificacion getVerificacionActual() {
-
-		if (opinoUnExperto()) {
-
-			Map<Opinable, Long> mapOpiniones = contarOpiniones(getOpinionesDeExperto());
-
-			for (Entry<Opinable, Long> op : mapOpiniones.entrySet()) {
-				if (op.getValue() > 1) {
-					return NivelDeVerificacion.VERIFICADA;
-				} else {
-					return NivelDeVerificacion.VERIFICADA_PARCIAL;
-				}
-			}
-		}
-
-		return NivelDeVerificacion.NO_VERIFICADA;
-	}
-
-	public Map<Opinable, Long> contarOpiniones(List<Opinion> opiniones) {
-		return opiniones.stream().collect(Collectors.groupingBy(op -> op.getOpinion(), Collectors.counting()));
+		return estadoDeVerificacion.resultadoActual(this);
 	}
 
 	public List<Opinion> getOpinionesDeExperto() {
@@ -127,28 +111,26 @@ public class Muestra {
 						.getUsuario()
 						.puedeOpinarEnMuestraParcialmenteVerificada())
 				.collect(Collectors.toList());
-
 	}
 
 	public boolean esInsecto(Insecto valorBuscado) {
 		return getResultadoActual() == valorBuscado;
 	}
-
-	/**
-	 * Indica si la muestra fue opinada por el usuario pasado por parametros.
-	 * @param usuario
-	 * @return boolean
-	 */
+	
 	public boolean fueVotadaEn(LocalDate fecha) {
 		return this.getOpiniones().stream().anyMatch(opinion -> opinion.getFechaCreacion().equals(fecha));
 	}
-
+	
 	public LocalDate getFechaCreacion() {
 		return fechaDeCreacion;
 	}
-
+	
 	public void setFechaCreacion(LocalDate fechaDeCreacion) {
 		this.fechaDeCreacion = fechaDeCreacion;
+	}
+	
+	public boolean elUsuarioYaOpino(Usuario usuario) {
+		return getOpiniones().stream().anyMatch(op -> op.getUsuario().equals(usuario));
 	}
 
 	/**
@@ -177,9 +159,13 @@ public class Muestra {
 	 * @param {List<ZonaDeCobertura>} zonasDeLaMuestra
 	 */
 	public void notificarValidacionSiCorresponde(List<ZonaDeCobertura> zonasDeLaMuestra) {
-		if (this.esMuestraVerificada()) {
+		if (estadoDeVerificacion instanceof Verificada) {
 			zonasDeLaMuestra.forEach(zona -> zona.notificar(this, Aspecto.MUESTRA_VERIFICADA));
 		}
 
+	}
+
+	void addOpinion(Opinion opinion) {
+		getOpiniones().add(opinion);
 	}
 }

@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import Muestra.Muestra;
 import ar.unq.tpfinal.filtro.IFiltro;
 import ar.unq.tpfinal.usuario.Usuario;
 import ar.unq.tpfinal.zonaDeCobertura.ZonaDeCobertura;

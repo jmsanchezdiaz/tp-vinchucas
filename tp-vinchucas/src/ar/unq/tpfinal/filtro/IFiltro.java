@@ -2,7 +2,7 @@ package ar.unq.tpfinal.filtro;
 
 import java.util.List;
 
-import ar.unq.tpfinal.Muestra;
+import Muestra.Muestra;
 
 public interface IFiltro {
 

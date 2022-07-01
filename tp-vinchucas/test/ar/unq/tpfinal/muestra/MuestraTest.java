@@ -3,6 +3,7 @@ package ar.unq.tpfinal.muestra;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -14,14 +15,16 @@ import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import Muestra.Muestra;
+import Muestra.NoVerificada;
+import Muestra.Verificada;
+import Muestra.VerificadaParcial;
 import ar.unq.tpfinal.ubicacion.Ubicacion;
 import ar.unq.tpfinal.usuario.Usuario;
 import ar.unq.tpfinal.zonaDeCobertura.ZonaDeCobertura;
 import ar.unq.tpfinal.Aspecto;
 import ar.unq.tpfinal.Comentario;
 import ar.unq.tpfinal.Foto;
-import ar.unq.tpfinal.Muestra;
-import ar.unq.tpfinal.NivelDeVerificacion;
 import ar.unq.tpfinal.Opinion;
 import ar.unq.tpfinal.ResultadoEmpate;
 import ar.unq.tpfinal.Vinchuca;
@@ -114,7 +117,9 @@ public class MuestraTest {
 	@Test
 	void siOpinoUnExpertoNoPuedeOpinarUnUsuarioNormal() {
 		
+		when(opinionImgPocoClaraMock.esOpinionDeExperto()).thenReturn(true);
 		when(opinionImgPocoClaraMock.getUsuario()).thenReturn(userExpertoMock);
+		when(opinionNingunaMock.esOpinionDeExperto()).thenReturn(false);
 		when(opinionNingunaMock.getUsuario()).thenReturn(userNormalMock);
 		
 		muestra.agregarOpinion(opinionImgPocoClaraMock);
@@ -159,22 +164,24 @@ public class MuestraTest {
 	void unaMuestraSabeCuandoEsVerificada() {
 		
 		when(opinionNingunaMock.getUsuario()).thenReturn(userExpertoMock);		
-		when(opinionNingunaMock2.getUsuario()).thenReturn(userExpertoMock2);	
+		when(opinionNingunaMock2.getUsuario()).thenReturn(userExpertoMock2);
+		when(opinionNingunaMock.esOpinionDeExperto()).thenReturn(true);		
+		when(opinionNingunaMock2.esOpinionDeExperto()).thenReturn(true);	
 		
 		muestra.agregarOpinion(opinionNingunaMock);
 		muestra.agregarOpinion(opinionNingunaMock2);
 		
-		assertTrue(muestra.esMuestraVerificada());
+		assertTrue(muestra.getEstadoDeVerificacion() instanceof Verificada);
 	}
 	
 	@Test
 	void unaMuestraSabeCuandoEsVerificadaParcial() {
 		
-		when(opinionImgPocoClaraMock.getUsuario()).thenReturn(userExpertoMock);		
+		when(opinionImgPocoClaraMock.esOpinionDeExperto()).thenReturn(true);		
 		
 		muestra.agregarOpinion(opinionImgPocoClaraMock);
 		
-		assertTrue(muestra.getVerificacionActual() == NivelDeVerificacion.VERIFICADA_PARCIAL);
+		assertInstanceOf(VerificadaParcial.class, muestra.getEstadoDeVerificacion());
 	}
 	
 	@Test
@@ -184,7 +191,7 @@ public class MuestraTest {
 		
 		muestra.agregarOpinion(opinionImgPocoClaraMock);
 		
-		assertTrue(muestra.getVerificacionActual() == NivelDeVerificacion.NO_VERIFICADA);
+		assertTrue(muestra.getEstadoDeVerificacion() instanceof NoVerificada);
 	}
 	
 	@Test

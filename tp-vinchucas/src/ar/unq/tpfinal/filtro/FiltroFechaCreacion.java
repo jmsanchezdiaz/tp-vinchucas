@@ -3,7 +3,8 @@ package ar.unq.tpfinal.filtro;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
-import ar.unq.tpfinal.Muestra;
+
+import Muestra.Muestra;
 
 public class FiltroFechaCreacion implements IFiltro {
 

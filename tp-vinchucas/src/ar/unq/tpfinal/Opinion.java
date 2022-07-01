@@ -53,5 +53,9 @@ public class Opinion {
 	public Boolean esOpinionDe(Usuario usuario) {
 		return this.getUsuario().equals(usuario);
 	}
+
+	public boolean esOpinionDeExperto() {
+		return getUsuario().puedeOpinarEnMuestraParcialmenteVerificada();
+	}
 	
 }

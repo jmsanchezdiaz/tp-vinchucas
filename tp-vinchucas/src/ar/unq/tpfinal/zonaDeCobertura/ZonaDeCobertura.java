@@ -6,8 +6,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import Muestra.Muestra;
 import ar.unq.tpfinal.Aspecto;
-import ar.unq.tpfinal.Muestra;
 import ar.unq.tpfinal.Observador;
 import ar.unq.tpfinal.ubicacion.Ubicacion;
 

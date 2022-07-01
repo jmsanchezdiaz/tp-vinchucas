@@ -4,15 +4,14 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.only;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import Muestra.Muestra;
 import ar.unq.tpfinal.AplicacionWeb;
-import ar.unq.tpfinal.Muestra;
 import ar.unq.tpfinal.Opinion;
 import ar.unq.tpfinal.usuario.Usuario;
 
