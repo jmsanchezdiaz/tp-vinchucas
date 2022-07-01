@@ -90,7 +90,7 @@ public class Muestra {
 			estadoDeVerificacion.agregarOpinion(this, opinion);
 		}
 	}
-
+	
 	public Resultado getResultadoActual() {
 		return estadoDeVerificacion.resultadoActual(this);
 	}
