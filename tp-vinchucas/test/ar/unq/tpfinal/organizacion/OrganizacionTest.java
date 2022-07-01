@@ -1,8 +1,6 @@
 package ar.unq.tpfinal.organizacion;
 
-import static org.junit.Assert.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
@@ -14,15 +12,14 @@ import org.junit.jupiter.api.Test;
 import ar.unq.tpfinal.Aspecto;
 import ar.unq.tpfinal.FuncionalidadExterna;
 import ar.unq.tpfinal.TipoDeOrganizacion;
+import ar.unq.tpfinal.muestra.Muestra;
 import ar.unq.tpfinal.ubicacion.Ubicacion;
 import ar.unq.tpfinal.zonaDeCobertura.ZonaDeCobertura;
-import ar.unq.tpfinal.muestra.Muestra;
 
 public class OrganizacionTest {
 
 	private Organizacion organizacion1;
 	private ZonaDeCobertura zona1;
-	private ZonaDeCobertura zona2;
 	private Muestra muestraMock1;
 	private FuncionalidadExterna funcionalidadMock1;
 
@@ -33,7 +30,7 @@ public class OrganizacionTest {
 
 		try {
 			zona1 = new ZonaDeCobertura("zona1", 2.0, new Ubicacion(20, 20));
-			zona2 = new ZonaDeCobertura("zona1", 2.0, new Ubicacion(21, 20));
+
 		} catch (Exception err) {
 			System.out.println(err.getMessage());
 		}
@@ -54,48 +51,6 @@ public class OrganizacionTest {
 		});
 
 		assertEquals("La cantidad de Personal no puede ser negativa", excepcion.getMessage());
-	}
-
-	@Test
-	public void testSuscripcionAZonaParaUnAspectoQueNoTieneZonasRegistradas() {
-		organizacion1.suscribirseAZona(zona1, Aspecto.MUESTRA_ENVIADA);
-
-		assertTrue(organizacion1.getSuscripcionesAZonasPorAspecto().containsKey(Aspecto.MUESTRA_ENVIADA));
-		assertEquals(1, organizacion1.getSuscripcionesAZonasPorAspecto().get(Aspecto.MUESTRA_ENVIADA).size());
-		assertTrue(organizacion1.getSuscripcionesAZonasPorAspecto().get(Aspecto.MUESTRA_ENVIADA).contains(zona1));
-
-	}
-
-	@Test
-	void testSuscripcionAUnaZonaEnUnAspectoQueYaTieneOtrasZonasRegistradas() {
-		organizacion1.suscribirseAZona(zona1, Aspecto.MUESTRA_ENVIADA);
-
-		organizacion1.suscribirseAZona(zona2, Aspecto.MUESTRA_ENVIADA);
-		assertTrue(organizacion1.getSuscripcionesAZonasPorAspecto().containsKey(Aspecto.MUESTRA_ENVIADA));
-		assertEquals(2, organizacion1.getSuscripcionesAZonasPorAspecto().get(Aspecto.MUESTRA_ENVIADA).size());
-		assertTrue(organizacion1.getSuscripcionesAZonasPorAspecto().get(Aspecto.MUESTRA_ENVIADA).contains(zona2));
-	}
-
-	@Test
-	void testDesuscripcionAUnaZonaEnUnAspectoAlQuePreviamenteFuiSuscrito() {
-		organizacion1.suscribirseAZona(zona1, Aspecto.MUESTRA_ENVIADA);
-
-		organizacion1.desuscribirseDeZona(zona1, Aspecto.MUESTRA_ENVIADA);
-
-		assertTrue(organizacion1.getSuscripcionesAZonasPorAspecto().containsKey(Aspecto.MUESTRA_ENVIADA));
-		assertFalse(organizacion1.getSuscripcionesAZonasPorAspecto().get(Aspecto.MUESTRA_ENVIADA).contains(zona1));
-		assertEquals(0, organizacion1.getSuscripcionesAZonasPorAspecto().get(Aspecto.MUESTRA_ENVIADA).size());
-	}
-
-	@Test
-	void testDesuscripcionAUnaZonaEnUnAspectoAlQueNoEstabaSuscripto() {
-		organizacion1.suscribirseAZona(zona1, Aspecto.MUESTRA_ENVIADA);
-
-		organizacion1.desuscribirseDeZona(zona2, Aspecto.MUESTRA_ENVIADA);
-
-		assertTrue(organizacion1.getSuscripcionesAZonasPorAspecto().containsKey(Aspecto.MUESTRA_ENVIADA));
-		assertTrue(organizacion1.getSuscripcionesAZonasPorAspecto().get(Aspecto.MUESTRA_ENVIADA).contains(zona1));
-		assertEquals(1, organizacion1.getSuscripcionesAZonasPorAspecto().get(Aspecto.MUESTRA_ENVIADA).size());
 	}
 
 	@Test
