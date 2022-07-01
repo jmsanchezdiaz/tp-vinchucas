@@ -14,10 +14,10 @@ import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import Muestra.Muestra;
 import ar.unq.tpfinal.Aspecto;
 import ar.unq.tpfinal.Observador;
 import ar.unq.tpfinal.ubicacion.Ubicacion;
+import ar.unq.tpfinal.muestra.Muestra;
 
 public class ZonaDeCoberturaTest {
 

@@ -10,10 +10,10 @@ import static org.mockito.Mockito.when;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import Muestra.Muestra;
 import ar.unq.tpfinal.AplicacionWeb;
 import ar.unq.tpfinal.Opinion;
 import ar.unq.tpfinal.usuario.Usuario;
+import ar.unq.tpfinal.muestra.Muestra;
 
 public class NivelDeConocimientoTest {
 	Usuario userMock;

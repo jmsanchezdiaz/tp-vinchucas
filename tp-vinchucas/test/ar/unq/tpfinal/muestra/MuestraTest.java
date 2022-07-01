@@ -15,10 +15,6 @@ import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import Muestra.Muestra;
-import Muestra.NoVerificada;
-import Muestra.Verificada;
-import Muestra.VerificadaParcial;
 import ar.unq.tpfinal.ubicacion.Ubicacion;
 import ar.unq.tpfinal.usuario.Usuario;
 import ar.unq.tpfinal.zonaDeCobertura.ZonaDeCobertura;

@@ -1,7 +1,6 @@
 package ar.unq.tpfinal.usuario;
 
 
-import Muestra.Muestra;
 import ar.unq.tpfinal.AplicacionWeb;
 import ar.unq.tpfinal.Vinchuca;
 import ar.unq.tpfinal.Foto;
@@ -9,6 +8,7 @@ import ar.unq.tpfinal.Opinable;
 import ar.unq.tpfinal.niveldeconocimiento.*;
 import ar.unq.tpfinal.Opinion;
 import ar.unq.tpfinal.ubicacion.Ubicacion;
+import ar.unq.tpfinal.muestra.Muestra;
 
 /**
  * <p>

@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import Muestra.Muestra;
+import ar.unq.tpfinal.muestra.Muestra;
 
 public class FiltroOR extends FiltroCompuesto {
 

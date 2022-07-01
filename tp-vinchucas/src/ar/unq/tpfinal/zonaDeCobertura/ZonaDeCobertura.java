@@ -6,9 +6,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-import Muestra.Muestra;
 import ar.unq.tpfinal.Aspecto;
 import ar.unq.tpfinal.Observador;
+import ar.unq.tpfinal.muestra.Muestra;
 import ar.unq.tpfinal.ubicacion.Ubicacion;
 
 public class ZonaDeCobertura {
@@ -22,7 +22,7 @@ public class ZonaDeCobertura {
 	 * Crea una Zona de cobertura
 	 * 
 	 * @param {String}    nombre - nombre de la zona.
-	 * @param {Double}    radio - radio en kilómetros.
+	 * @param {Double}    radio - radio en kilï¿½metros.
 	 * @param {Ubicacion} epicentro - ubicacion del centro de la zona.
 	 *
 	 */
@@ -75,7 +75,7 @@ public class ZonaDeCobertura {
 	public void desuscribir(Observador observador, Aspecto aspecto) {
 		// si el suscriptor no estaba en la lista de observadores del aspecto dado
 		// entonces no hace nada
-		// lo mismo si el aspecto no está definido como clave en los suscriptores
+		// lo mismo si el aspecto no estï¿½ definido como clave en los suscriptores
 		if (this.getSuscriptores().containsKey(aspecto)) {
 
 			List<Observador> observadoresDelAspecto = this.suscriptores.get(aspecto);

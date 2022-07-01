@@ -3,7 +3,7 @@ package ar.unq.tpfinal.filtro;
 import java.util.ArrayList;
 import java.util.List;
 
-import Muestra.Muestra;
+import ar.unq.tpfinal.muestra.Muestra;
 
 public class FiltroAND extends FiltroCompuesto {
 

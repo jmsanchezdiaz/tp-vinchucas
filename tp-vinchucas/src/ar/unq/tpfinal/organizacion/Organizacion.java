@@ -5,12 +5,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import Muestra.Muestra;
 import ar.unq.tpfinal.Aspecto;
 import ar.unq.tpfinal.FuncionalidadExterna;
 import ar.unq.tpfinal.Observador;
 import ar.unq.tpfinal.TipoDeOrganizacion;
 import ar.unq.tpfinal.zonaDeCobertura.ZonaDeCobertura;
+import ar.unq.tpfinal.muestra.Muestra;
 
 public class Organizacion implements Observador {
 
@@ -25,7 +25,7 @@ public class Organizacion implements Observador {
 	 * 
 	 * @param {TipoDeOrganizacion} tipoDeOrganizacion.
 	 * @param {int}                cantidadDePersonal - numero de personas que
-	 *                             trabajan en la organización.
+	 *                             trabajan en la organizaciï¿½n.
 	 * @throws {IllegalArgumentException} en caso de instanciar pasando
 	 *                                    cantidadDePersonal menor a cero.
 	 *
@@ -76,9 +76,9 @@ public class Organizacion implements Observador {
 	}
 
 	public void desuscribirseDeZona(ZonaDeCobertura zona, Aspecto aspecto) {
-		// si la zona no estaba registrada en las suscripciones según el aspecto dado,
+		// si la zona no estaba registrada en las suscripciones segï¿½n el aspecto dado,
 		// no se hace nada
-		// lo mismo sucede si el aspecto no está definido como clave
+		// lo mismo sucede si el aspecto no estï¿½ definido como clave
 		if (this.getSuscripcionesAZonasPorAspecto().containsKey(aspecto)) {
 
 			List<ZonaDeCobertura> zonasDelAspecto = this.getSuscripcionesAZonasPorAspecto().get(aspecto);

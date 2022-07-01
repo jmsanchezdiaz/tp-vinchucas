@@ -12,10 +12,10 @@ import static org.mockito.Mockito.when;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import Muestra.Muestra;
 import ar.unq.tpfinal.AplicacionWeb;
 import ar.unq.tpfinal.Vinchuca;
 import ar.unq.tpfinal.ubicacion.Ubicacion;
+import ar.unq.tpfinal.muestra.Muestra;
 import ar.unq.tpfinal.Foto;
 import ar.unq.tpfinal.NoVinchuca;
 import ar.unq.tpfinal.Opinion;

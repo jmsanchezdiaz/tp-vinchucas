@@ -14,9 +14,9 @@ import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import Muestra.Muestra;
 import ar.unq.tpfinal.NivelDeVerificacion;
 import ar.unq.tpfinal.NoVinchuca;
+import ar.unq.tpfinal.muestra.Muestra;
 
 public class FiltrosTest {
 	List<Muestra> muestras;

@@ -1,4 +1,4 @@
-package Muestra;
+package ar.unq.tpfinal.muestra;
 
 import ar.unq.tpfinal.NivelDeVerificacion;
 import ar.unq.tpfinal.Opinion;

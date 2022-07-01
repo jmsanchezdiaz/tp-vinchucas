@@ -1,4 +1,4 @@
-package Muestra;
+package ar.unq.tpfinal.muestra;
 
 import java.util.Map;
 import java.util.Map.Entry;
