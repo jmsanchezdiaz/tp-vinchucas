@@ -84,9 +84,9 @@ public class Muestra {
 		return contarOpiniones(getOpinionesDeExpertos());
 	}
 
-	public void agregarOpinion(Opinion opinion) {
+	public void agregarOpinion(AplicacionWeb app, Opinion opinion) {
 		if (!elUsuarioYaOpino(opinion.getUsuario())) {
-			estadoDeVerificacion.agregarOpinion(AplicacionWeb.getAplicacionWeb(), this, opinion);
+			estadoDeVerificacion.agregarOpinion(app , this, opinion);
 		}
 	}
 	

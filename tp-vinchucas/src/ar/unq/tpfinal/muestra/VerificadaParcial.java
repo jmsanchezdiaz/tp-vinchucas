@@ -17,12 +17,12 @@ public class VerificadaParcial implements EstadoVerificacion {
 	public void agregarOpinion(AplicacionWeb app, Muestra muestra, Opinion opinion) {
 
 		if (opinion.esOpinionDeExperto()) {
-			muestra.addOpinion(opinion);
-
 			if (muestra.opinoIgualQueOtroExperto(opinion)) {
-				muestra.setEstadoDeVerificacion(new Verificada(resultadoActual(muestra)));
 				app.zonasDeLaMuestra(muestra).forEach(zona -> zona.notificar(muestra, Aspecto.MUESTRA_VERIFICADA));
+				muestra.setEstadoDeVerificacion(new Verificada(resultadoActual(muestra)));
 			}
+			
+			muestra.addOpinion(opinion);
 		}
 
 	}

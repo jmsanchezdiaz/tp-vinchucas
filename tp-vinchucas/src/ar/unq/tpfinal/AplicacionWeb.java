@@ -98,7 +98,7 @@ public class AplicacionWeb {
 	 * 
 	 */
 	public void agregarOpinionA(Muestra muestra, Opinion opinion) {
-		muestra.agregarOpinion(opinion);
+		muestra.agregarOpinion(this, opinion);
 	}
 
 	/**

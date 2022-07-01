@@ -144,7 +144,7 @@ public class AplicacionWebTest {
 		when(opMock.getUsuario()).thenReturn(userMock);
 		app.agregarOpinionA(muestraMock1, opMock);
 
-		verify(muestraMock1).agregarOpinion(opMock);
+		verify(muestraMock1).agregarOpinion(app, opMock);
 	}
 
 	@Test
