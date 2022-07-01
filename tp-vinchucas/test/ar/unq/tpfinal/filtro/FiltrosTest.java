@@ -3,6 +3,7 @@ package ar.unq.tpfinal.filtro;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -92,7 +93,7 @@ public class FiltrosTest {
 		
 		List<Muestra> filtradas = otherFiltroOR.filter(muestras);
 		
-		muestras.forEach(muestra -> verify(muestra).getEstadoDeVerificacion().valor());
+		muestras.forEach(muestra -> verify(muestra).seEncuentraEnEstado(any(NivelDeVerificacion.class)));
 		muestras.forEach(muestra -> verify(muestra).fueVotadaEn(fecha));
 		verify(muestraMock2).esInsecto(NoVinchuca.PhtiaChinche);
 		
@@ -170,7 +171,7 @@ public class FiltrosTest {
 		List<Muestra> filtradas = filtroVerificacion.filter(muestras);
 		
 		//Verify/Assert
-		muestras.forEach(muestra -> verify(muestra).getEstadoDeVerificacion().valor());
+		muestras.forEach(muestra -> verify(muestra).seEncuentraEnEstado(any(NivelDeVerificacion.class)));
 		assertTrue(filtradas.containsAll(Arrays.asList(muestraMock1, muestraMock4)));
 		assertEquals(filtradas.size(),2,0);
 	}
@@ -197,10 +198,10 @@ public class FiltrosTest {
 	}
 
 	private void mockedGetVerificicacionActualMethods() {
-		when(muestraMock1.getEstadoDeVerificacion().valor()).thenReturn(NivelDeVerificacion.VERIFICADA);
-		when(muestraMock2.getEstadoDeVerificacion().valor()).thenReturn(NivelDeVerificacion.NO_VERIFICADA);
-		when(muestraMock3.getEstadoDeVerificacion().valor()).thenReturn(NivelDeVerificacion.VERIFICADA_PARCIAL);
-		when(muestraMock4.getEstadoDeVerificacion().valor()).thenReturn(NivelDeVerificacion.VERIFICADA);
+		when(muestraMock1.seEncuentraEnEstado(NivelDeVerificacion.VERIFICADA)).thenReturn(true);
+		when(muestraMock2.seEncuentraEnEstado(NivelDeVerificacion.NO_VERIFICADA)).thenReturn(false);
+		when(muestraMock3.seEncuentraEnEstado(NivelDeVerificacion.VERIFICADA_PARCIAL)).thenReturn(false);
+		when(muestraMock4.seEncuentraEnEstado(NivelDeVerificacion.VERIFICADA)).thenReturn(true);
 	}
 	
 }

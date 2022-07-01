@@ -9,6 +9,7 @@ import java.util.stream.Collectors;
 import ar.unq.tpfinal.Aspecto;
 import ar.unq.tpfinal.Foto;
 import ar.unq.tpfinal.Insecto;
+import ar.unq.tpfinal.NivelDeVerificacion;
 import ar.unq.tpfinal.Opinable;
 import ar.unq.tpfinal.Opinion;
 import ar.unq.tpfinal.Resultado;
@@ -148,5 +149,9 @@ public class Muestra {
 
 	void addOpinion(Opinion opinion) {
 		getOpiniones().add(opinion);
+	}
+
+	public boolean seEncuentraEnEstado(NivelDeVerificacion nivel) {
+		return this.estadoDeVerificacion.valor() == nivel;
 	}
 }
