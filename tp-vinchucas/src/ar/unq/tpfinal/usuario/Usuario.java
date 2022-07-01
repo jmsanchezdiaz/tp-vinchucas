@@ -2,10 +2,10 @@ package ar.unq.tpfinal.usuario;
 
 import java.util.UUID;
 
+import Muestra.Muestra;
 import ar.unq.tpfinal.AplicacionWeb;
 import ar.unq.tpfinal.Vinchuca;
 import ar.unq.tpfinal.Foto;
-import ar.unq.tpfinal.Muestra;
 import ar.unq.tpfinal.Opinable;
 import ar.unq.tpfinal.niveldeconocimiento.*;
 import ar.unq.tpfinal.Opinion;

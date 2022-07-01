@@ -1,5 +1,6 @@
 package ar.unq.tpfinal;
 
+import Muestra.Muestra;
 import ar.unq.tpfinal.zonaDeCobertura.ZonaDeCobertura;
 
 public interface Observador {

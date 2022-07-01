@@ -3,8 +3,8 @@ package ar.unq.tpfinal.filtro;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import Muestra.Muestra;
 import ar.unq.tpfinal.Insecto;
-import ar.unq.tpfinal.Muestra;
 
 public class FiltroTipoInsecto implements IFiltro {
 

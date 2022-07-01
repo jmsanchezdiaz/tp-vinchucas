@@ -14,7 +14,7 @@ import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import ar.unq.tpfinal.Muestra;
+import Muestra.Muestra;
 import ar.unq.tpfinal.NivelDeVerificacion;
 import ar.unq.tpfinal.NoVinchuca;
 
@@ -92,7 +92,7 @@ public class FiltrosTest {
 		
 		List<Muestra> filtradas = otherFiltroOR.filter(muestras);
 		
-		muestras.forEach(muestra -> verify(muestra).getVerificacionActual());
+		muestras.forEach(muestra -> verify(muestra).getEstadoDeVerificacion().valor());
 		muestras.forEach(muestra -> verify(muestra).fueVotadaEn(fecha));
 		verify(muestraMock2).esInsecto(NoVinchuca.PhtiaChinche);
 		
@@ -170,7 +170,7 @@ public class FiltrosTest {
 		List<Muestra> filtradas = filtroVerificacion.filter(muestras);
 		
 		//Verify/Assert
-		muestras.forEach(muestra -> verify(muestra).getVerificacionActual());
+		muestras.forEach(muestra -> verify(muestra).getEstadoDeVerificacion().valor());
 		assertTrue(filtradas.containsAll(Arrays.asList(muestraMock1, muestraMock4)));
 		assertEquals(filtradas.size(),2,0);
 	}
@@ -197,10 +197,10 @@ public class FiltrosTest {
 	}
 
 	private void mockedGetVerificicacionActualMethods() {
-		when(muestraMock1.getVerificacionActual()).thenReturn(NivelDeVerificacion.VERIFICADA);
-		when(muestraMock2.getVerificacionActual()).thenReturn(NivelDeVerificacion.NO_VERIFICADA);
-		when(muestraMock3.getVerificacionActual()).thenReturn(NivelDeVerificacion.VERIFICADA_PARCIAL);
-		when(muestraMock4.getVerificacionActual()).thenReturn(NivelDeVerificacion.VERIFICADA);
+		when(muestraMock1.getEstadoDeVerificacion().valor()).thenReturn(NivelDeVerificacion.VERIFICADA);
+		when(muestraMock2.getEstadoDeVerificacion().valor()).thenReturn(NivelDeVerificacion.NO_VERIFICADA);
+		when(muestraMock3.getEstadoDeVerificacion().valor()).thenReturn(NivelDeVerificacion.VERIFICADA_PARCIAL);
+		when(muestraMock4.getEstadoDeVerificacion().valor()).thenReturn(NivelDeVerificacion.VERIFICADA);
 	}
 	
 }

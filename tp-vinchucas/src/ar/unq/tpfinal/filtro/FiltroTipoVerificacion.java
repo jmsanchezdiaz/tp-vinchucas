@@ -3,7 +3,7 @@ package ar.unq.tpfinal.filtro;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import ar.unq.tpfinal.Muestra;
+import Muestra.Muestra;
 import ar.unq.tpfinal.NivelDeVerificacion;
 
 public class FiltroTipoVerificacion implements IFiltro {
@@ -17,7 +17,7 @@ public class FiltroTipoVerificacion implements IFiltro {
 	@Override
 	public List<Muestra> filter(List<Muestra> muestras) {
 		return muestras.stream()
-				.filter(muestra -> muestra.getVerificacionActual() == this.valorBuscado)
+				.filter(muestra -> muestra.getEstadoDeVerificacion().valor() == this.valorBuscado)
 				.collect(Collectors.toList());
 	}
 }

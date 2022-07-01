@@ -11,9 +11,9 @@ import static org.mockito.Mockito.verify;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import Muestra.Muestra;
 import ar.unq.tpfinal.Aspecto;
 import ar.unq.tpfinal.FuncionalidadExterna;
-import ar.unq.tpfinal.Muestra;
 import ar.unq.tpfinal.TipoDeOrganizacion;
 import ar.unq.tpfinal.ubicacion.Ubicacion;
 import ar.unq.tpfinal.zonaDeCobertura.ZonaDeCobertura;
