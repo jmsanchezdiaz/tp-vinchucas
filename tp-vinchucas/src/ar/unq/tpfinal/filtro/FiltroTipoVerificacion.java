@@ -17,7 +17,7 @@ public class FiltroTipoVerificacion implements IFiltro {
 	@Override
 	public List<Muestra> filter(List<Muestra> muestras) {
 		return muestras.stream()
-				.filter(muestra -> muestra.getEstadoDeVerificacion().valor() == this.valorBuscado)
+				.filter(muestra -> muestra.seEncuentraEnEstado(valorBuscado))
 				.collect(Collectors.toList());
 	}
 }
