@@ -5,7 +5,6 @@ import static org.junit.Assert.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyList;
-import static org.mockito.Mockito.atLeastOnce;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -49,9 +48,13 @@ public class AplicacionWebTest {
 		userMock = mock(Usuario.class);
 		userMock2 = mock(Usuario.class);
 		
+		//Mockeamos los metodos en común.
 		when(muestraMock1.getUsuario()).thenReturn(userMock);
 		when(muestraMock2.getUsuario()).thenReturn(userMock2);
 		when(muestraMock3.getUsuario()).thenReturn(userMock);
+		when(muestraMock1.fuePublicadaDentroDeEsteRango(any(LocalDate.class), any(LocalDate.class))).thenReturn(true);
+		when(muestraMock2.fuePublicadaDentroDeEsteRango(any(LocalDate.class), any(LocalDate.class))).thenReturn(false);
+		when(muestraMock3.fuePublicadaDentroDeEsteRango(any(LocalDate.class), any(LocalDate.class))).thenReturn(true);
 		
 		app.agregarMuestra(muestraMock1);
 		app.agregarMuestra(muestraMock2);
@@ -72,7 +75,6 @@ public class AplicacionWebTest {
 		
 		when(zonaMock.contieneMuestra(muestraMock1)).thenReturn(false);
 		when(zonaMock2.contieneMuestra(muestraMock1)).thenReturn(true);
-		
 		
 		app.eliminarMuestra(muestraMock1);
 		app.agregarMuestra(muestraMock1);
@@ -106,10 +108,6 @@ public class AplicacionWebTest {
 		LocalDate fechaDeHoy = LocalDate.now();
 		LocalDate fechaInicio = fechaDeHoy.minusDays(5);
 		
-		when(muestraMock1.fuePublicadaDentroDeEsteRango(fechaInicio, fechaDeHoy)).thenReturn(true);
-		when(muestraMock2.fuePublicadaDentroDeEsteRango(fechaInicio, fechaDeHoy)).thenReturn(false);
-		when(muestraMock3.fuePublicadaDentroDeEsteRango(fechaInicio, fechaDeHoy)).thenReturn(true);
-		
 		List<Muestra> muestrasFiltradas = app.obtenerMuestrasHace(5);
 		
 		muestras.forEach(muestra -> verify(muestra).fuePublicadaDentroDeEsteRango(fechaInicio, fechaDeHoy));
@@ -121,25 +119,25 @@ public class AplicacionWebTest {
 	@Test
 	void puedoObtenerLaCantidadDeMuestrasEnviadasPorUnUsuarioEnUnaListaDeMuestras() {
 		when(muestraMock1.fueEnviadaPor(userMock)).thenReturn(true);
-		when(muestraMock2.fueEnviadaPor(userMock)).thenReturn(false);
 		when(muestraMock3.fueEnviadaPor(userMock)).thenReturn(true);
 		
-		int cantidadEsperada = app.cantidadDeEnviosDe(userMock, muestras);
+		int cantidadEsperada = app.cantidadDeEnviosDeHace(userMock, 30);
 		
-		muestras.forEach(muestra -> verify(muestra)
-				.fueEnviadaPor(userMock));
+		Arrays.asList(muestraMock1, muestraMock3)
+			.forEach(muestra -> verify(muestra)
+					.fueEnviadaPor(userMock));
 		assertEquals(cantidadEsperada, 2, 0);
 	}
 	
 	@Test
 	void puedoObtenerLaCantidadDeOpinionesPorUnUsuarioEnUnaListaDeMuestras() {
 		when(muestraMock1.elUsuarioYaOpino(userMock)).thenReturn(true);
-		when(muestraMock2.elUsuarioYaOpino(userMock)).thenReturn(false);
 		when(muestraMock3.elUsuarioYaOpino(userMock)).thenReturn(true);
 		
-		int cantidadEsperada = app.cantidadDeOpinionesDe(userMock, muestras);
+		int cantidadEsperada = app.cantidadDeOpinionesDeHace(userMock, 30);
 		
-		muestras.forEach(muestra -> verify(muestra)
+		Arrays.asList(muestraMock1, muestraMock3)
+			.forEach(muestra -> verify(muestra)
 				.elUsuarioYaOpino(userMock));
 		
 		assertEquals(cantidadEsperada, 2, 0);
@@ -152,7 +150,6 @@ public class AplicacionWebTest {
 		
 		verify(muestraMock1).agregarOpinion(opMock);
 		verify(muestraMock1).notificarValidacionSiCorresponde(anyList());
-		verify(opMock).getUsuario();
 	}
 	
 	@Test
@@ -162,60 +159,6 @@ public class AplicacionWebTest {
 		app.buscar(filtroMock);
 		
 		verify(filtroMock).filter(muestras);
-	}
-	
-	@Test
-	void puedoBajarElNivelDeConocimientoDeUnUsuarioSiCorresponde() {
-		Muestra envioMockeado = mock(Muestra.class);
-		
-		//Mockeo los valores del envio mockeado.
-		when(envioMockeado.fueEnviadaPor(userMock))
-			.thenReturn(true);
-		when(envioMockeado.getUsuario())
-			.thenReturn(userMock);
-		when(envioMockeado.elUsuarioYaOpino(userMock))
-		.thenReturn(false);
-		when(envioMockeado.fuePublicadaDentroDeEsteRango(any(LocalDate.class), any(LocalDate.class)))
-			.thenReturn(true);
-		
-		app.agregarMuestra(envioMockeado);
-		
-		verify(userMock, atLeastOnce()).bajarDeNivel();
-	}
-	
-	@Test
-	void puedoSubirElNivelDeConocimientoDeUnUsuarioSiCorresponde() {
-		//Lleno la app con muestras enviadas 
-		for(int i = 0; i < 31; i++){
-			Muestra envioMockeado = mock(Muestra.class);
-			Muestra muestraConOpinionMockeada = mock(Muestra.class);
-			
-			//Mockeo los valores del envio mockeado.
-			when(envioMockeado.fueEnviadaPor(userMock))
-				.thenReturn(true);
-			when(envioMockeado.getUsuario())
-				.thenReturn(userMock);
-			when(envioMockeado.elUsuarioYaOpino(userMock))
-			.thenReturn(false);
-			when(envioMockeado.fuePublicadaDentroDeEsteRango(any(LocalDate.class), any(LocalDate.class)))
-				.thenReturn(true);
-			
-			//Mockeo los valores del envio mockeado.
-			when(muestraConOpinionMockeada.fueEnviadaPor(userMock))
-				.thenReturn(false);
-			when(muestraConOpinionMockeada.getUsuario())
-				.thenReturn(userMock2);
-			when(muestraConOpinionMockeada.elUsuarioYaOpino(userMock))
-			.thenReturn(true);
-			when(muestraConOpinionMockeada.fuePublicadaDentroDeEsteRango(any(LocalDate.class), any(LocalDate.class)))
-				.thenReturn(true);
-			
-			app.agregarMuestra(envioMockeado);
-			app.agregarMuestra(muestraConOpinionMockeada);
-		};
-		
-		//Verifico que se le suba el nivel al usuario
-		verify(userMock,atLeastOnce()).subirDeNivel();
 	}
 	
 	@Test

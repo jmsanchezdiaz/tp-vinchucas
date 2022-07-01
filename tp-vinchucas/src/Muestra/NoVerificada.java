@@ -25,7 +25,7 @@ public class NoVerificada implements EstadoVerificacion {
 
 	@Override
 	public Resultado resultadoActual(Muestra muestra) {
-		Map<Opinable, Long> mapOpiniones = muestra.mapOpiniones();
+		Map<Opinable, Long> mapOpiniones = muestra.contarOpiniones(muestra.getOpiniones());
 
 		Resultado resultado = ResultadoEmpate.NO_DEFINIDO;
 		long actualMayor = 0;

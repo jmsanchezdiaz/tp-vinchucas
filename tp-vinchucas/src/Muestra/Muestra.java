@@ -45,7 +45,7 @@ public class Muestra {
 	}
 	
 	private List<Opinion> getOpinionesDeExpertos() {
-		return opiniones.stream().filter(op -> op.getUsuario().esExperto()).collect(Collectors.toList());
+		return opiniones.stream().filter(op -> op.getUsuario().puedeOpinarEnMuestraParcialmenteVerificada()).collect(Collectors.toList());
 	}
 
 	public Opinion getOpinionDeUsuario() {
@@ -75,7 +75,7 @@ public class Muestra {
 	public LocalDate getFechaDeCreacion() {
 		return fechaDeCreacion;
 	}
-
+	
 	public void setFechaDeCreacion(LocalDate fechaDeCreacion) {
 		this.fechaDeCreacion = fechaDeCreacion;
 	}
@@ -84,8 +84,11 @@ public class Muestra {
 		return opiniones.stream().collect(Collectors.groupingBy(op -> op.getOpinion(), Collectors.counting()));
 	}
 
-	public Map<Opinable, Long> mapOpiniones() {
-		return contarOpiniones(opiniones);
+	public Boolean opinoUnExperto() {
+		return getOpiniones()
+				.stream().anyMatch(op -> op
+				.getUsuario()
+				.puedeOpinarEnMuestraParcialmenteVerificada());
 	}
 	
 	public Map<Opinable, Long> mapOpinionesDeExperto() {
@@ -100,6 +103,14 @@ public class Muestra {
 
 	public Resultado getResultadoActual() {
 		return estadoDeVerificacion.resultadoActual(this);
+	}
+
+	public List<Opinion> getOpinionesDeExperto() {
+		return opiniones.stream()
+				.filter(op -> op
+						.getUsuario()
+						.puedeOpinarEnMuestraParcialmenteVerificada())
+				.collect(Collectors.toList());
 	}
 
 	public boolean esInsecto(Insecto valorBuscado) {

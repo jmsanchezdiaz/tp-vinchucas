@@ -4,10 +4,11 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertInstanceOf;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -18,6 +19,8 @@ import ar.unq.tpfinal.ubicacion.Ubicacion;
 import ar.unq.tpfinal.Foto;
 import ar.unq.tpfinal.NoVinchuca;
 import ar.unq.tpfinal.Opinion;
+import ar.unq.tpfinal.niveldeconocimiento.Basico;
+import ar.unq.tpfinal.niveldeconocimiento.Experto;
 import ar.unq.tpfinal.niveldeconocimiento.ExpertoPermanente;
 import ar.unq.tpfinal.niveldeconocimiento.NivelDeConocimiento;
 
@@ -29,7 +32,6 @@ public class UsuarioTest {
 	Muestra muestraMock;
 	Ubicacion ubiMock;
 	NivelDeConocimiento expertoPermanente;
-	
 	
 	@BeforeEach
 	void setUp() {
@@ -44,82 +46,62 @@ public class UsuarioTest {
 	}
 	
 	@Test
-	void cadaUsuarioTieneUnIdGeneradoUnicoAleatoriamente() {
-		assertFalse(userNormal.getId().equals(userExpertoPermanente.getId()));
-	}
-	
-	@Test
-	void losUsuarioTienenNombreYId() {
-		userNormal.setId("id testeado");
-		
+	void unUsuarioTieneNombre() {
 		assertEquals(userNormal.getNombre(), "Juan");
-		assertEquals(userNormal.getId(), "id testeado");
 	}
 	
 	@Test
 	void todosLoUsuarioMutablesAlInicioSuNivelDeConocimientoEsBasico() {
-		assertTrue(userNormal.esBasico());
+		assertFalse(userNormal.puedeOpinarEnMuestraParcialmenteVerificada());
 	}
 	
 	@Test
-	void puedoSubirElNivelDeConocimientoDeUnUsuarioComun() {
+	void unUsuarioPuedeSubirDeNivelSiCumpleConCiertasCondiciones() {
 		//Exercise
-		userNormal.subirDeNivel();
+		when(appMock.cantidadDeEnviosDeHace(userNormal, 30)).thenReturn(15);
+		when(appMock.cantidadDeOpinionesDeHace(userNormal, 30)).thenReturn(34);
+
+		userNormal.enviarMuestra(appMock, ubiMock, fotoMock, Vinchuca.VinchucaGuayasana);
+		userNormal.opinarMuestra(appMock, muestraMock, Vinchuca.VinchucaGuayasana);
 		
 		//Assert
-		assertTrue(userNormal.esExperto());
-		assertFalse(userNormal.esBasico());
+		assertTrue(userNormal.puedeOpinarEnMuestraParcialmenteVerificada());
+		assertInstanceOf(Experto.class, userNormal.getNivelDeConocimiento());
+		verify(appMock).agregarMuestra(any(Muestra.class));
 	}
 	
 	@Test
-	void puedoBajarElNivelDeConocimientoDeUnUsuarioComun() {
+	void puedoBajarElNivelDeConocimientoDeUnUsuarioExperto() {
+		//Setup
+		when(appMock.cantidadDeEnviosDeHace(userNormal, 30)).thenReturn(7);
+		when(appMock.cantidadDeOpinionesDeHace(userNormal, 30)).thenReturn(32);
+		userNormal.setNivelDeConocimiento(new Experto());
+
 		//Exercise
-		userNormal.subirDeNivel();
-		userNormal.bajarDeNivel();
+		userNormal.enviarMuestra(appMock, ubiMock, fotoMock, Vinchuca.VinchucaGuayasana);
+		userNormal.opinarMuestra(appMock, muestraMock, Vinchuca.VinchucaGuayasana);
 		
 		//Assert
-		assertTrue(userNormal.esBasico());
-		assertFalse(userNormal.esExperto());
+		assertFalse(userNormal.puedeOpinarEnMuestraParcialmenteVerificada());
+		assertInstanceOf(Basico.class, userNormal.getNivelDeConocimiento());
+		verify(appMock).agregarMuestra(any(Muestra.class));
 	}
 	
-	@Test
-	void noPuedoBajarElNivelDeConocimientoDeUnUsuarioBasicoYLanzaUnaExcepcion() {
-		RuntimeException exp = assertThrows(RuntimeException.class, () -> userNormal.bajarDeNivel());
-		
-		assertEquals(exp.getMessage(), "No se puede bajar más de nivel");
-	}
-	
-	@Test
-	void noPuedoSubirElNivelDeConocimientoDeUnUsuarioExpertoYLanzaUnaExcepcion() {
-		userNormal.subirDeNivel();
-		
-		RuntimeException exp = assertThrows(RuntimeException.class, () -> userNormal.subirDeNivel());
-		
-		assertEquals(exp.getMessage(),"No se puede subir más de nivel");
-		assertInstanceOf(RuntimeException.class, exp);
-	}
-	
-	@Test
-	void noPuedoBajarElNivelDeConocimientoDeUnUsuarioFijoYLanzaUnaExcepcion() {
-		
-		RuntimeException exp = assertThrows(RuntimeException.class, () -> userExpertoPermanente.bajarDeNivel());
-		assertEquals(exp.getMessage(), "No se puede bajar de nivel a un usuario fijo");
-		assertInstanceOf(RuntimeException.class, exp);
-	}
-	
-	@Test
-	void noPuedoSubirElNivelDeConocimientoDeUnUsuarioFijoYLanzaUnaExcepcion() {
-		RuntimeException exp = assertThrows(RuntimeException.class, () -> userExpertoPermanente.subirDeNivel());
-		
-		assertEquals(exp.getMessage(),"No se puede subir de nivel a un usuario fijo");
-		assertInstanceOf(RuntimeException.class, exp);
-	}
-	
+
 	@Test
 	void unUsuarioExpertoPermanenteSiempreLoEs() {
-		assertFalse(userExpertoPermanente.esBasico());
-		assertTrue(userExpertoPermanente.esExperto());
+		//Setup
+		when(appMock.cantidadDeEnviosDeHace(userExpertoPermanente, 30)).thenReturn(7);
+		when(appMock.cantidadDeOpinionesDeHace(userExpertoPermanente, 30)).thenReturn(32);
+				
+		//Exercise
+		userExpertoPermanente.enviarMuestra(appMock, ubiMock, fotoMock, Vinchuca.VinchucaGuayasana);
+		
+		//Assert
+		assertInstanceOf(ExpertoPermanente.class, userExpertoPermanente.getNivelDeConocimiento());
+		verify(appMock).agregarMuestra(any(Muestra.class));
 	}
+		
 	
 	@Test
 	void unUsuarioPuedeEnviarUnaMuestra() {

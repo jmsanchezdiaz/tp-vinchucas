@@ -55,7 +55,7 @@ public class Opinion {
 	}
 
 	public boolean esOpinionDeExperto() {
-		return getUsuario().esExperto();
+		return getUsuario().puedeOpinarEnMuestraParcialmenteVerificada();
 	}
 	
 }
