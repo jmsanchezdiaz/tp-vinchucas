@@ -18,9 +18,13 @@ public class VerificadaParcial implements EstadoVerificacion {
 
 		if (opinion.esOpinionDeExperto()) {
 			muestra.addOpinion(opinion);
-			muestra.setEstadoDeVerificacion(new Verificada(resultadoActual(muestra)));
-			app.zonasDeLaMuestra(muestra).forEach(zona -> zona.notificar(muestra, Aspecto.MUESTRA_VERIFICADA));
+
+			if (muestra.opinoIgualQueOtroExperto(opinion)) {
+				muestra.setEstadoDeVerificacion(new Verificada(resultadoActual(muestra)));
+				app.zonasDeLaMuestra(muestra).forEach(zona -> zona.notificar(muestra, Aspecto.MUESTRA_VERIFICADA));
+			}
 		}
+
 	}
 
 	@Override

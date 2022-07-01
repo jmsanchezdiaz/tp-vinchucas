@@ -143,4 +143,8 @@ public class Muestra {
 	public boolean seEncuentraEnEstado(NivelDeVerificacion nivel) {
 		return this.estadoDeVerificacion.valor() == nivel;
 	}
+
+	public boolean opinoIgualQueOtroExperto(Opinion opinion) {
+		return getOpiniones().stream().anyMatch(op -> op.getOpinion().equals(opinion.getOpinion()));
+	}
 }
