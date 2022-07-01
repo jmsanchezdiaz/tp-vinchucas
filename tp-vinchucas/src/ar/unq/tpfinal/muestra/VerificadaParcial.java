@@ -18,8 +18,12 @@ public class VerificadaParcial implements EstadoVerificacion {
 		
 		if(opinion.esOpinionDeExperto()) {
 			muestra.addOpinion(opinion);
-			muestra.setEstadoDeVerificacion(new Verificada(resultadoActual(muestra)));
+			
+			if(muestra.opinoIgualQueOtroExperto(opinion)) {				
+				muestra.setEstadoDeVerificacion(new Verificada(resultadoActual(muestra)));
+			}
 		}
+		
 	}
 
 	@Override

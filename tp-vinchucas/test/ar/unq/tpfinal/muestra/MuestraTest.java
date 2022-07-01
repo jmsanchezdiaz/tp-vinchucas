@@ -160,17 +160,18 @@ public class MuestraTest {
 	@Test
 	void unaMuestraParcialSabeCuandoEsEmpate() {
 		
-		when(opinionVinchucaInfestans.esOpinionDeExperto()).thenReturn(false);
+		when(opinionNingunaMock.getUsuario()).thenReturn(userExpertoMock);
+		when(opinionVinchucaInfestans.getUsuario()).thenReturn(userExpertoMock2);	
+		
 		when(opinionNingunaMock.esOpinionDeExperto()).thenReturn(true);
+		when(opinionVinchucaInfestans.esOpinionDeExperto()).thenReturn(true);	
 		
-		when(opinionVinchucaInfestans.getUsuario()).thenReturn(userExpertoMock);	
-		when(opinionImgPocoClaraMock.getUsuario()).thenReturn(userExpertoMock2);
-		
-		muestra.agregarOpinion(opinionVinchucaInfestans);
-		muestra.agregarOpinion(opinionImgPocoClaraMock);
 		muestra.agregarOpinion(opinionNingunaMock);
+		muestra.agregarOpinion(opinionVinchucaInfestans);
 		
-		assertTrue(muestra.getResultadoActual() == ResultadoEmpate.NO_DEFINIDO);
+		System.out.print(muestra.getEstadoDeVerificacion().valor());
+		
+		assertEquals(muestra.getResultadoActual(), ResultadoEmpate.NO_DEFINIDO);
 	}
 	
 	@Test
