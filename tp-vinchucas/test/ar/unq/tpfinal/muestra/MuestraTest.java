@@ -84,7 +84,7 @@ public class MuestraTest {
 		when(opinionImgPocoClaraMock.getUsuario()).thenReturn(userMock);
 		when(userMock.puedeOpinarEnMuestraParcialmenteVerificada()).thenReturn(false);
 
-		muestra.agregarOpinion(appMock,opinionImgPocoClaraMock);
+		muestra.agregarOpinion(appMock, opinionImgPocoClaraMock);
 		assertFalse(muestra.getOpiniones().isEmpty());
 	}
 
@@ -93,11 +93,11 @@ public class MuestraTest {
 		when(opinionImgPocoClaraMock.getUsuario()).thenReturn(userNormalMock);
 		when(opinionNingunaMock.getUsuario()).thenReturn(userNormalMock);
 
-		muestra.agregarOpinion(appMock,opinionImgPocoClaraMock);
-		muestra.agregarOpinion(appMock,opinionNingunaMock); // No se agrega porque ya opino.
+		muestra.agregarOpinion(appMock, opinionImgPocoClaraMock);
+		muestra.agregarOpinion(appMock, opinionNingunaMock); // No se agrega porque ya opino.
 
 		// son dos opiniones mas la del usuario creador de la muestra.
-		assertEquals(muestra.getOpiniones().size(),2,0);
+		assertEquals(muestra.getOpiniones().size(), 2, 0);
 	}
 
 	@Test
@@ -106,12 +106,12 @@ public class MuestraTest {
 		when(opinionNingunaMock2.getUsuario()).thenReturn(userExpertoMock2);
 		when(opinionImgPocoClaraMock.getUsuario()).thenReturn(userMock);
 
-		muestra.agregarOpinion(appMock,opinionNingunaMock);
-		muestra.agregarOpinion(appMock,opinionNingunaMock2);
-		muestra.agregarOpinion(appMock,opinionImgPocoClaraMock); // No se agrega porque ya esta verificada.
+		muestra.agregarOpinion(appMock, opinionNingunaMock);
+		muestra.agregarOpinion(appMock, opinionNingunaMock2);
+		muestra.agregarOpinion(appMock, opinionImgPocoClaraMock); // No se agrega porque ya esta verificada.
 
 		// son dos opiniones mas la del usuario creador de la muestra.
-		assertEquals(muestra.getOpiniones().size(),3,0);
+		assertEquals(muestra.getOpiniones().size(), 3, 0);
 	}
 
 	@Test
@@ -122,16 +122,16 @@ public class MuestraTest {
 		when(opinionNingunaMock.esOpinionDeExperto()).thenReturn(false);
 		when(opinionNingunaMock.getUsuario()).thenReturn(userNormalMock);
 
-		muestra.agregarOpinion(appMock,opinionImgPocoClaraMock);
-		muestra.agregarOpinion(appMock,opinionNingunaMock); // No se agrega porque ya opino un experto.
+		muestra.agregarOpinion(appMock, opinionImgPocoClaraMock);
+		muestra.agregarOpinion(appMock, opinionNingunaMock); // No se agrega porque ya opino un experto.
 
 		// es una opinion mas la del usuario creador de la muestra.
-		assertEquals(muestra.getOpiniones().size(),2,0);
+		assertEquals(muestra.getOpiniones().size(), 2, 0);
 	}
 
 	@Test
 	void elResultadoDeUnaMuestraCuandoAlInicioEsLaOpinionDelUsuarioQueSubioLaMuestra() {
-		assertEquals(muestra.getResultadoActual() ,Vinchuca.VinchucaGuayasana);
+		assertEquals(muestra.getResultadoActual(), Vinchuca.VinchucaGuayasana);
 	}
 
 	@Test
@@ -140,8 +140,8 @@ public class MuestraTest {
 		when(opinionVinchucaInfestans.getUsuario()).thenReturn(userExpertoMock);
 		when(opinionVinchucaInfestans2.getUsuario()).thenReturn(userExpertoMock2);
 
-		muestra.agregarOpinion(appMock,opinionVinchucaInfestans);
-		muestra.agregarOpinion(appMock,opinionVinchucaInfestans2);
+		muestra.agregarOpinion(appMock, opinionVinchucaInfestans);
+		muestra.agregarOpinion(appMock, opinionVinchucaInfestans2);
 
 		assertEquals(muestra.getResultadoActual(), Vinchuca.VinchucaInfestans);
 	}
@@ -153,28 +153,28 @@ public class MuestraTest {
 		when(opinionImgPocoClaraMock.getUsuario()).thenReturn(userNormalMock);
 		when(opinionNingunaMock.getUsuario()).thenReturn(userExpertoMock);
 
-		muestra.agregarOpinion(appMock,opinionVinchucaInfestans);
-		muestra.agregarOpinion(appMock,opinionImgPocoClaraMock);
-		muestra.agregarOpinion(appMock,opinionNingunaMock);
+		muestra.agregarOpinion(appMock, opinionVinchucaInfestans);
+		muestra.agregarOpinion(appMock, opinionImgPocoClaraMock);
+		muestra.agregarOpinion(appMock, opinionNingunaMock);
 
 		assertEquals(muestra.getResultadoActual(), ResultadoEmpate.NO_DEFINIDO);
 	}
 
 	@Test
 	void unaMuestraParcialSabeCuandoEsEmpate() {
-		
+
 		when(opinionNingunaMock.getUsuario()).thenReturn(userExpertoMock);
-		when(opinionVinchucaInfestans.getUsuario()).thenReturn(userExpertoMock2);	
-		
+		when(opinionVinchucaInfestans.getUsuario()).thenReturn(userExpertoMock2);
+
 		when(opinionNingunaMock.esOpinionDeExperto()).thenReturn(true);
-		when(opinionVinchucaInfestans.esOpinionDeExperto()).thenReturn(true);	
-		
-		muestra.agregarOpinion(appMock,opinionNingunaMock);
-		muestra.agregarOpinion(appMock,opinionVinchucaInfestans);
-		
+		when(opinionVinchucaInfestans.esOpinionDeExperto()).thenReturn(true);
+
+		muestra.agregarOpinion(appMock, opinionNingunaMock);
+		muestra.agregarOpinion(appMock, opinionVinchucaInfestans);
+
 		assertEquals(muestra.getResultadoActual(), ResultadoEmpate.NO_DEFINIDO);
 	}
-	
+
 	@Test
 	void unaMuestraSabeCuandoEsVerificada() {
 		when(opinionNingunaMock.getUsuario()).thenReturn(userExpertoMock);
@@ -182,11 +182,11 @@ public class MuestraTest {
 		when(opinionNingunaMock.esOpinionDeExperto()).thenReturn(true);
 		when(opinionNingunaMock2.esOpinionDeExperto()).thenReturn(true);
 
-		muestra.agregarOpinion(appMock,opinionNingunaMock);
-		muestra.agregarOpinion(appMock,opinionNingunaMock2);
+		muestra.agregarOpinion(appMock, opinionNingunaMock);
+		muestra.agregarOpinion(appMock, opinionNingunaMock2);
 
 		assertInstanceOf(Verificada.class, muestra.getEstadoDeVerificacion());
-		assertEquals(muestra.getEstadoDeVerificacion().valor(),  NivelDeVerificacion.VERIFICADA);
+		assertEquals(muestra.getEstadoDeVerificacion().valor(), NivelDeVerificacion.VERIFICADA);
 	}
 
 	@Test
@@ -194,7 +194,7 @@ public class MuestraTest {
 
 		when(opinionImgPocoClaraMock.esOpinionDeExperto()).thenReturn(true);
 
-		muestra.agregarOpinion(appMock,opinionImgPocoClaraMock);
+		muestra.agregarOpinion(appMock, opinionImgPocoClaraMock);
 
 		assertInstanceOf(VerificadaParcial.class, muestra.getEstadoDeVerificacion());
 		assertTrue(muestra.seEncuentraEnEstado(NivelDeVerificacion.VERIFICADA_PARCIAL));
@@ -206,7 +206,7 @@ public class MuestraTest {
 
 		when(opinionImgPocoClaraMock.getUsuario()).thenReturn(userNormalMock);
 
-		muestra.agregarOpinion(appMock,opinionImgPocoClaraMock);
+		muestra.agregarOpinion(appMock, opinionImgPocoClaraMock);
 
 		assertInstanceOf(NoVerificada.class, muestra.getEstadoDeVerificacion());
 		assertTrue(muestra.seEncuentraEnEstado(NivelDeVerificacion.NO_VERIFICADA));
@@ -222,27 +222,27 @@ public class MuestraTest {
 	}
 
 	@Test
-    void unaMuestraPuedeNotificarValidaciónDeOpiniónSobreEllaMisma() {
-       
-        // setup
+	void unaMuestraPuedeNotificarValidacionDeOpinionSobreEllaMisma() {
+
+		// setup
 		List<ZonaDeCobertura> zonasDeCobertura = new ArrayList<ZonaDeCobertura>();
-        zonasDeCobertura.add(zonaMock);
-		
-        when(opinionNingunaMock.esOpinionDeExperto()).thenReturn(true);
-        when(opinionNingunaMock2.esOpinionDeExperto()).thenReturn(true);
-        when(opinionNingunaMock.getUsuario()).thenReturn(userExpertoMock);
-        when(opinionNingunaMock2.getUsuario()).thenReturn(userExpertoMock2);
-        when(appMock.zonasDeLaMuestra(muestra)).thenReturn(zonasDeCobertura);
+		zonasDeCobertura.add(zonaMock);
 
-        muestra.agregarOpinion(appMock ,opinionNingunaMock);
+		when(opinionNingunaMock.esOpinionDeExperto()).thenReturn(true);
+		when(opinionNingunaMock2.esOpinionDeExperto()).thenReturn(true);
+		when(opinionNingunaMock.getUsuario()).thenReturn(userExpertoMock);
+		when(opinionNingunaMock2.getUsuario()).thenReturn(userExpertoMock2);
+		when(appMock.zonasDeLaMuestra(muestra)).thenReturn(zonasDeCobertura);
 
-        // exercise
-        muestra.agregarOpinion(appMock, opinionNingunaMock2);
+		muestra.agregarOpinion(appMock, opinionNingunaMock);
 
-        // verify
-        verify(zonaMock).notificar(muestra, Aspecto.MUESTRA_VERIFICADA);
-    }
-	
+		// exercise
+		muestra.agregarOpinion(appMock, opinionNingunaMock2);
+
+		// verify
+		verify(zonaMock).notificar(muestra, Aspecto.MUESTRA_VERIFICADA);
+	}
+
 	@Test
 	void unaMuestraSabeSiElResultadoEsUnInsecto() {
 
@@ -258,7 +258,7 @@ public class MuestraTest {
 	void unaMuestraSabeSiNoElResultadoEsUnInsecto() {
 
 		when(opinionImgPocoClaraMock.getUsuario()).thenReturn(userNormalMock);
-		muestra.agregarOpinion(appMock,opinionImgPocoClaraMock);
+		muestra.agregarOpinion(appMock, opinionImgPocoClaraMock);
 
 		assertFalse(muestra.esInsecto(Vinchuca.VinchucaInfestans));
 	}
@@ -270,7 +270,7 @@ public class MuestraTest {
 
 		when(opinionVinchucaInfestans.getUsuario()).thenReturn(userNormalMock);
 		when(opinionVinchucaInfestans.getFechaCreacion()).thenReturn(fecha);
-		muestra.agregarOpinion(appMock,opinionVinchucaInfestans);
+		muestra.agregarOpinion(appMock, opinionVinchucaInfestans);
 
 		assertTrue(muestra.fueVotadaEn(fecha));
 	}
@@ -311,7 +311,7 @@ public class MuestraTest {
 
 	@Test
 	void unaMuestraConoceSuFoto() {
-		assertEquals(muestra.getFoto(),fotoMock);
+		assertEquals(muestra.getFoto(), fotoMock);
 		;
 	}
 
@@ -323,7 +323,7 @@ public class MuestraTest {
 
 	@Test
 	void unaMuestraConoceSuUbicacion() {
-		assertEquals(muestra.getUbicacion() ,ubiMock);
+		assertEquals(muestra.getUbicacion(), ubiMock);
 		;
 	}
 
@@ -338,32 +338,32 @@ public class MuestraTest {
 		assertEquals(muestra.getEstadoDeVerificacion().valor(), NivelDeVerificacion.NO_VERIFICADA);
 		assertTrue(muestra.seEncuentraEnEstado(NivelDeVerificacion.NO_VERIFICADA));
 	}
-	
+
 	@Test
 	void unaMuestraVerificadaNoPuedeAgregarOpiniones() {
-		when(opinionNingunaMock.getUsuario()).thenReturn(userExpertoMock);		
+		when(opinionNingunaMock.getUsuario()).thenReturn(userExpertoMock);
 		when(opinionNingunaMock2.getUsuario()).thenReturn(userExpertoMock2);
-		when(opinionNingunaMock.esOpinionDeExperto()).thenReturn(true);		
-		when(opinionNingunaMock2.esOpinionDeExperto()).thenReturn(true);	
-		
-		muestra.agregarOpinion(appMock,opinionNingunaMock);
-		muestra.agregarOpinion(appMock,opinionNingunaMock2);
-		
-		muestra.agregarOpinion(appMock,opinionVinchucaInfestans);
-		
+		when(opinionNingunaMock.esOpinionDeExperto()).thenReturn(true);
+		when(opinionNingunaMock2.esOpinionDeExperto()).thenReturn(true);
+
+		muestra.agregarOpinion(appMock, opinionNingunaMock);
+		muestra.agregarOpinion(appMock, opinionNingunaMock2);
+
+		muestra.agregarOpinion(appMock, opinionVinchucaInfestans);
+
 		assertEquals(muestra.getOpiniones().size(), 3);
 	}
-	
+
 	@Test
 	void unaMuestraVerificadaConoceSuResultado() {
-		when(opinionNingunaMock.getUsuario()).thenReturn(userExpertoMock);		
+		when(opinionNingunaMock.getUsuario()).thenReturn(userExpertoMock);
 		when(opinionNingunaMock2.getUsuario()).thenReturn(userExpertoMock2);
-		when(opinionNingunaMock.esOpinionDeExperto()).thenReturn(true);		
-		when(opinionNingunaMock2.esOpinionDeExperto()).thenReturn(true);	
-		
-		muestra.agregarOpinion(appMock,opinionNingunaMock);
-		muestra.agregarOpinion(appMock,opinionNingunaMock2);
-		
+		when(opinionNingunaMock.esOpinionDeExperto()).thenReturn(true);
+		when(opinionNingunaMock2.esOpinionDeExperto()).thenReturn(true);
+
+		muestra.agregarOpinion(appMock, opinionNingunaMock);
+		muestra.agregarOpinion(appMock, opinionNingunaMock2);
+
 		assertEquals(muestra.getEstadoDeVerificacion().resultadoActual(muestra), Comentario.NINGUNA);
 	}
 

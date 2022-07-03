@@ -62,30 +62,6 @@ public class Organizacion implements Observador {
 		return funcionalidadesPorAspecto;
 	}
 
-//	public void suscribirseAZona(ZonaDeCobertura zona, Aspecto aspecto) {
-//
-//		if (this.getSuscripcionesAZonasPorAspecto().containsKey(aspecto)) {
-//			this.getSuscripcionesAZonasPorAspecto().get(aspecto).add(zona);
-//
-//		} else {
-//			List<ZonaDeCobertura> zonasDelAspecto = new ArrayList<ZonaDeCobertura>();
-//			zonasDelAspecto.add(zona);
-//			this.getSuscripcionesAZonasPorAspecto().put(aspecto, zonasDelAspecto);
-//		}
-//	}
-
-//	public void desuscribirseDeZona(ZonaDeCobertura zona, Aspecto aspecto) {
-//		// si la zona no estaba registrada en las suscripciones seg�n el aspecto dado,
-//		// no se hace nada
-//		// lo mismo sucede si el aspecto no est� definido como clave
-//		if (this.getSuscripcionesAZonasPorAspecto().containsKey(aspecto)) {
-//
-//			List<ZonaDeCobertura> zonasDelAspecto = this.getSuscripcionesAZonasPorAspecto().get(aspecto);
-//			zonasDelAspecto.remove(zona);
-//
-//		}
-//	}
-
 	public void setFuncionalidadParaAspecto(FuncionalidadExterna funcionalidad, Aspecto aspecto) {
 		this.getFuncionalidadesPorAspecto().put(aspecto, funcionalidad);
 	}
